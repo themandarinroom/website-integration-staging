@@ -1,0 +1,66 @@
+{
+  "commit": "80b4ab7",
+  "workflow": "https://github.com/themandarinroom/website-integration-staging/actions/runs/40271927144",
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "styles.css",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "public-data.mjs",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "catalog.mjs",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "app.mjs",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "robots.txt",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "assets/hanzi.png",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "assets/emblem.svg",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "assets/topics.png",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "assets/pinyin.png",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "assets/year-staircase.png",
+      "status": 200,
+      "matches_local": true
+    },
+    {
+      "file": "assets/about.png",
+      "status": 200,
+      "matches_local": true
+    }
+  ]
+}
