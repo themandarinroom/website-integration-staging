@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=new URL('../dist/',import.meta.url);
-const allowed=new Set(['.nojekyll','index.html','robots.txt','styles.css','app.mjs','catalog.mjs','public-data.mjs','assets/seal.svg','assets/topics.png','assets/pinyin.png','assets/hanzi.png','assets/about.png']);
+const allowed=new Set(['.nojekyll','index.html','robots.txt','styles.css','app.mjs','catalog.mjs','public-data.mjs','assets/emblem.svg','assets/year-staircase.png','assets/topics.png','assets/pinyin.png','assets/hanzi.png','assets/about.png']);
 function walk(dir,prefix=''){
  for(const entry of fs.readdirSync(dir,{withFileTypes:true})){
   const relative=prefix+entry.name;const file=path.join(dir,entry.name);
@@ -17,4 +17,4 @@ function walk(dir,prefix=''){
  }
 }
 walk(fileURLToPath(root));if(allowed.size)throw new Error('Missing files: '+[...allowed].join(', '));
-console.log('Deployment payload verified: 12 allowlisted static files; no backend, credentials, rules or private content.');
+console.log('Deployment payload verified: 13 allowlisted static files; no backend, credentials, rules or private content.');

@@ -41,3 +41,13 @@ This delivers a safe Phase 1 integration shell. It does not claim full app embed
 The isolated staging deployment succeeded. All 11 served static files matched local SHA-256 digests; details in deployment-http-checks.json. Live browser check: 6 vocabulary image cards, 2 Unit previews, zero broken images, no document overflow at the default 1227px viewport and no warning/error console entries. The existing Word Randomiser launch was followed from the integration link and loaded all 9 live published sets in its default Local Mode.
 
 No production data/rules/Storage/Functions deploy, existing repo push, custom-domain configuration or DNS change was performed. The parent checkout retains its pre-existing changes; the independent website-integration repository owns this work.
+
+## Approved visual revision — staircase and Yin-Yang logo
+
+The supplied staircase reference was located in the Desktop project folder, not the missing Downloads path. Year Levels now displays its full illustrated staircase beneath the real shared header, with seven accessible links aligned to the seven step fronts. Choosing a step retains the existing year filter and moves focus to that year’s resources. Narrow screens can scroll the scene horizontally and have seven additional readable, 44px-high year shortcuts.
+
+The supplied Yin-Yang emblem replaces the integration site’s vertical seal in every shared header, footer and favicon. The original PNG is embedded unchanged in a cropped SVG viewport to show only the emblem; the site name/tagline remain live HTML. Existing independent production applications are outside this styling update.
+
+Validation: syntax check and all 14 existing integration tests passed. Desktop Year 5 step opened Countries vocabulary and its public Unit metadata preview. Desktop/tablet/mobile visual and click checks, current screenshots and deployment evidence are recorded with this revision. No Firebase or production application source was edited.
+
+Revision browser results: all 7 stair links opened the correct year heading and moved keyboard focus to it; the mobile Year 6 shortcut also worked. All 18 page/screen checks (6 pages × desktop 1536px, tablet 810px, mobile 375px) loaded the new shared logo and had no document overflow. The scene itself intentionally scrolls within its own region on smaller screens. The embedded emblem PNG was verified byte-for-byte against the supplied original. See staircase-browser-checks.json and screenshots/staircase-revision/.

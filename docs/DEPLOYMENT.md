@@ -39,3 +39,7 @@ Initial deployed source commit: `692508d8ff5994ea91a9607b8c2d230a7acb766c`.
 All 11 publicly served static files returned HTTP 200 and matched local SHA-256 content exactly (`.nojekyll` is a deployment marker, not a served asset). See deployment-http-checks.json. The live browser loaded six actual image cards and two Unit metadata previews without console warnings/errors; staging-home.png records the deployed page. Existing Vocabulary, Units, Speaking and Word Randomiser entries returned HTTP 200 again after staging deployment.
 
 Subsequent documentation/screenshot commits do not change the verified static content.
+
+## Staircase / emblem revision
+
+The current deployment allowlist contains 13 files, adding the staircase scene and replacing seal.svg with emblem.svg. The PNG source images are preserved unchanged; CSS/SVG viewports omit the supplied mockup header and logo wordmark. This release changes only integration presentation and its accessible year navigation. It preserves the same read-only catalog and canonical application links.

@@ -17,3 +17,7 @@ Six visual reference mockups for Codex. These are static concepts, not functiona
 4. About contact form is a design placeholder until a secure backend and email delivery are configured.
 5. Existing apps must remain operational; avoid unapproved production/data changes.
 6. These images contain illustrative content and should not be used as a source of verified curriculum, resource availability, or functioning controls.
+
+## Approved revision — staircase and Yin-Yang identity
+
+The user supplied 07-year-levels-staircase.png and 08-yin-yang-brand.png as the replacement direction. The Year Levels scene now follows the staircase reference; the Yin-Yang emblem replaces the vertical seal across the integration header, footer and favicon. These latest decisions override the original six mockups for those elements.

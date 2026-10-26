@@ -34,3 +34,7 @@ Vocabulary loads `published == true` from the existing public Firestore API. The
 `dist/catalog.mjs` holds stable topic IDs and reviewed resource-to-topic associations. New or renamed resource IDs are searchable but receive no guessed topic tags until reviewed. Years come directly from source metadata; the mockups’ illustrative year chips are not data.
 
 The approved illustrations are displayed by clipping unchanged PNG references inside SVG viewports. Text/navigation/cards are real responsive HTML; no screenshot is used as a full-page implementation. Actual vocabulary imagery remains owned by the existing library. Standalone original illustration assets can replace these clipped references later without changing the approved design.
+
+## Latest approved visual revision
+
+Year Levels uses the supplied illustrated staircase, with working Prep–Year 6 step links and smaller-screen shortcuts. All shared header/footer branding and the favicon use the supplied Yin-Yang emblem. These replace the earlier year-card layout and vertical seal; the other approved page designs and resource/data boundaries remain in place.

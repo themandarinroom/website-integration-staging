@@ -1,0 +1,26 @@
+
+> the-mandarin-room-integration@1.0.0 test
+> node --test tests/*.test.mjs
+
+✔ unpublished, deleted, invalid-year and invalid-ID vocabulary cannot enter the catalog (1.156417ms)
+✔ preview strips author metadata and embedded audio paths (0.1355ms)
+✔ unknown set IDs never acquire guessed topic or year relationships (0.59975ms)
+✔ topic badges reflect published resource years only (0.203292ms)
+✔ search supports English, Chinese and year labels without interpreting markup (0.145625ms)
+✔ unsafe image schemes and credentials are rejected (0.105541ms)
+✔ Units accepts only its public index contract and reconstructs canonical URLs (0.174292ms)
+✔ Firestore decoding preserves nested arrays, booleans, null and numbers (0.300167ms)
+✔ anonymous query includes published predicate and excludes identity fields (0.359709ms)
+✔ network adapter uses anonymous no-cache read-only endpoints (0.495125ms)
+✔ Teacher Voice rejects mismatched identities and arbitrary audio hosts (0.359166ms)
+✔ six navigation links, staging noindex, restrictive CSP, and no third-party scripts (0.304208ms)
+✔ frontend cannot write Firebase, collect contact data or add tracking (1.849ms)
+✔ topic IDs are unique and all twelve approved categories are present (0.090042ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 83.235166

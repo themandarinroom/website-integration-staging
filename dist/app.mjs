@@ -81,9 +81,13 @@ function yearActivities(year) {
 function yearLevels(params) {
   const raw=params.get('year'); const selected=/^[0-6]$/.test(raw||'')?Number(raw):null;
   const vocab=selectResources(state.vocabulary,{year:selected}); const units=selectResources(state.units,{year:selected});
-  return `<a class="back-link" href="#/">← Back to Home</a><div class="page-intro"><h1>Explore by Year Level</h1><p class="subtitle">Find vocabulary, units and activities for your year level.</p></div>
-  <div class="year-grid">${Array.from({length:7},(_,y)=>`<a class="year-card year-${y}" href="#/year-levels?year=${y}" ${selected===y?'aria-current="true"':''}>${yearLabel(y)}<span class="circle" aria-hidden="true">→</span></a>`).join('')}</div>
-  ${selected!==null?`<section class="resource-area"><h2>${yearLabel(selected)} resources</h2><p class="muted">Published vocabulary and public unit previews for this year.</p><div class="resource-columns"><section class="resource-panel"><h3>Vocabulary</h3>${vocab.length?vocab.map(resourceCard).join(''):loadingOrEmpty('vocabulary','No published vocabulary for this year yet.')}</section><section class="resource-panel"><h3>Units</h3>${units.length?units.map(resourceCard).join(''):loadingOrEmpty('units','No public unit previews for this year yet.')}</section><section class="resource-panel"><h3>Activities</h3>${yearActivities(selected)}</section></div></section>`:''}`;
+  return `<h1 class="sr-only">Explore by Year Level</h1><p class="sr-only">Find vocabulary, units and activities for your year level. Select a step from Prep to Year 6.</p>
+  <section class="year-journey" aria-label="Choose your year level"><div class="year-scene-scroll" role="region" aria-label="Year level staircase; scroll horizontally to explore all seven steps" tabindex="0"><div class="year-scene">
+  <svg class="staircase-art" width="1624" height="804" viewBox="0 164 1624 804" aria-hidden="true" focusable="false"><image href="assets/year-staircase.png" width="1624" height="968"/></svg>
+  <nav class="staircase-links" aria-label="Year level steps">${Array.from({length:7},(_,y)=>`<a class="stair-step stair-step-${y}" href="#/year-levels?year=${y}" aria-label="Explore ${yearLabel(y)} resources" ${selected===y?'aria-current="true"':''}><span class="sr-only">${yearLabel(y)}</span></a>`).join('')}</nav>
+  </div></div><p class="staircase-hint">Choose a step to explore. <span>Swipe the picture to see the higher steps, or choose below.</span></p>
+  <nav class="year-shortcuts" aria-label="Year levels on smaller screens">${Array.from({length:7},(_,y)=>`<a class="year-badge year-${y}" href="#/year-levels?year=${y}" ${selected===y?'aria-current="true"':''}>${yearLabel(y)}</a>`).join('')}</nav></section>
+  ${selected!==null?`<section class="resource-area"><h2 id="year-resource-heading" tabindex="-1">${yearLabel(selected)} resources</h2><p class="muted">Published vocabulary and public unit previews for this year.</p><div class="resource-columns"><section class="resource-panel"><h3>Vocabulary</h3>${vocab.length?vocab.map(resourceCard).join(''):loadingOrEmpty('vocabulary','No published vocabulary for this year yet.')}</section><section class="resource-panel"><h3>Units</h3>${units.length?units.map(resourceCard).join(''):loadingOrEmpty('units','No public unit previews for this year yet.')}</section><section class="resource-panel"><h3>Activities</h3>${yearActivities(selected)}</section></div></section>`:''}`;
 }
 function topicCard(topic) {
   const years=topicYears(allResources(),topic.id);
@@ -167,6 +171,7 @@ function wireAudio(){
 }
 function render({focus=false}={}){
   const {page,params}=route();
+  main.classList.toggle('year-level-page',page==='year-levels');
   const renderers={home, 'year-levels':()=>yearLevels(params),topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
   main.innerHTML=renderers[page]?renderers[page]():`<section class="banner green"><div><h1>Page not found</h1><p class="subtitle"><a class="inline-link" href="#/">Return Home</a></p></div></section>`;
   document.title=`${({'home':'Home','year-levels':'Year Levels',topics:'Topics',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
@@ -184,7 +189,7 @@ function render({focus=false}={}){
     history.replaceState(null,'',`#/search${search.value?'?q='+encodeURIComponent(search.value):''}`);
   });
   const form=document.querySelector('.contact-form');if(form)form.addEventListener('submit',e=>e.preventDefault());
-  if(focus){main.focus({preventScroll:true});window.scrollTo(0,0);}
+  if(focus){main.focus({preventScroll:true});window.scrollTo(0,0);if(page==='year-levels' && /^[0-6]$/.test(params.get('year')||'')){document.querySelector('#year-resource-heading')?.focus({preventScroll:true});main.querySelector('.resource-area')?.scrollIntoView({block:'start'});}}
 }
 const backdrop=document.querySelector('#modal'),modal=backdrop.querySelector('.modal');let returnFocus=null;
 function showModal(title,html){returnFocus=document.activeElement;document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">${title}</h2>${html}`;backdrop.hidden=false;document.body.style.overflow='hidden';main.setAttribute('aria-hidden','true');document.querySelector('.site-header').setAttribute('aria-hidden','true');document.querySelector('.site-footer').setAttribute('aria-hidden','true');modal.focus();}

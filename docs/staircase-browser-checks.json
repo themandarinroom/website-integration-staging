@@ -1,0 +1,194 @@
+{
+  "sourceFavicon": "assets/emblem.svg",
+  "note": "The browser automation extension temporarily badges tab favicons; the site favicon is verified in its HTML source.",
+  "stairChecks": [
+    {
+      "focused": "year-resource-heading",
+      "heading": "Prep resources",
+      "route": "#/year-levels?year=0",
+      "selected": "Explore Prep resources"
+    },
+    {
+      "focused": "year-resource-heading",
+      "heading": "Year 1 resources",
+      "route": "#/year-levels?year=1",
+      "selected": "Explore Year 1 resources"
+    },
+    {
+      "focused": "year-resource-heading",
+      "heading": "Year 2 resources",
+      "route": "#/year-levels?year=2",
+      "selected": "Explore Year 2 resources"
+    },
+    {
+      "focused": "year-resource-heading",
+      "heading": "Year 3 resources",
+      "route": "#/year-levels?year=3",
+      "selected": "Explore Year 3 resources"
+    },
+    {
+      "focused": "year-resource-heading",
+      "heading": "Year 4 resources",
+      "route": "#/year-levels?year=4",
+      "selected": "Explore Year 4 resources"
+    },
+    {
+      "focused": "year-resource-heading",
+      "heading": "Year 5 resources",
+      "route": "#/year-levels?year=5",
+      "selected": "Explore Year 5 resources"
+    },
+    {
+      "focused": "year-resource-heading",
+      "heading": "Year 6 resources",
+      "route": "#/year-levels?year=6",
+      "selected": "Explore Year 6 resources"
+    }
+  ],
+  "brandChecks": [
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Home · The Mandarin Room",
+      "pageWidth": 1536,
+      "viewport": 1536
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Year Levels · The Mandarin Room",
+      "pageWidth": 1536,
+      "viewport": 1536
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Topics · The Mandarin Room",
+      "pageWidth": 1536,
+      "viewport": 1536
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Pinyin · The Mandarin Room",
+      "pageWidth": 1536,
+      "viewport": 1536
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Hanzi · The Mandarin Room",
+      "pageWidth": 1536,
+      "viewport": 1536
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "About · The Mandarin Room",
+      "pageWidth": 1536,
+      "viewport": 1536
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Home · The Mandarin Room",
+      "pageWidth": 810,
+      "viewport": 810
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Year Levels · The Mandarin Room",
+      "pageWidth": 810,
+      "viewport": 810
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Topics · The Mandarin Room",
+      "pageWidth": 810,
+      "viewport": 810
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Pinyin · The Mandarin Room",
+      "pageWidth": 810,
+      "viewport": 810
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Hanzi · The Mandarin Room",
+      "pageWidth": 810,
+      "viewport": 810
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "About · The Mandarin Room",
+      "pageWidth": 810,
+      "viewport": 810
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Home · The Mandarin Room",
+      "pageWidth": 375,
+      "viewport": 375
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Year Levels · The Mandarin Room",
+      "pageWidth": 375,
+      "viewport": 375
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Topics · The Mandarin Room",
+      "pageWidth": 375,
+      "viewport": 375
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Pinyin · The Mandarin Room",
+      "pageWidth": 375,
+      "viewport": 375
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "Hanzi · The Mandarin Room",
+      "pageWidth": 375,
+      "viewport": 375
+    },
+    {
+      "footerLogo": "assets/emblem.svg",
+      "logoLoaded": true,
+      "logoSource": "assets/emblem.svg",
+      "page": "About · The Mandarin Room",
+      "pageWidth": 375,
+      "viewport": 375
+    }
+  ]
+}
