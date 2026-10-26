@@ -6,7 +6,7 @@ New repository: https://github.com/themandarinroom/website-integration-staging
 
 Source branch: `codex/unified-website-v1`.
 
-Expected Pages URL (verify deployment before treating it as live): https://themandarinroom.github.io/website-integration-staging/
+Verified live Pages URL: https://themandarinroom.github.io/website-integration-staging/
 
 The only deployable directory is `dist`. No existing production repo, Pages configuration, Firebase environment or application file participates. Public production resources are read anonymously; the shell has no write operations. Only approved public metadata and media are loaded. Live Word Randomiser links explicitly enter its existing staging environment.
 
@@ -29,3 +29,13 @@ For rollback, redeploy a previously accepted commit in this staging repository. 
 9. Monitor links and published resource changes with a separately authorised process; no recurring monitor or tracking has been enabled by this task.
 
 No production migration, DNS, Firebase security rule or destructive data changes were performed.
+
+## Verified release
+
+Initial deployed source commit: `692508d8ff5994ea91a9607b8c2d230a7acb766c`.
+
+[GitHub Actions deployment](https://github.com/themandarinroom/website-integration-staging/actions/runs/40257456004) completed successfully after adding the exact integration branch to this new repository’s default Pages branch allowlist. No existing repository environment was changed.
+
+All 11 publicly served static files returned HTTP 200 and matched local SHA-256 content exactly (`.nojekyll` is a deployment marker, not a served asset). See deployment-http-checks.json. The live browser loaded six actual image cards and two Unit metadata previews without console warnings/errors; staging-home.png records the deployed page. Existing Vocabulary, Units, Speaking and Word Randomiser entries returned HTTP 200 again after staging deployment.
+
+Subsequent documentation/screenshot commits do not change the verified static content.

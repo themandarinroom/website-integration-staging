@@ -35,3 +35,9 @@ Chrome browser, live anonymous public data; viewport simulation is not physical 
 ## Acceptance limits
 
 This delivers a safe Phase 1 integration shell. It does not claim full app embedding, public Unit content, a complete Pinyin course/chart/audio bank, Hanzi stroke animations, new games, email delivery, analytics, production live sessions, or a configured custom domain. Those are preserved existing workflows, explicit placeholders or documented follow-up decisions. Existing production security/rule limitations are recorded in ARCHITECTURE.md and left unchanged.
+
+## Staging release verification
+
+The isolated staging deployment succeeded. All 11 served static files matched local SHA-256 digests; details in deployment-http-checks.json. Live browser check: 6 vocabulary image cards, 2 Unit previews, zero broken images, no document overflow at the default 1227px viewport and no warning/error console entries. The existing Word Randomiser launch was followed from the integration link and loaded all 9 live published sets in its default Local Mode.
+
+No production data/rules/Storage/Functions deploy, existing repo push, custom-domain configuration or DNS change was performed. The parent checkout retains its pre-existing changes; the independent website-integration repository owns this work.

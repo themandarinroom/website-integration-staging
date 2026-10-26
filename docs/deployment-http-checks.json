@@ -1,0 +1,90 @@
+{
+  "staging_url": "https://themandarinroom.github.io/website-integration-staging/",
+  "static_files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "file": "styles.css",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "text/css; charset=utf-8"
+    },
+    {
+      "file": "public-data.mjs",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "text/javascript; charset=utf-8"
+    },
+    {
+      "file": "catalog.mjs",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "text/javascript; charset=utf-8"
+    },
+    {
+      "file": "app.mjs",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "text/javascript; charset=utf-8"
+    },
+    {
+      "file": "robots.txt",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "text/plain; charset=utf-8"
+    },
+    {
+      "file": "assets/hanzi.png",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "image/png"
+    },
+    {
+      "file": "assets/topics.png",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "image/png"
+    },
+    {
+      "file": "assets/pinyin.png",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "image/png"
+    },
+    {
+      "file": "assets/seal.svg",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "image/svg+xml"
+    },
+    {
+      "file": "assets/about.png",
+      "status": 200,
+      "matches_local": true,
+      "content_type": "image/png"
+    }
+  ],
+  "existing_production_entries": [
+    {
+      "url": "https://themandarinroom.github.io/vocabularylibrary/",
+      "status": 200
+    },
+    {
+      "url": "https://themandarinroom.github.io/units/",
+      "status": 200
+    },
+    {
+      "url": "https://themandarinroom.github.io/speaking/student.html",
+      "status": 200
+    },
+    {
+      "url": "https://themandarinroom.github.io/vocabularylibrary/tools/word-randomizer/",
+      "status": 200
+    }
+  ],
+  "verified_at_utc": "2026-10-26T02:07:58.892870Z"
+}

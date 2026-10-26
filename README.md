@@ -2,6 +2,8 @@
 
 Six responsive pages following the six approved mockups, with real published Vocabulary previews and independent AI/Teacher Voice, year/topic browsing, resource search, public Unit metadata previews, existing activity links, protected Admin entry links and bilingual About. Unimplemented activities and contact delivery are visibly unavailable.
 
+**Live staging:** https://themandarinroom.github.io/website-integration-staging/
+
 The staging source is isolated from all existing application repositories. It makes anonymous read-only requests for public resources; it has no Firebase SDK, auth, backend, writes or curriculum cache. The existing apps retain ownership of editing, student workflows, recordings and permissions.
 
 ## Preview and checks
