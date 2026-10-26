@@ -43,3 +43,11 @@ Evidence: homepage-browser-checks.json, homepage-app-link-checks.json and screen
 Only the independent website-integration-staging repository is published. Existing production repositories, Firebase data/Storage/rules/Functions, authentication, Specialist Planner and DNS are unchanged. Public Units remain metadata previews until a separately approved publishing/access model exists. Existing placeholder Pinyin/Hanzi content and contact delivery stay visibly unavailable where unfinished.
 
 Viewport checks do not substitute for physical school-iPad/Safari, microphone, VoiceOver or managed-network testing. Those existing manual acceptance items remain in VERIFICATION.md. No new analytics or student-identifying storage has been added.
+
+## Verified staging release
+
+Published code commit: `bf22df7`.
+
+The [staging workflow](https://github.com/themandarinroom/website-integration-staging/actions/runs/40287303142) completed successfully. All 13 publicly served files returned HTTP 200 and matched the tested local source by SHA-256; `.nojekyll` is the fourteenth allowlisted deployment marker. Evidence: homepage-deployment-checks.json.
+
+Live browser verification confirmed the exact welcome heading, eight ordered navigation tabs, seven Home steps, 9 published Vocabulary sets, six matching audio preview cards and 2 Unit previews. The live `#/year-levels?year=0` compatibility URL redirected to `#/?year=0` and showed Prep resources with Home active. The browser was left on the new Home page. A deployed screenshot is saved as screenshots/homepage-promotion/staging-home.png.
