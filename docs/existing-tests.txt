@@ -1,0 +1,47 @@
+✔ Pinyin editing preserves a trailing space while the teacher types (0.72725ms)
+✔ Pinyin is normalized when editing finishes (0.147792ms)
+✔ stable IDs do not depend on later title edits (5.11475ms)
+✔ saved practice normalization retains Teacher Voice metadata (3.817458ms)
+✔ duplicate-style payloads omit source Teacher Voice (0.370458ms)
+✔ compatibility snapshot retains stable Teacher Voice paths (0.249208ms)
+✔ publish updates only the year pointer and compatibility snapshot (0.306166ms)
+✔ staging rules keep secrets backend-only and scope teacher device lists (2.02225ms)
+✔ public projections exclude secrets, teacher identity, join code and presence lists (4.755334ms)
+✔ production Firebase files remain disconnected from staging rules (3.129458ms)
+✔ staging allows only authorised teachers to edit shared vocabulary sources (0.56725ms)
+✔ session snapshot keeps its Teacher Voice revision across resume (4.23075ms)
+✔ teacher draw is authoritative for teacher and three viewers (1.64ms)
+✔ one delegated student draws once and control returns to teacher (1.359708ms)
+✔ two groups keep independent histories and no-repeat pools (0.591792ms)
+✔ duplicate request is idempotent and stale request is rejected (0.321ms)
+✔ refresh resumes current state and disconnect does not block draws (0.408375ms)
+✔ reset and allow-repeats preserve configured vocabulary (0.944ms)
+✔ live no-repeat draws every word once and reports completion (0.42575ms)
+✔ teacher lock, immediate revoke, group assignment and end are enforced (0.93625ms)
+✔ local QR generator encodes a GitHub Pages classroom join link (16.772125ms)
+✔ live header exposes QR and join-code enlargement controls (0.397083ms)
+✔ QR value is the same relative student link used by Copy join link (0.286417ms)
+✔ enlarged join display supports close, backdrop and Escape (0.364625ms)
+✔ no-repeat draws every item exactly once and then completes (0.753125ms)
+✔ shuffleAgain starts a clean no-repeat round with the same items (0.134792ms)
+✔ allow-repeats retains the full pool and records repeated history (0.849791ms)
+✔ setMode resets history and round state (1.969125ms)
+✔ cache namespace is derived from the actual Firebase project ID (1.818417ms)
+✔ Vocabulary Store has no packaged-data or cloud/cache merge path (0.598709ms)
+✔ Randomiser refreshes the requested set and loads the new architecture version (0.923042ms)
+✔ live clients use only the session Teacher Voice snapshot (0.787833ms)
+✔ joined students receive a dedicated bilingual waiting scene (0.670084ms)
+✔ delegated student draw previews words but submits one authoritative callable draw (0.328958ms)
+✔ student join inputs are constrained inside narrow cards (0.307916ms)
+✔ Unit Library reads stable Unit and Lesson IDs from a deep link (1.174875ms)
+✔ canonical lesson links encode both stable IDs (0.165958ms)
+✔ metadata index is generated from source Units without teaching content (0.9405ms)
+✔ deleted Units and Lessons without stable IDs are excluded (1.593208ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 39
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 194.039375

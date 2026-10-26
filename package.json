@@ -1,0 +1,11 @@
+{
+  "name": "the-mandarin-room-integration",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check dist/app.mjs && node --check dist/catalog.mjs && node --check dist/public-data.mjs",
+    "preview": "python3 -m http.server 8765 --bind 127.0.0.1 --directory dist"
+  }
+}
