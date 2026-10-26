@@ -1,0 +1,26 @@
+[
+  {
+    "url": "https://themandarinroom.github.io/vocabularylibrary/",
+    "status": 200
+  },
+  {
+    "url": "https://themandarinroom.github.io/units/",
+    "status": 200
+  },
+  {
+    "url": "https://themandarinroom.github.io/units/unit-library-index.json",
+    "status": 200
+  },
+  {
+    "url": "https://themandarinroom.github.io/speaking/student.html",
+    "status": 200
+  },
+  {
+    "url": "https://themandarinroom.github.io/vocabularylibrary/tools/word-randomizer/",
+    "status": 200
+  },
+  {
+    "url": "https://themandarinroom.github.io/word-randomiser-staging/tools/word-randomizer/?firebase=staging",
+    "status": 200
+  }
+]

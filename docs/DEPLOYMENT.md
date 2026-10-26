@@ -43,3 +43,7 @@ Subsequent documentation/screenshot commits do not change the verified static co
 ## Staircase / emblem revision
 
 The current deployment allowlist contains 13 files, adding the staircase scene and replacing seal.svg with emblem.svg. The PNG source images are preserved unchanged; CSS/SVG viewports omit the supplied mockup header and logo wordmark. This release changes only integration presentation and its accessible year navigation. It preserves the same read-only catalog and canonical application links.
+
+## Homepage promotion release
+
+The staging payload now has 14 allowlisted files, adding `routing.mjs`. The eight top-level pages and legacy redirect are entirely static hash routes. No production settings or Firebase services are deployed. Vocabulary and Unit filter state is encoded in route fragments; only published Vocabulary and the existing public Unit index are read. The existing staircase PNG remains byte-for-byte unchanged. See HOMEPAGE_PROMOTION.md for the latest acceptance evidence.

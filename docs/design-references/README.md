@@ -21,3 +21,7 @@ Six visual reference mockups for Codex. These are static concepts, not functiona
 ## Approved revision — staircase and Yin-Yang identity
 
 The user supplied 07-year-levels-staircase.png and 08-yin-yang-brand.png as the replacement direction. The Year Levels scene now follows the staircase reference; the Yin-Yang emblem replaces the vertical seal across the integration header, footer and favicon. These latest decisions override the original six mockups for those elements.
+
+## Approved homepage promotion
+
+The staircase is now the homepage, headed “Welcome to The Mandarin Room”. The supplied illustration is reused unchanged, with its old title region clipped and replaced by live responsive HTML. Year Levels is removed from navigation; old routes redirect to Home. Vocabulary, Units and Activities are independent pastel resource pages. This decision supersedes the earlier homepage three-column layout and separate Year Levels page.

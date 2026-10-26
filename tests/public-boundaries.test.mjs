@@ -59,14 +59,14 @@ test('Teacher Voice rejects mismatched identities and arbitrary audio hosts',asy
  global.fetch=async()=>({ok:true,json:async()=>({fields:data})});
  try{assert.equal(await loadTeacherVoice('prep-numbers','one'),'');data.setId.stringValue='prep-numbers';data.teacherAudioUrl.stringValue='https://attacker.example/audio';assert.equal(await loadTeacherVoice('prep-numbers','one'),'');data.teacherAudioUrl.stringValue='https://firebasestorage.googleapis.com/audio';assert.match(await loadTeacherVoice('prep-numbers','one'),/^https:\/\/firebasestorage.googleapis.com/);}finally{global.fetch=original;}
 });
-test('six navigation links, staging noindex, restrictive CSP, and no third-party scripts',()=>{
+test('eight navigation links, staging noindex, restrictive CSP, and no third-party scripts',()=>{
  const html=fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8');
- assert.equal((html.match(/data-page=/g)||[]).length,6);assert.match(html,/noindex,nofollow/);assert.match(html,/form-action 'none'/);assert.match(html,/object-src 'none'/);assert(!/<script[^>]+src="https:/.test(html));assert(!html.includes('Teacher Login'));
+ assert.deepEqual([...html.matchAll(/data-page="([^"]+)"/g)].map(m=>m[1]),['home','vocabulary','units','activities','topics','pinyin','hanzi','about']);assert.match(html,/noindex,nofollow/);assert.match(html,/form-action 'none'/);assert.match(html,/object-src 'none'/);assert(!/<script[^>]+src="https:/.test(html));assert(!html.includes('Teacher Login'));
 });
 test('frontend cannot write Firebase, collect contact data or add tracking',()=>{
  const app=fs.readFileSync(new URL('../dist/app.mjs',import.meta.url),'utf8');
  assert.match(app,/<fieldset disabled>/);assert.match(app,/required/);assert.match(app,/role="status"/);
- const sources=['app.mjs','public-data.mjs','catalog.mjs'].map(p=>fs.readFileSync(new URL('../dist/'+p,import.meta.url),'utf8')).join('');
+ const sources=['app.mjs','public-data.mjs','catalog.mjs','routing.mjs'].map(p=>fs.readFileSync(new URL('../dist/'+p,import.meta.url),'utf8')).join('');
  assert(!/setDoc|addDoc|updateDoc|deleteDoc|signIn|localStorage|sessionStorage|sendBeacon|gtag\(|analytics\(/.test(sources));
 });
 test('topic IDs are unique and all twelve approved categories are present',()=>{

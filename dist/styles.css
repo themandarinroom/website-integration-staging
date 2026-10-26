@@ -42,3 +42,43 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 @media(max-width:700px){.brand-emblem{width:48px;height:48px}.staircase-hint{font-size:13px;line-height:1.6;padding:14px 20px 0}.year-shortcuts{gap:8px}.year-shortcuts a{font-size:13px;min-width:68px}.year-level-page .resource-area{margin:25px 16px 0}.stair-step{border-width:2px}}
 @media(prefers-reduced-motion:reduce){.stair-step{transition:none}}
 @media(max-width:700px){.year-scene{min-width:740px}}
+/* Staircase homepage and independent resource pages. */
+.welcome-copy{position:absolute;z-index:1;left:3.5%;top:7.4%;width:49%;pointer-events:none}
+.welcome-copy h1{font-size:clamp(30px,2.75vw,45px);line-height:1.15;letter-spacing:-1.1px;color:#08143a}
+.welcome-copy p{font-size:clamp(16px,1.35vw,22px);line-height:1.4;color:#617797;margin-top:12px;max-width:760px}
+.site-header nav[aria-label="Main navigation"]{gap:clamp(13px,1.3vw,23px);position:relative;min-width:0}
+.catalog-filters{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px;padding:21px 24px;background:#f4f8f5;border-radius:14px;margin:20px 0}
+.catalog-filters label{display:flex;flex-direction:column;gap:7px;font-size:13px;min-width:155px;color:#415a71;flex:1}
+.catalog-filters .catalog-query{flex:1.5}
+.catalog-filters select,.catalog-filters input{width:100%;min-width:0;min-height:44px;border:1px solid #dce5e0;border-radius:9px;background:#fff;padding:10px 12px;color:var(--ink);font-size:14px}
+.catalog-filters .text-button{padding:12px 3px;font-size:13px}
+.catalog-access-note{font-size:14px;line-height:1.6;color:var(--muted);margin:12px 3px}
+.catalog-grid .resource-link{margin:0;padding:18px;border:1px solid #e4eee7;background:#f5fbf7;overflow:hidden}
+.catalog-grid .resource-link:nth-child(4n+2){background:var(--peach)}
+.catalog-grid .resource-link:nth-child(4n+3){background:var(--blue)}
+.catalog-grid .resource-link:nth-child(4n){background:var(--lavender)}
+.resource-cover{height:155px;background:#fff;border-radius:9px;margin-bottom:15px;overflow:hidden}
+.resource-cover img{width:100%;height:100%;object-fit:contain;display:block}
+.vocabulary-preview{border-radius:16px;padding:24px;margin-top:30px}
+.vocabulary-preview .preview-intro{margin-bottom:18px}
+.vocabulary-preview .preview-intro h2{margin-bottom:7px}
+.vocabulary-preview .word-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+.vocabulary-preview .word-image{height:130px}
+.vocabulary-preview .audio-button{font-size:12px;min-height:38px}
+.vocabulary-preview .audio-status{font-size:13px;margin-top:15px}
+.activities-page .activity-grid{grid-template-columns:repeat(4,minmax(0,1fr));height:auto;gap:18px}
+.activities-page .activity-card{min-height:250px;padding:24px}
+.activities-page .activity-card h3{font-size:22px;margin-top:18px}
+.activities-page .activity-card p{font-size:15px;margin-top:10px;margin-bottom:18px}
+.activities-page .activity-card .circle{width:42px;height:42px;min-width:42px}
+.live-preview{margin-top:26px;padding:25px;border-radius:15px;background:#f6f7fb}
+.live-preview h2{font-size:23px;margin-bottom:8px}
+.live-preview .button{margin-top:16px}
+.panel-action{margin-top:18px}
+@media(max-width:1450px){.site-header{flex-wrap:wrap}.site-header nav[aria-label="Main navigation"]{order:3;width:100%;justify-content:center;gap:clamp(16px,2vw,30px);height:44px}.site-header nav a[aria-current=page]:after{bottom:0}}
+@media(max-width:1000px){.vocabulary-preview .word-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.activities-page .activity-grid{grid-template-columns:1fr 1fr}.welcome-copy{width:51%}.welcome-copy h1{font-size:32px}.welcome-copy p{font-size:17px}}
+@media(max-width:700px){.site-header nav[aria-label="Main navigation"]{justify-content:flex-start;gap:20px;overflow-x:auto;height:42px;padding:0 3px;scrollbar-width:thin;scrollbar-color:#b6d4c5 transparent}.welcome-copy{left:3.5%;top:4.8%;width:325px;max-width:calc(100vw - 48px)}.welcome-copy h1{font-size:26px;line-height:1.15;letter-spacing:-.7px}.welcome-copy p{font-size:14px;line-height:1.4;margin-top:9px}.catalog-filters{padding:17px;gap:13px}.catalog-filters label{min-width:calc(50% - 13px)}.catalog-filters .catalog-query{flex-basis:100%}.catalog-filters .button{flex:1}.vocabulary-preview{padding:17px}.vocabulary-preview .word-grid{gap:8px}.vocabulary-preview .word-image{height:95px}.vocabulary-preview .word-content{padding:7px 6px}.vocabulary-preview .audio-button{font-size:10px;min-height:36px}.activities-page .activity-grid{grid-template-columns:1fr 1fr;gap:12px}.activities-page .activity-card{min-height:250px;padding:18px 14px}.activities-page .activity-card h3{font-size:20px}.activities-page .activity-card p{font-size:14px}}
+@media(max-width:380px){.site-header nav[aria-label="Main navigation"]{gap:19px}.activities-page .activity-grid{grid-template-columns:1fr}.activities-page .activity-card{min-height:220px}}
+.resource-cover-text{display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:32px;color:#397458;line-height:1.4;background:#ffffffa8;overflow-wrap:anywhere}
+.banner>.button{gap:8px;white-space:nowrap}
+@media(max-width:700px){.banner>.button{margin-top:18px}}

@@ -1,0 +1,359 @@
+{
+  "promotionLayoutQa": [
+    {
+      "active": "Home",
+      "h1": "Welcome to The Mandarin Room",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Home · The Mandarin Room",
+      "route": "#/",
+      "viewport": 1536,
+      "width": 1536
+    },
+    {
+      "active": "Vocabulary",
+      "h1": "Vocabulary",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Vocabulary · The Mandarin Room",
+      "route": "#/vocabulary",
+      "viewport": 1536,
+      "width": 1536
+    },
+    {
+      "active": "Units",
+      "h1": "Units",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Units · The Mandarin Room",
+      "route": "#/units",
+      "viewport": 1536,
+      "width": 1536
+    },
+    {
+      "active": "Activities",
+      "h1": "Activities",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Activities · The Mandarin Room",
+      "route": "#/activities",
+      "viewport": 1536,
+      "width": 1536
+    },
+    {
+      "active": "Topics",
+      "h1": "Explore by Topic",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Topics · The Mandarin Room",
+      "route": "#/topics",
+      "viewport": 1536,
+      "width": 1536
+    },
+    {
+      "active": "Pinyin",
+      "h1": "Pinyin",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Pinyin · The Mandarin Room",
+      "route": "#/pinyin",
+      "viewport": 1536,
+      "width": 1536
+    },
+    {
+      "active": "Hanzi",
+      "h1": "Hanzi",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Hanzi · The Mandarin Room",
+      "route": "#/hanzi",
+      "viewport": 1536,
+      "width": 1536
+    },
+    {
+      "active": "About",
+      "h1": "About",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "About · The Mandarin Room",
+      "route": "#/about",
+      "viewport": 1536,
+      "width": 1536
+    },
+    {
+      "active": "Home",
+      "h1": "Welcome to The Mandarin Room",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Home · The Mandarin Room",
+      "route": "#/",
+      "viewport": 810,
+      "width": 810
+    },
+    {
+      "active": "Vocabulary",
+      "h1": "Vocabulary",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Vocabulary · The Mandarin Room",
+      "route": "#/vocabulary",
+      "viewport": 810,
+      "width": 810
+    },
+    {
+      "active": "Units",
+      "h1": "Units",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Units · The Mandarin Room",
+      "route": "#/units",
+      "viewport": 810,
+      "width": 810
+    },
+    {
+      "active": "Activities",
+      "h1": "Activities",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Activities · The Mandarin Room",
+      "route": "#/activities",
+      "viewport": 810,
+      "width": 810
+    },
+    {
+      "active": "Topics",
+      "h1": "Explore by Topic",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Topics · The Mandarin Room",
+      "route": "#/topics",
+      "viewport": 810,
+      "width": 810
+    },
+    {
+      "active": "Pinyin",
+      "h1": "Pinyin",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Pinyin · The Mandarin Room",
+      "route": "#/pinyin",
+      "viewport": 810,
+      "width": 810
+    },
+    {
+      "active": "Hanzi",
+      "h1": "Hanzi",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Hanzi · The Mandarin Room",
+      "route": "#/hanzi",
+      "viewport": 810,
+      "width": 810
+    },
+    {
+      "active": "About",
+      "h1": "About",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "About · The Mandarin Room",
+      "route": "#/about",
+      "viewport": 810,
+      "width": 810
+    },
+    {
+      "active": "Home",
+      "h1": "Welcome to The Mandarin Room",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Home · The Mandarin Room",
+      "route": "#/",
+      "viewport": 375,
+      "width": 375
+    },
+    {
+      "active": "Vocabulary",
+      "h1": "Vocabulary",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Vocabulary · The Mandarin Room",
+      "route": "#/vocabulary",
+      "viewport": 375,
+      "width": 375
+    },
+    {
+      "active": "Units",
+      "h1": "Units",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Units · The Mandarin Room",
+      "route": "#/units",
+      "viewport": 375,
+      "width": 375
+    },
+    {
+      "active": "Activities",
+      "h1": "Activities",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Activities · The Mandarin Room",
+      "route": "#/activities",
+      "viewport": 375,
+      "width": 375
+    },
+    {
+      "active": "Topics",
+      "h1": "Explore by Topic",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Topics · The Mandarin Room",
+      "route": "#/topics",
+      "viewport": 375,
+      "width": 375
+    },
+    {
+      "active": "Pinyin",
+      "h1": "Pinyin",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Pinyin · The Mandarin Room",
+      "route": "#/pinyin",
+      "viewport": 375,
+      "width": 375
+    },
+    {
+      "active": "Hanzi",
+      "h1": "Hanzi",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "Hanzi · The Mandarin Room",
+      "route": "#/hanzi",
+      "viewport": 375,
+      "width": 375
+    },
+    {
+      "active": "About",
+      "h1": "About",
+      "h1Count": 1,
+      "logoLoaded": true,
+      "navCount": 8,
+      "page": "About · The Mandarin Room",
+      "route": "#/about",
+      "viewport": 375,
+      "width": 375
+    }
+  ],
+  "homeYearQa": [
+    {
+      "active": "Home",
+      "focused": "year-resource-heading",
+      "route": "#/?year=0",
+      "title": "Home · The Mandarin Room",
+      "yearHeading": "Prep resources"
+    },
+    {
+      "active": "Home",
+      "focused": "year-resource-heading",
+      "route": "#/?year=1",
+      "title": "Home · The Mandarin Room",
+      "yearHeading": "Year 1 resources"
+    },
+    {
+      "active": "Home",
+      "focused": "year-resource-heading",
+      "route": "#/?year=2",
+      "title": "Home · The Mandarin Room",
+      "yearHeading": "Year 2 resources"
+    },
+    {
+      "active": "Home",
+      "focused": "year-resource-heading",
+      "route": "#/?year=3",
+      "title": "Home · The Mandarin Room",
+      "yearHeading": "Year 3 resources"
+    },
+    {
+      "active": "Home",
+      "focused": "year-resource-heading",
+      "route": "#/?year=4",
+      "title": "Home · The Mandarin Room",
+      "yearHeading": "Year 4 resources"
+    },
+    {
+      "active": "Home",
+      "focused": "year-resource-heading",
+      "route": "#/?year=5",
+      "title": "Home · The Mandarin Room",
+      "yearHeading": "Year 5 resources"
+    },
+    {
+      "active": "Home",
+      "focused": "year-resource-heading",
+      "route": "#/?year=6",
+      "title": "Home · The Mandarin Room",
+      "yearHeading": "Year 6 resources"
+    }
+  ],
+  "filterQa": [
+    {
+      "count": "2 vocabulary sets",
+      "route": "#/vocabulary?year=1&topic=animals",
+      "topic": "animals",
+      "year": "1"
+    },
+    {
+      "action": "back",
+      "count": "3 vocabulary sets",
+      "route": "#/vocabulary?year=1",
+      "topic": "",
+      "year": "1"
+    },
+    {
+      "action": "forward",
+      "count": "2 vocabulary sets",
+      "route": "#/vocabulary?year=1&topic=animals",
+      "topic": "animals",
+      "year": "1"
+    }
+  ],
+  "legacyQa": [
+    {
+      "active": "Home",
+      "route": "#/?year=5",
+      "yearHeading": "Year 5 resources"
+    },
+    {
+      "action": "back",
+      "active": "Units",
+      "route": "#/units?year=5"
+    },
+    {
+      "action": "forward",
+      "active": "Home",
+      "route": "#/?year=5",
+      "yearHeading": "Year 5 resources"
+    }
+  ]
+}
