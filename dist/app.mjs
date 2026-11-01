@@ -223,7 +223,8 @@ function render({focus=false}={}){
 }
 const backdrop=document.querySelector('#modal'),modal=backdrop.querySelector('.modal');let returnFocus=null;
 function showModal(title,html){returnFocus=document.activeElement;document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">${title}</h2>${html}`;backdrop.hidden=false;document.body.style.overflow='hidden';main.setAttribute('aria-hidden','true');document.querySelector('.site-header').setAttribute('aria-hidden','true');document.querySelector('.site-footer').setAttribute('aria-hidden','true');modal.focus();}
-function closeModal(){backdrop.hidden=true;document.body.style.overflow='';main.removeAttribute('aria-hidden');document.querySelector('.site-header').removeAttribute('aria-hidden');document.querySelector('.site-footer').removeAttribute('aria-hidden');if(returnFocus?.isConnected)returnFocus.focus();}
+let adminMode=false,adminSessionPromise;
+function closeModal(){adminMode=false;backdrop.hidden=true;document.body.style.overflow='';main.removeAttribute('aria-hidden');document.querySelector('.site-header').removeAttribute('aria-hidden');document.querySelector('.site-footer').removeAttribute('aria-hidden');if(returnFocus?.isConnected)returnFocus.focus();}
 document.querySelector('#modal-close').onclick=closeModal;
 backdrop.addEventListener('click',e=>{if(e.target===backdrop)closeModal();});
 document.addEventListener('keydown',e=>{
@@ -232,7 +233,17 @@ document.addEventListener('keydown',e=>{
     if(e.shiftKey&&(document.activeElement===first||document.activeElement===modal)){e.preventDefault();last?.focus();}
     else if(!e.shiftKey&&(document.activeElement===last||document.activeElement===modal)){e.preventDefault();first?.focus();}}
 });
-document.querySelector('#admin-open').onclick=()=>showModal('Admin',`<p>Authorised administrators can manage resources in the existing applications. Sign in there with your approved Google account.</p><a class="resource-link" href="${LINKS.vocabulary}"><strong>Vocabulary administration ${arrow}</strong><p>Existing sign-in and editing permissions apply.</p></a><a class="resource-link" href="https://themandarinroom.github.io/speaking/"><strong>Speaking administration ${arrow}</strong><p>Sign in before opening Teacher Mode.</p></a><a class="resource-link" href="${LINKS.units}"><strong>Unit Library ${arrow}</strong><p>Unit cloud access requires an authorised Admin account.</p></a><a class="resource-link" href="unit-publication.html"><strong>Student Unit Publication ${arrow}</strong><p>Review, publish or unpublish approved student content in staging.</p></a><a class="resource-link" href="journey-admin.html"><strong>Learning Journey management ${arrow}</strong><p>Arrange, preview and publish year-level Journeys in staging.</p></a><p>No public account registration is available.</p>`);
+document.querySelector('#admin-open').onclick=async()=>{
+  adminMode=true;
+  showModal('Admin Login','<p>Sign in to manage The Mandarin Room.</p><p role="status">Loading Google sign-in…</p><p class="data-note">Authorised administrators only</p>');
+  try{
+    if(!adminSessionPromise)adminSessionPromise=import('./admin-session.mjs').then(({startAdminSession})=>startAdminSession(panel=>{
+      if(adminMode&&!backdrop.hidden)document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">${panel.title}</h2>${panel.html}`;
+    })).catch(error=>{adminSessionPromise=null;throw error;});
+    const session=await adminSessionPromise;if(adminMode&&!backdrop.hidden)session.open();
+  }catch(error){if(adminMode&&!backdrop.hidden)document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">Admin Login</h2><p role="status">Sign-in unavailable: ${escape(error.message)}</p><p>Close and reopen Admin to try again.</p>`;}
+};
+backdrop.addEventListener('click',async event=>{const action=event.target.closest('[data-admin-action]');if(action&&adminSessionPromise)(await adminSessionPromise).act(action.dataset.adminAction);});
 document.querySelector('#privacy-open').onclick=()=>showModal('Privacy',`<p>This integration frontend has no analytics, advertising trackers, student accounts or student information forms. It does not save search terms or curriculum content in browser storage.</p><p>Published resources and images are loaded from existing Google Firebase and GitHub Pages services. Those services receive ordinary network requests. Existing applications retain their own authentication, storage and microphone behaviour.</p><p>The contact form is disabled and sends nothing. Student speaking recordings remain under the existing app’s device-local workflow.</p>`);
 function openUnit(id){if(state.units.some(unit=>unit.id===id))location.hash=`#/unit?unit=${encodeURIComponent(id)}`;}
 function openLearning(key){
