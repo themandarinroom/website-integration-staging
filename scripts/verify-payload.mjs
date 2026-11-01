@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=new URL('../dist/',import.meta.url);
-const allowed=new Set(['.nojekyll','index.html','robots.txt','styles.css','app.mjs','catalog.mjs','public-data.mjs','routing.mjs','assets/emblem.svg','assets/year-staircase.png','assets/topics.png','assets/pinyin.png','assets/hanzi.png','assets/about.png','assets/australia-states.png','assets/topic-covers-transparent.png','unit-viewer/unit-renderer.mjs','unit-viewer/student-data.mjs','unit-viewer/student-view.css','unit-viewer/firebase.js','unit-viewer/firebase-config.js','unit-publication.html','unit-publication.mjs','unit-publication.css']);
+const allowed=new Set(['journey-model.mjs','journey-data.mjs','journey-view.mjs','journey-admin.mjs','journey-admin.html','journey.css','.nojekyll','index.html','robots.txt','styles.css','app.mjs','catalog.mjs','public-data.mjs','routing.mjs','assets/emblem.svg','assets/year-staircase.png','assets/topics.png','assets/pinyin.png','assets/hanzi.png','assets/about.png','assets/australia-states.png','assets/topic-covers-transparent.png','unit-viewer/unit-renderer.mjs','unit-viewer/student-data.mjs','unit-viewer/student-view.css','unit-viewer/firebase.js','unit-viewer/firebase-config.js','unit-publication.html','unit-publication.mjs','unit-publication.css']);
 function walk(dir,prefix=''){
  for(const entry of fs.readdirSync(dir,{withFileTypes:true})){
   const relative=prefix+entry.name;const file=path.join(dir,entry.name);
@@ -17,4 +17,4 @@ function walk(dir,prefix=''){
  }
 }
 walk(fileURLToPath(root));if(allowed.size)throw new Error('Missing files: '+[...allowed].join(', '));
-console.log('Deployment payload verified: 24 allowlisted static files; no backend, credentials, rules or private content.');
+console.log('Deployment payload verified: 30 allowlisted static files; no backend, credentials, rules or private content.');
