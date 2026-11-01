@@ -90,4 +90,4 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 .catalog-resource-open:focus-visible{outline:3px solid var(--ink,#23354b);outline-offset:3px}
 .catalog-cards .year-tags{position:relative;z-index:2;pointer-events:none}
 .catalog-cards .year-tags a{pointer-events:auto}
-.catalog-placeholder{display:flex;align-items:center;justify-content:center;font-family:KaiTi,STKaiti,serif;font-size:64px;color:#47745b;object-fit:contain}
+.catalog-placeholder{display:flex;align-items:center;justify-content:center;font-family:KaiTi,STKaiti,serif;font-size:32px;line-height:1.4;overflow-wrap:anywhere;color:#47745b;object-fit:contain}
