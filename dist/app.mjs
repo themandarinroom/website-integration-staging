@@ -1,3 +1,5 @@
+import {renderUnit,focusLesson} from './unit-viewer/unit-renderer.mjs';
+import {getStudentUnit} from './unit-viewer/student-data.mjs';
 import {LINKS,TOPICS,yearLabel,selectResources,topicYears} from './catalog.mjs';
 import {loadVocabulary,loadUnits,loadTeacherVoice} from './public-data.mjs';
 import {parseRoute,readFilters,resourceRoute} from './routing.mjs';
@@ -30,15 +32,15 @@ function route() {
 }
 function loadingOrEmpty(type,message) {
   const status=state[`${type}Status`];
-  if(status==='loading')return `<p class="empty-state" role="status">Loading published ${type==='units'?'unit previews':'vocabulary'}…</p>`;
-  if(status==='error')return `<p class="empty-state">${type==='units'?'Unit previews':'Vocabulary'} could not be loaded. <button class="text-button" data-action="retry">Try again</button> or open the existing library.</p>`;
+  if(status==='loading')return `<p class="empty-state" role="status">Loading published ${type==='units'?'units':'vocabulary'}…</p>`;
+  if(status==='error')return `<p class="empty-state">${type==='units'?'Units':'Vocabulary'} could not be loaded. <button class="text-button" data-action="retry">Try again</button> or open the existing library.</p>`;
   return `<p class="empty-state">${message}</p>`;
 }
 function resourceCard(resource,{cover=false}={}) {
   const image=cover?resource.items?.find(item=>item.image)?.image:null;
-  return `<a class="resource-link" ${resource.type==='unit'?`href="#" data-unit="${escape(resource.id)}"`:`href="${escape(resource.url)}"`}>
-    ${image?`<div class="resource-cover"><img src="${escape(image)}" alt="" data-resource-image loading="lazy" referrerpolicy="no-referrer"></div>`:cover?`<div class="resource-cover resource-cover-text" lang="zh-Hans">${escape(resource.chinese||resource.title)}</div>`:''}${yearBadge(resource.year)} <span class="badge">${resource.type==='unit'?'Unit preview':'Vocabulary'}</span><strong>${escape(resource.title)} ${arrow}</strong>
-    ${resource.chinese?`<p lang="zh-Hans">${escape(resource.chinese)}</p>`:''}<p>${resource.type==='unit'?`${resource.lessons.length} lesson${resource.lessons.length===1?'':'s'} · viewer access may be restricted`:escape(resource.description)}</p></a>`;
+  return `<a class="resource-link" ${resource.type==='unit'?`href="${escape(resource.url)}" data-unit="${escape(resource.id)}"`:`href="${escape(resource.url)}"`}>
+    ${image?`<div class="resource-cover"><img src="${escape(image)}" alt="" data-resource-image loading="lazy" referrerpolicy="no-referrer"></div>`:cover?`<div class="resource-cover resource-cover-text" lang="zh-Hans">${escape(resource.chinese||resource.title)}</div>`:''}${yearBadge(resource.year)} <span class="badge">${resource.type==='unit'?'Unit':'Vocabulary'}</span><strong>${escape(resource.title)} ${arrow}</strong>
+    ${resource.chinese?`<p lang="zh-Hans">${escape(resource.chinese)}</p>`:''}<p>${resource.type==='unit'?`${resource.lessons.length} lesson${resource.lessons.length===1?'':'s'}`:escape(resource.description)}</p></a>`;
 }
 function choosePreview() {
   const chosen=[];
@@ -81,7 +83,7 @@ function home(params) {
   <nav class="staircase-links" aria-label="Year level steps">${Array.from({length:7},(_,y)=>`<a class="stair-step stair-step-${y}" href="#/?year=${y}" aria-label="Explore ${yearLabel(y)} resources" ${selected===y?'aria-current="true"':''}><span class="sr-only">${yearLabel(y)}</span></a>`).join('')}</nav>
   </div></div><p class="staircase-hint">Choose a step to explore. <span>Swipe the picture to see the higher steps, or choose below.</span></p>
   <nav class="year-shortcuts" aria-label="Year levels on smaller screens">${Array.from({length:7},(_,y)=>`<a class="year-badge year-${y}" href="#/?year=${y}" ${selected===y?'aria-current="true"':''}>${yearLabel(y)}</a>`).join('')}</nav></section>
-  ${selected!==null?`<section class="resource-area"><h2 id="year-resource-heading" tabindex="-1">${yearLabel(selected)} resources</h2><p class="muted">Published vocabulary and public unit previews for this year.</p><div class="resource-columns"><section class="resource-panel"><h3>Vocabulary</h3>${vocab.length?vocab.map(resourceCard).join(''):loadingOrEmpty('vocabulary','No published vocabulary for this year yet.')}<a class="button secondary panel-action" href="#/vocabulary?year=${selected}">Explore Vocabulary ${arrow}</a></section><section class="resource-panel"><h3>Units</h3>${units.length?units.map(resourceCard).join(''):loadingOrEmpty('units','No public unit previews for this year yet.')}<a class="button secondary panel-action" href="#/units?year=${selected}">Explore Units ${arrow}</a></section><section class="resource-panel"><h3>Activities</h3>${yearActivities(selected)}<a class="button secondary panel-action" href="#/activities">Explore Activities ${arrow}</a></section></div></section>`:''}`;
+  ${selected!==null?`<section class="resource-area"><h2 id="year-resource-heading" tabindex="-1">${yearLabel(selected)} resources</h2><p class="muted">Published vocabulary and public units for this year.</p><div class="resource-columns"><section class="resource-panel"><h3>Vocabulary</h3>${vocab.length?vocab.map(resourceCard).join(''):loadingOrEmpty('vocabulary','No published vocabulary for this year yet.')}<a class="button secondary panel-action" href="#/vocabulary?year=${selected}">Explore Vocabulary ${arrow}</a></section><section class="resource-panel"><h3>Units</h3>${units.length?units.map(resourceCard).join(''):loadingOrEmpty('units','No published units for this year yet.')}<a class="button secondary panel-action" href="#/units?year=${selected}">Explore Units ${arrow}</a></section><section class="resource-panel"><h3>Activities</h3>${yearActivities(selected)}<a class="button secondary panel-action" href="#/activities">Explore Activities ${arrow}</a></section></div></section>`:''}`;
 }
 function catalogPage(type,params) {
   const vocabulary=type==='vocabulary';
@@ -149,8 +151,9 @@ function about() {
 function searchPage(params) {
   const query=params.get('q')||'';
   const resources=selectResources(allResources(),{query});
-  return `<section class="banner green"><div><h1>Search resources</h1><p class="subtitle">Find published vocabulary and public unit previews.</p></div><label class="topic-search">${icon('search')}<input id="resource-search" type="search" value="${escape(query)}" placeholder="Search in English or Chinese…" aria-label="Search published resources"></label></section><p class="search-summary" id="search-summary" role="status">${resources.length} resources${query?' found':''}</p><div class="results-grid" id="search-results">${resources.map(resourceCard).join('')||'<p class="no-results">No matching public resources. Try another word.</p>'}</div>${state.vocabularyStatus==='error'||state.unitsStatus==='error'?'<p class="notice">Some resources could not be loaded. <button class="text-button" data-action="retry">Try again</button></p>':''}`;
+  return `<section class="banner green"><div><h1>Search resources</h1><p class="subtitle">Find published vocabulary and published units.</p></div><label class="topic-search">${icon('search')}<input id="resource-search" type="search" value="${escape(query)}" placeholder="Search in English or Chinese…" aria-label="Search published resources"></label></section><p class="search-summary" id="search-summary" role="status">${resources.length} resources${query?' found':''}</p><div class="results-grid" id="search-results">${resources.map(resourceCard).join('')||'<p class="no-results">No matching public resources. Try another word.</p>'}</div>${state.vocabularyStatus==='error'||state.unitsStatus==='error'?'<p class="notice">Some resources could not be loaded. <button class="text-button" data-action="retry">Try again</button></p>':''}`;
 }
+let studentViewRequest=0;
 let currentAudio=null;
 let currentUtterance=null;
 function stopAudio(){if(currentAudio){currentAudio.pause();currentAudio=null;}if('speechSynthesis'in window)window.speechSynthesis.cancel();currentUtterance=null;}
@@ -181,11 +184,19 @@ function wireAudio(){
 }
 function render({focus=false}={}){
   const {page,params}=route();
+  const viewRequest=++studentViewRequest;
   main.classList.toggle('year-level-page',page==='home');
-  const renderers={home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
+  const renderers={unit:()=>'<section class="student-unit-view" id="student-unit-view"><p role="status">Loading Unit…</p></section>',home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
   main.innerHTML=renderers[page]?renderers[page]():`<section class="banner green"><div><h1>Page not found</h1><p class="subtitle"><a class="inline-link" href="#/">Return Home</a></p></div></section>`;
-  document.title=`${({'home':'Home',vocabulary:'Vocabulary',units:'Units',activities:'Activities',topics:'Topics',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
-  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===page)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  document.title=`${({'home':'Home',vocabulary:'Vocabulary',units:'Units',unit:'Unit',activities:'Activities',topics:'Topics',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
+  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'?'units':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  if(page==='unit')getStudentUnit(params.get('unit')).then(unit=>{
+    if(viewRequest!==studentViewRequest)return;
+    const container=document.querySelector('#student-unit-view');if(!container)return;
+    container.innerHTML=renderUnit(unit,{student:true});
+    if(unit)document.title=`${unit.englishTitle} · The Mandarin Room`;
+    focusLesson(container,params.get('lesson'));
+  });
   if(page==='vocabulary')wireAudio();
   const activeNav=document.querySelector('.site-header nav [aria-current=page]');
   if(activeNav){const nav=activeNav.parentElement,linkRect=activeNav.getBoundingClientRect(),navRect=nav.getBoundingClientRect();if(linkRect.left<navRect.left)nav.scrollLeft-=navRect.left-linkRect.left+8;else if(linkRect.right>navRect.right)nav.scrollLeft+=linkRect.right-navRect.right+8;}
@@ -214,11 +225,9 @@ document.addEventListener('keydown',e=>{
     if(e.shiftKey&&(document.activeElement===first||document.activeElement===modal)){e.preventDefault();last?.focus();}
     else if(!e.shiftKey&&(document.activeElement===last||document.activeElement===modal)){e.preventDefault();first?.focus();}}
 });
-document.querySelector('#admin-open').onclick=()=>showModal('Admin',`<p>Authorised administrators can manage resources in the existing applications. Sign in there with your approved Google account.</p><a class="resource-link" href="${LINKS.vocabulary}"><strong>Vocabulary administration ${arrow}</strong><p>Existing sign-in and editing permissions apply.</p></a><a class="resource-link" href="https://themandarinroom.github.io/speaking/"><strong>Speaking administration ${arrow}</strong><p>Sign in before opening Teacher Mode.</p></a><a class="resource-link" href="${LINKS.units}"><strong>Unit Library ${arrow}</strong><p>Unit cloud access requires an authorised Admin account.</p></a><p>No public account registration is available.</p>`);
+document.querySelector('#admin-open').onclick=()=>showModal('Admin',`<p>Authorised administrators can manage resources in the existing applications. Sign in there with your approved Google account.</p><a class="resource-link" href="${LINKS.vocabulary}"><strong>Vocabulary administration ${arrow}</strong><p>Existing sign-in and editing permissions apply.</p></a><a class="resource-link" href="https://themandarinroom.github.io/speaking/"><strong>Speaking administration ${arrow}</strong><p>Sign in before opening Teacher Mode.</p></a><a class="resource-link" href="${LINKS.units}"><strong>Unit Library ${arrow}</strong><p>Unit cloud access requires an authorised Admin account.</p></a><a class="resource-link" href="unit-publication.html"><strong>Student Unit Publication ${arrow}</strong><p>Review, publish or unpublish approved student content in staging.</p></a><p>No public account registration is available.</p>`);
 document.querySelector('#privacy-open').onclick=()=>showModal('Privacy',`<p>This integration frontend has no analytics, advertising trackers, student accounts or student information forms. It does not save search terms or curriculum content in browser storage.</p><p>Published resources and images are loaded from existing Google Firebase and GitHub Pages services. Those services receive ordinary network requests. Existing applications retain their own authentication, storage and microphone behaviour.</p><p>The contact form is disabled and sends nothing. Student speaking recordings remain under the existing app’s device-local workflow.</p>`);
-function openUnit(id){const unit=state.units.find(u=>u.id===id);if(!unit)return;
-  showModal(escape(unit.title),`${yearBadge(unit.year)}<p>${unit.lessons.length} lesson${unit.lessons.length===1?'':'s'} in the public metadata preview:</p><ul>${unit.lessons.map(l=>`<li>${escape(l.title)}</li>`).join('')}</ul><p>Full unit content is not published for anonymous browsing yet. The existing viewer may require authorised Admin access or show its local preview instead.</p><a class="button" href="${escape(unit.url)}">Open existing Unit Library ${arrow}</a>`);
-}
+function openUnit(id){if(state.units.some(unit=>unit.id===id))location.hash=`#/unit?unit=${encodeURIComponent(id)}`;}
 function openLearning(key){
   if(key==='pinyin:initials')showModal('Initials & Finals',`<p>An initial begins a syllable; a final follows it. Some syllables have no initial.</p><h3>Common initials</h3><p class="letter-list" lang="zh-Latn-pinyin">b p m f · d t n l · g k h · j q x · zh ch sh r · z c s</p><h3>Simple finals</h3><p class="letter-list" lang="zh-Latn-pinyin">a o e i u ü</p><p>Examples: m + ā → mā; n + ǐ → nǐ. The tone mark shows how the syllable is pronounced. A complete chart and listening practice are coming soon.</p>`);
   if(key==='pinyin:tones')showModal('Four Tones & Neutral Tone',`<p>Mandarin uses four main tones and a neutral tone. A tone can change a word’s meaning.</p><div class="tone-grid"><span><b lang="zh-Latn-pinyin">mā</b>1 · high and level</span><span><b lang="zh-Latn-pinyin">má</b>2 · rising</span><span><b lang="zh-Latn-pinyin">mǎ</b>3 · low / dipping</span><span><b lang="zh-Latn-pinyin">mà</b>4 · falling</span><span><b lang="zh-Latn-pinyin">ma</b>Neutral · light</span></div><p>The third tone often stays low in connected speech. Neutral-tone syllables have no tone mark. Listening and pronunciation practice are coming soon.</p>`);

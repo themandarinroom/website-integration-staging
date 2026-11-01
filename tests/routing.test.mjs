@@ -26,3 +26,8 @@ test('shareable filters round-trip Prep, reviewed topic and bilingual search saf
  assert.deepEqual(readFilters(new URLSearchParams('year=7&topic=unreviewed')),{year:null,topic:null,query:''});
  assert.equal(readFilters(new URLSearchParams('year=')).year,null);
 });
+
+test('student Unit and lesson direct links retain stable IDs without year restrictions',()=>{
+ const current=parseRoute('#/unit?unit=synthetic-unit&lesson=lesson-b');
+ assert.equal(current.page,'unit');assert.equal(current.params.get('unit'),'synthetic-unit');assert.equal(current.params.get('lesson'),'lesson-b');assert.equal(current.redirect,null);
+});

@@ -48,9 +48,15 @@ test('anonymous query includes published predicate and excludes identity fields'
 });
 test('network adapter uses anonymous no-cache read-only endpoints',async()=>{
  const original=global.fetch;const calls=[];
- global.fetch=async(url,options)=>{calls.push({url,options});return {ok:true,json:async()=>url.endsWith(':runQuery')?[{document:{fields:{id:{stringValue:'prep-numbers'},title:{stringValue:'Numbers'},yearLevel:{integerValue:'0'},published:{booleanValue:true}}}}]:publishedIndex};};
+ const unit = {schemaVersion:1,id:'synthetic-unit',yearLevel:5,englishTitle:'Synthetic Unit',published:true,approvedForStudents:true,lessons:[{id:'lesson-a',title:'First lesson'}]};
+ const encode = value => typeof value==='string'?{stringValue:value}:typeof value==='boolean'?{booleanValue:value}:typeof value==='number'?{integerValue:String(value)}:Array.isArray(value)?{arrayValue:{values:value.map(encode)}}:{mapValue:{fields:Object.fromEntries(Object.entries(value).map(([k,v])=>[k,encode(v)]))}};
+ global.fetch=async(url,options)=>{
+  calls.push({url,options});
+  const document=url.includes('/the-mandarin-room-staging/')?{name:'projects/the-mandarin-room-staging/databases/(default)/documents/publicUnits/synthetic-unit',fields:encode(unit).mapValue.fields}:{fields:{id:{stringValue:'prep-numbers'},title:{stringValue:'Numbers'},yearLevel:{integerValue:'0'},published:{booleanValue:true}}};
+  return {ok:true,json:async()=>[{document}]};
+ };
  try{assert.equal((await loadVocabulary()).length,1);assert.equal((await loadUnits()).length,1);
- for(const {url,options}of calls){assert.equal(options.credentials,'omit');assert.equal(options.cache,'no-store');if(url.includes('/units/'))assert.equal(url,LINKS.unitIndex);}
+ for(const {url,options}of calls){assert.equal(options.credentials,'omit');assert.equal(options.cache,'no-store');if(url.includes('/the-mandarin-room-staging/'))assert(options.body.includes('publicUnits'));}
  assert.equal(calls[0].options.method,'POST');assert(calls[0].url.endsWith(':runQuery'));
  }finally{global.fetch=original;}
 });

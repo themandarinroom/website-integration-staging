@@ -1,0 +1,17 @@
+/* Existing Unit Viewer layout, scoped to the integration's student view. */
+.student-unit-view .back-link{display:inline-block;margin-bottom:24px;font-weight:650}
+.student-unit-view .unit-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:24px 0 28px;border-bottom:1px solid var(--line)}
+.student-unit-view .unit-header h1{margin:4px 0 10px}.student-unit-view .unit-chinese{font-size:28px;margin-bottom:12px}
+.student-unit-view .eyebrow{font-size:12px;font-weight:700;color:var(--green)}
+.student-unit-view .lesson{padding:28px 0;border-bottom:1px solid var(--line)}
+.student-unit-view .lesson h2{margin:8px 0 18px}.student-unit-view .lesson h3{font-size:14px;margin:20px 0 8px}
+.student-unit-view .lesson-layout{display:grid;grid-template-columns:minmax(0,3fr) minmax(210px,1fr);gap:32px}
+.student-unit-view .lesson-content{min-width:0}.student-unit-view .preline{white-space:pre-line;overflow-wrap:anywhere}
+.student-unit-view .links a{display:inline-block;min-height:44px;padding:10px 0;text-decoration:underline}
+.student-unit-view .worked-examples{padding-left:24px;border-left:1px solid var(--line)}
+.student-unit-view .worked-example-gallery{display:grid;gap:12px}
+.student-unit-view .worked-example-gallery img{display:block;width:100%;max-height:320px;object-fit:contain;border-radius:10px}
+.student-unit-view .worked-example-gallery span{display:block;font-size:12px;margin-top:6px;overflow-wrap:anywhere}
+.student-unit-view .deep-linked{outline:3px solid #216daf;outline-offset:5px;border-radius:8px}
+@media(max-width:900px){.student-unit-view .lesson-layout{grid-template-columns:1fr}.student-unit-view .worked-examples{padding:18px 0 0;border-left:0;border-top:1px solid var(--line)}.student-unit-view .worked-example-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.student-unit-view .unit-header{align-items:flex-start;flex-direction:column}.student-unit-view .worked-example-gallery{grid-template-columns:1fr}}

@@ -1,4 +1,5 @@
-import {LINKS,vocabularyResources,unitResources,safeHttps,validId} from './catalog.mjs';
+import {listStudentUnits} from './unit-viewer/student-data.mjs';
+import {LINKS,vocabularyResources,safeHttps,validId} from './catalog.mjs';
 const ROOT='https://firestore.googleapis.com/v1/projects/the-mandarin-room/databases/(default)/documents';
 export function decodeValue(value) {
   if('stringValue' in value)return value.stringValue;
@@ -25,7 +26,9 @@ export async function loadVocabulary() {
   if(!Array.isArray(rows))throw new Error('Invalid vocabulary response');
   return vocabularyResources(rows.filter(r=>r.document?.fields).map(r=>decodeFields(r.document.fields)));
 }
-export async function loadUnits() {return unitResources(await request(LINKS.unitIndex));}
+export async function loadUnits() {
+  return (await listStudentUnits()).map(unit=>({id:unit.id,type:'unit',title:unit.englishTitle,chinese:unit.chineseTitle,description:unit.description,year:unit.yearLevel,topics:unit.topics,url:`#/unit?unit=${encodeURIComponent(unit.id)}`,lessons:unit.lessons.map(({id,title})=>({id,title}))}));
+}
 export async function loadTeacherVoice(setId,itemId) {
   if(!validId(setId)||!validId(itemId))return '';
   try { const doc=await request(`${ROOT}/vocabularyTeacherVoices/${encodeURIComponent(setId+'--'+itemId)}`);
