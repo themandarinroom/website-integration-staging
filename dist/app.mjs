@@ -4,7 +4,7 @@ import {renderUnit,focusLesson} from './unit-viewer/unit-renderer.mjs';
 import {getStudentUnit} from './unit-viewer/student-data.mjs';
 import {LINKS,TOPICS,yearLabel,selectResources,topicYears} from './catalog.mjs';
 import {loadVocabulary,loadUnits,loadTeacherVoice} from './public-data.mjs';
-import {parseRoute,readFilters,resourceRoute} from './routing.mjs';
+import {parseRoute,readFilters,resourceRoute} from './routing.mjs?v=units-admin-1';
 
 const main=document.querySelector('#main');
 const state={vocabulary:[],units:[],vocabularyStatus:'loading',unitsStatus:'loading'};
@@ -85,7 +85,7 @@ function home(params) {
   <nav class="staircase-links" aria-label="Year level steps">${Array.from({length:7},(_,y)=>`<a class="stair-step stair-step-${y}" href="#/journey?year=${y}" aria-label="Explore ${yearLabel(y)} resources" ${selected===y?'aria-current="true"':''}><span class="sr-only">${yearLabel(y)}</span></a>`).join('')}</nav>
   </div></div><p class="staircase-hint">Choose a step to explore. <span>Swipe the picture to see the higher steps, or choose below.</span></p>
   <nav class="year-shortcuts" aria-label="Year levels on smaller screens">${Array.from({length:7},(_,y)=>`<a class="year-badge year-${y}" href="#/journey?year=${y}" ${selected===y?'aria-current="true"':''}>${yearLabel(y)}</a>`).join('')}</nav></section>
-  ${selected!==null?`<section class="resource-area"><h2 id="year-resource-heading" tabindex="-1">${yearLabel(selected)} resources</h2><p class="muted">Published vocabulary and public units for this year.</p><div class="resource-columns"><section class="resource-panel"><h3>Vocabulary</h3>${vocab.length?vocab.map(resourceCard).join(''):loadingOrEmpty('vocabulary','No published vocabulary for this year yet.')}<a class="button secondary panel-action" href="#/vocabulary?year=${selected}">Explore Vocabulary ${arrow}</a></section><section class="resource-panel"><h3>Units</h3>${units.length?units.map(resourceCard).join(''):loadingOrEmpty('units','No published units for this year yet.')}<a class="button secondary panel-action" href="#/units?year=${selected}">Explore Units ${arrow}</a></section><section class="resource-panel"><h3>Activities</h3>${yearActivities(selected)}<a class="button secondary panel-action" href="#/activities">Explore Activities ${arrow}</a></section></div></section>`:''}`;
+  ${selected!==null?`<section class="resource-area"><h2 id="year-resource-heading" tabindex="-1">${yearLabel(selected)} resources</h2><p class="muted">Published vocabulary and public units for this year.</p><div class="resource-columns"><section class="resource-panel"><h3>Vocabulary</h3>${vocab.length?vocab.map(resourceCard).join(''):loadingOrEmpty('vocabulary','No published vocabulary for this year yet.')}<a class="button secondary panel-action" href="#/vocabulary?year=${selected}">Explore Vocabulary ${arrow}</a></section><section class="resource-panel"><h3>Activities</h3>${yearActivities(selected)}<a class="button secondary panel-action" href="#/activities">Explore Activities ${arrow}</a></section></div></section>`:''}`;
 }
 function catalogPage(type,params) {
   const vocabulary=type==='vocabulary';
@@ -191,7 +191,7 @@ function render({focus=false}={}){
   const renderers={journey:()=>'<section id="journey-view"><p role="status">Loading Learning Journey…</p></section>',unit:()=>'<section class="student-unit-view" id="student-unit-view"><p role="status">Loading Unit…</p></section>',home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
   main.innerHTML=renderers[page]?renderers[page]():`<section class="banner green"><div><h1>Page not found</h1><p class="subtitle"><a class="inline-link" href="#/">Return Home</a></p></div></section>`;
   document.title=`${({'home':'Home',journey:'Learning Journey',vocabulary:'Vocabulary',units:'Units',unit:'Unit',activities:'Activities',topics:'Topics',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
-  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'?'units':page==='journey'?'home':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'||page==='journey'?'home':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   if(page==='journey'){
     const raw=params.get('year'), grade=/^[0-6]$/.test(raw||'')?Number(raw):null;
     if(grade===null)document.querySelector('#journey-view').innerHTML='<h1>Choose your year level</h1><p><a href="#/">Return to the homepage</a></p>';
@@ -200,7 +200,7 @@ function render({focus=false}={}){
   if(page==='unit')getStudentUnit(params.get('unit')).then(unit=>{
     if(viewRequest!==studentViewRequest)return;
     const container=document.querySelector('#student-unit-view');if(!container)return;
-    container.innerHTML=renderUnit(unit,{student:true});
+    container.innerHTML=renderUnit(unit,{student:true,backHref:'#/'}).replace('← All units','← Choose your year level');
     if(unit)document.title=`${unit.englishTitle} · The Mandarin Room`;
     focusLesson(container,params.get('lesson'));
   });
@@ -237,7 +237,7 @@ document.querySelector('#admin-open').onclick=async()=>{
   adminMode=true;
   showModal('Admin Login','<p>Sign in to manage The Mandarin Room.</p><p role="status">Loading Google sign-in…</p><p class="data-note">Authorised administrators only</p>');
   try{
-    if(!adminSessionPromise)adminSessionPromise=import('./admin-session.mjs').then(({startAdminSession})=>startAdminSession(panel=>{
+    if(!adminSessionPromise)adminSessionPromise=import('./admin-session.mjs?v=units-admin-1').then(({startAdminSession})=>startAdminSession(panel=>{
       if(adminMode&&!backdrop.hidden)document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">${panel.title}</h2>${panel.html}`;
     })).catch(error=>{adminSessionPromise=null;throw error;});
     const session=await adminSessionPromise;if(adminMode&&!backdrop.hidden)session.open();

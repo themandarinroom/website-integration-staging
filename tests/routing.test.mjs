@@ -14,8 +14,8 @@ test('legacy Year Levels links redirect to Home without losing year/filter param
   assert.equal(legacy.page,'home');assert.equal(readFilters(legacy.params).year,year);
  }
 });
-test('all eight top-level destinations remain independent routes',()=>{
- for(const page of ['home','vocabulary','units','activities','topics','pinyin','hanzi','about']){
+test('all seven top-level destinations remain independent routes',()=>{
+ for(const page of ['home','vocabulary','activities','topics','pinyin','hanzi','about']){
   const hash=resourceRoute(page);assert.equal(parseRoute(hash).page,page);assert.equal(parseRoute(hash).redirect,null);
  }
 });
@@ -31,3 +31,5 @@ test('student Unit and lesson direct links retain stable IDs without year restri
  const current=parseRoute('#/unit?unit=synthetic-unit&lesson=lesson-b');
  assert.equal(current.page,'unit');assert.equal(current.params.get('unit'),'synthetic-unit');assert.equal(current.params.get('lesson'),'lesson-b');assert.equal(current.redirect,null);
 });
+
+test('public Unit browsing redirects Home while stable student Unit deep links survive',()=>{for(const hash of ['#/units','#/units?year=4','#/units?unit=private-unit']){assert.equal(parseRoute(hash).redirect,'#/');assert.equal(parseRoute(hash).page,'home');}assert.equal(parseRoute('#/unit?unit=approved-unit&lesson=map').page,'unit');});

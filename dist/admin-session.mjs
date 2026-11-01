@@ -1,9 +1,22 @@
 import {LINKS} from './catalog.mjs';
 const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function adminPanel(state) {
-  if (state.phase === 'authorised') return {title:'Admin Dashboard',html:`<nav class="admin-dashboard" aria-label="Admin management"><a class="resource-link" href="${LINKS.vocabulary}">Vocabulary Management →</a><a class="resource-link" href="${LINKS.units}">Units Management →</a><a class="resource-link" href="https://themandarinroom.github.io/speaking/">Activities Management →</a><a class="resource-link" href="journey-admin.html">Learning Journey Management →</a><a class="resource-link" href="unit-publication.html">Unit Publication →</a></nav><p class="data-note">Existing applications keep their own permissions and may require a separate sign-in. Activities Management opens the existing Speaking management application.</p><button class="button secondary" data-admin-action="logout">Sign out</button>`};
+  if (state.phase === 'authorised') return {title:'Admin Dashboard',html:`<nav class="admin-dashboard" aria-label="Admin management"><a class="resource-link" href="${LINKS.vocabulary}">Vocabulary Management →</a><a class="resource-link" href="unit-management.html">Units Management →</a><a class="resource-link" href="https://themandarinroom.github.io/speaking/">Activities Management →</a><a class="resource-link" href="journey-admin.html">Learning Journey Management →</a><a class="resource-link" href="unit-publication.html">Unit Publication →</a></nav><p class="data-note">Existing applications keep their own permissions and may require a separate sign-in. Activities Management opens the existing Speaking management application.</p><button class="button secondary" data-admin-action="logout">Sign out</button>`};
   const ready = state.phase === 'signed-out' || state.phase === 'error';
   return {title:'Admin Login',html:`<p>Sign in to manage The Mandarin Room.</p>${state.message?`<p role="status">${esc(state.message)}</p>`:''}${ready?'<button class="button" data-admin-action="login">Continue with Google</button>':state.phase==='checking'?'<p role="status">Checking administrator access…</p>':''}${state.phase==='denied'?'<button class="button secondary" data-admin-action="logout">Sign out</button>':''}<p class="data-note">Authorised administrators only</p>`};
+}
+export async function assertAuthorisedTeacher(services){
+  if(services.app.options.projectId!=='the-mandarin-room-staging')throw Error('Staging authentication required.');
+  const user=services.auth.currentUser;
+  if(!user?.emailVerified)throw Error('A verified teacher email is required.');
+  const collection='authorizedTeachers',controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+  try{
+    const response=await fetch(`https://firestore.googleapis.com/v1/projects/the-mandarin-room-staging/databases/(default)/documents/${collection}/${encodeURIComponent(user.uid)}`,{headers:{Authorization:`Bearer ${await user.getIdToken()}`},credentials:'omit',cache:'no-store',signal:controller.signal});
+    if(!response.ok)throw Error('Administrator access could not be verified.');
+    const teacher=await response.json();
+    if(teacher.fields?.active?.booleanValue !== true)throw Error('This account is not authorised.');
+    return user;
+  }finally{clearTimeout(timer);}
 }
 export async function startAdminSession(update) {
   const {getFirebaseServices} = await import('./unit-viewer/firebase.js');
@@ -18,10 +31,8 @@ export async function startAdminSession(update) {
     if (!user) {emit({phase:'signed-out'});return;}
     emit({phase:'checking'});
     try {
-      if (!user.emailVerified) throw Error('A verified teacher email is required.');
-      const teacher = await sdk.getDoc(sdk.doc(db,'authorizedTeachers',user.uid));
+      await assertAuthorisedTeacher(services);
       if (request !== generation) return;
-      if (!teacher.exists() || teacher.data().active !== true) throw Error('This account is not authorised.');
       emit({phase:'authorised'});
     } catch(error) {if(request===generation)emit({phase:'denied',message:error.message});}
   },error=>emit({phase:'error',message:error.message}));

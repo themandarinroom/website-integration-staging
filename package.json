@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node scripts/build-student-viewer.mjs && node scripts/verify-payload.mjs",
     "test": "node --test tests/*.test.mjs",
-    "check": "node --check dist/app.mjs && node --check dist/catalog.mjs && node --check dist/public-data.mjs && node --check dist/routing.mjs && node --check dist/unit-publication.mjs && node --check dist/unit-viewer/student-data.mjs && node --check dist/unit-viewer/unit-renderer.mjs && node --check dist/journey-data.mjs && node --check dist/journey-view.mjs && node --check dist/journey-model.mjs && node --check dist/journey-admin.mjs && node --check dist/admin-session.mjs",
+    "check": "node --check dist/app.mjs && node --check dist/catalog.mjs && node --check dist/public-data.mjs && node --check dist/routing.mjs && node --check dist/unit-publication.mjs && node --check dist/unit-viewer/student-data.mjs && node --check dist/unit-viewer/unit-renderer.mjs && node --check dist/journey-data.mjs && node --check dist/journey-view.mjs && node --check dist/journey-model.mjs && node --check dist/journey-admin.mjs && node --check dist/admin-session.mjs && node --check dist/unit-management.mjs && node --check dist/teacher-unit-data.mjs",
     "preview": "python3 -m http.server 8765 --bind 127.0.0.1 --directory dist"
   }
 }
