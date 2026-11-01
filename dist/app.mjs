@@ -20,6 +20,8 @@ function art(source,x,y,w,h,className='') {
   const height=source==='topics'?1024:source==='pinyin'?500:source==='hanzi'?524:1024;
   return `<svg class="clip-art ${className}" viewBox="0 0 ${w} ${h}" aria-hidden="true" focusable="false"><svg width="${w}" height="${h}" viewBox="${x} ${y} ${w} ${h}" overflow="hidden"><image href="assets/${source}.png" width="1536" height="${height}"/></svg></svg>`;
 }
+// Full illustration bounds in the transparent cover sheet; shared by Topics and resources.
+const TOPIC_COVERS={numbers:[65,230,250,220],family:[470,230,250,220],food:[790,230,270,220],animals:[1210,230,250,220],weather:[65,480,250,220],countries:[470,480,220,220],school:[790,480,280,220],colours:[1200,480,280,220],'body-parts':[65,700,260,230],time:[470,700,250,250],people:[790,700,280,250],culture:[1210,700,250,250]};
 const yearBadge=year=>`<span class="year-badge year-${year}">${yearLabel(year)}</span>`;
 function route() {
   const current=parseRoute(location.hash);
@@ -95,12 +97,12 @@ function topicCard(topic,resource=null) {
   // Reuse the Topics card markup and sizing; year links remain independent of the resource link.
   if(resource && typeof resource==='object') {
     const title=escape(resource.title);
-    const cover={numbers:[65,230,250,220],family:[470,230,250,220],food:[790,230,270,220],animals:[1210,230,250,220],countries:[470,480,220,220],'body-parts':[65,700,260,230],culture:[1210,700,250,250]}[topic.id];
+    const cover=TOPIC_COVERS[topic.id];
     return `<article class="topic-card year-${resource.year}"><div class="topic-top">${resource.id==='year4-australian-states'?'<img class="clip-art catalog-cover" src="assets/australia-states.png" alt="Australian states and territories with a red location pin at Melbourne" loading="lazy">':cover?art('topic-covers-transparent',...cover):'<span class="clip-art catalog-placeholder" lang="zh-Hans" aria-hidden="true">文</span>'}<div class="topic-copy"><h2>${title}</h2>${resource.chinese?`<div class="chinese-title" lang="zh-Hans">${escape(resource.chinese)}</div>`:''}</div></div><span class="circle" aria-hidden="true">${arrow}</span><a class="catalog-resource-open" href="${escape(resource.url)}" ${resource.type==='unit'?`data-unit="${escape(resource.id)}"`:''} aria-label="Open ${title}"></a><div class="year-tags"><a href="${resourceRoute(resource.type==='unit'?'units':'vocabulary',{year:resource.year})}" class="year-badge year-${resource.year}" aria-label="Filter ${yearLabel(resource.year)}">${yearLabel(resource.year)}</a></div></article>`;
   }
   const years=topicYears(allResources(),topic.id);
   const empty=state.vocabularyStatus==='loading'||state.unitsStatus==='loading'?'Loading resources…':state.vocabularyStatus==='error'||state.unitsStatus==='error'?'Library temporarily unavailable':'Resources coming soon';
-  return `<article class="topic-card ${topic.colour}"><div class="topic-top">${art('topics',topic.x,topic.y,120,130)}<div class="topic-copy"><h2>${topic.title}</h2><div class="chinese-title" lang="zh-Hans">${topic.chinese}</div><p>${topic.description}</p></div></div><a href="#/topics?topic=${topic.id}" class="circle" aria-label="Explore ${topic.title}">${arrow}</a><div class="year-tags">${years.length?years.map(y=>`<a href="#/topics?topic=${topic.id}&year=${y}" class="year-badge year-${y}" aria-label="${topic.title}, ${yearLabel(y)}">${yearLabel(y)}</a>`).join(''):`<span class="muted">${empty}</span>`}</div></article>`;
+  return `<article class="topic-card ${topic.colour}"><div class="topic-top">${art('topic-covers-transparent',...TOPIC_COVERS[topic.id])}<div class="topic-copy"><h2>${topic.title}</h2><div class="chinese-title" lang="zh-Hans">${topic.chinese}</div><p>${topic.description}</p></div></div><a href="#/topics?topic=${topic.id}" class="circle" aria-label="Explore ${topic.title}">${arrow}</a><div class="year-tags">${years.length?years.map(y=>`<a href="#/topics?topic=${topic.id}&year=${y}" class="year-badge year-${y}" aria-label="${topic.title}, ${yearLabel(y)}">${yearLabel(y)}</a>`).join(''):`<span class="muted">${empty}</span>`}</div></article>`;
 }
 function topics(params) {
   const topic=TOPICS.find(t=>t.id===params.get('topic'));
