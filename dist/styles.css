@@ -93,3 +93,5 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 .catalog-placeholder{display:flex;align-items:center;justify-content:center;font-family:KaiTi,STKaiti,serif;font-size:32px;line-height:1.4;overflow-wrap:anywhere;color:#47745b;object-fit:contain}
 
 .catalog-cover{object-fit:contain}
+
+.catalog-cards .topic-card{color:var(--ink)}
