@@ -81,27 +81,22 @@ function home(params) {
   <nav class="year-shortcuts" aria-label="Year levels on smaller screens">${Array.from({length:7},(_,y)=>`<a class="year-badge year-${y}" href="#/?year=${y}" ${selected===y?'aria-current="true"':''}>${yearLabel(y)}</a>`).join('')}</nav></section>
   ${selected!==null?`<section class="resource-area"><h2 id="year-resource-heading" tabindex="-1">${yearLabel(selected)} resources</h2><p class="muted">Published vocabulary and public unit previews for this year.</p><div class="resource-columns"><section class="resource-panel"><h3>Vocabulary</h3>${vocab.length?vocab.map(resourceCard).join(''):loadingOrEmpty('vocabulary','No published vocabulary for this year yet.')}<a class="button secondary panel-action" href="#/vocabulary?year=${selected}">Explore Vocabulary ${arrow}</a></section><section class="resource-panel"><h3>Units</h3>${units.length?units.map(resourceCard).join(''):loadingOrEmpty('units','No public unit previews for this year yet.')}<a class="button secondary panel-action" href="#/units?year=${selected}">Explore Units ${arrow}</a></section><section class="resource-panel"><h3>Activities</h3>${yearActivities(selected)}<a class="button secondary panel-action" href="#/activities">Explore Activities ${arrow}</a></section></div></section>`:''}`;
 }
-function catalogFilters(params,resources) {
-  const filter=readFilters(params);
-  const availableTopics=TOPICS.filter(t=>resources.some(r=>r.topics.includes(t.id)) || t.id===filter.topic);
-  return `<form class="catalog-filters" id="catalog-filters" role="search" aria-label="Filter resources"><label>Year level<select id="catalog-year" name="year"><option value="">All year levels</option>${Array.from({length:7},(_,year)=>`<option value="${year}" ${filter.year===year?'selected':''}>${yearLabel(year)}</option>`).join('')}</select></label><label>Topic<select id="catalog-topic" name="topic"><option value="">All topics</option>${availableTopics.map(t=>`<option value="${t.id}" ${filter.topic===t.id?'selected':''}>${t.title}</option>`).join('')}</select></label><label class="catalog-query">Search<input type="search" id="catalog-query" name="q" value="${escape(filter.query)}" placeholder="English or Chinese…"></label><button class="button" type="submit">Apply filters</button><a class="text-button" href="${resourceRoute(route().page)}">Reset</a></form>`;
-}
 function catalogPage(type,params) {
   const vocabulary=type==='vocabulary';
-  const title=vocabulary?'Vocabulary':'Units';
   const resources=vocabulary?state.vocabulary:state.units;
   const shown=selectResources(resources,readFilters(params));
-  const status=state[vocabulary?'vocabularyStatus':'unitsStatus'];
-  return `<section class="banner ${vocabulary?'green':'pink'}"><div><h1>${title}</h1><p class="subtitle">${vocabulary?'Explore published vocabulary, images and audio from the Vocabulary Library.':'Explore teaching units and lesson previews from the Unit Library.'}</p></div><a class="button secondary" href="${vocabulary?LINKS.vocabulary:LINKS.units}">Open ${vocabulary?'Vocabulary':'Unit'} Library ${arrow}</a></section>
-  ${!vocabulary?'<p class="catalog-access-note">Public title and lesson previews only. Full units retain their existing access permissions in the Unit Library.</p>':''}
-  ${catalogFilters(params,resources)}<p class="search-summary" role="status">${status==='loading'?'Loading published resources…':status==='error'?'Library temporarily unavailable':`${shown.length} ${vocabulary?'vocabulary set'+(shown.length===1?'':'s'):'unit preview'+(shown.length===1?'':'s')}`}</p>
-  <div class="results-grid catalog-grid">${shown.length?shown.map(resource=>resourceCard(resource,{cover:vocabulary})).join(''):loadingOrEmpty(vocabulary?'vocabulary':'units','No resources match these filters yet.')}</div>
-  ${vocabulary&&choosePreview().length?`<section class="vocabulary-preview green" aria-labelledby="listen-heading"><div class="preview-intro"><h2 id="listen-heading">Listen & explore</h2><p class="muted">A few words from the matching vocabulary sets.</p></div>${wordCards()}<p class="audio-status" id="audio-status" role="status">AI Voice and Teacher Voice are independent. Teacher recordings appear where available.</p></section>`:''}`;
+  return `<div class="catalog-heading"><h1>${vocabulary?'Vocabulary':'Units'}</h1><a class="inline-link" href="${resourceRoute(type)}">Show all</a></div>
+  <div class="topic-grid catalog-cards">${shown.length?shown.map(resource=>topicCard(TOPICS.find(topic=>resource.topics.includes(topic.id))||{colour:'aqua'},resource)).join(''):loadingOrEmpty(vocabulary?'vocabulary':'units','No resources match this year yet.')}</div>`;
 }
 function activitiesPage() {
   return `<section class="banner blue"><div><h1>Activities</h1><p class="subtitle">Play, listen and practise Mandarin with classroom activities.</p></div></section><section class="activities-page" aria-label="Classroom activities">${activityTiles()}</section><aside class="live-preview"><h2>Live classroom preview</h2><p class="muted">Try the separate Word Randomiser staging environment for live sessions.</p><a class="button secondary" href="${LINKS.live}">Open Live Word Randomiser — staging ${arrow}</a></aside>`;
 }
-function topicCard(topic) {
+function topicCard(topic,resource=null) {
+  // Reuse the Topics card markup and sizing; year links remain independent of the resource link.
+  if(resource && typeof resource==='object') {
+    const title=escape(resource.title);
+    return `<article class="topic-card ${topic.colour}"><div class="topic-top"><span class="clip-art catalog-placeholder" lang="zh-Hans" aria-hidden="true">${escape(topic.chinese||'文')}</span><div class="topic-copy"><h2>${title}</h2>${resource.chinese?`<div class="chinese-title" lang="zh-Hans">${escape(resource.chinese)}</div>`:''}</div></div><span class="circle" aria-hidden="true">${arrow}</span><a class="catalog-resource-open" href="${escape(resource.url)}" ${resource.type==='unit'?`data-unit="${escape(resource.id)}"`:''} aria-label="Open ${title}"></a><div class="year-tags"><a href="${resourceRoute(resource.type==='unit'?'units':'vocabulary',{year:resource.year})}" class="year-badge year-${resource.year}" aria-label="Filter ${yearLabel(resource.year)}">${yearLabel(resource.year)}</a></div></article>`;
+  }
   const years=topicYears(allResources(),topic.id);
   const empty=state.vocabularyStatus==='loading'||state.unitsStatus==='loading'?'Loading resources…':state.vocabularyStatus==='error'||state.unitsStatus==='error'?'Library temporarily unavailable':'Resources coming soon';
   return `<article class="topic-card ${topic.colour}"><div class="topic-top">${art('topics',topic.x,topic.y,120,130)}<div class="topic-copy"><h2>${topic.title}</h2><div class="chinese-title" lang="zh-Hans">${topic.chinese}</div><p>${topic.description}</p></div></div><a href="#/topics?topic=${topic.id}" class="circle" aria-label="Explore ${topic.title}">${arrow}</a><div class="year-tags">${years.length?years.map(y=>`<a href="#/topics?topic=${topic.id}&year=${y}" class="year-badge year-${y}" aria-label="${topic.title}, ${yearLabel(y)}">${yearLabel(y)}</a>`).join(''):`<span class="muted">${empty}</span>`}</div></article>`;
@@ -116,7 +111,7 @@ function topics(params) {
     ${years.length?years.map(y=>`<section class="topic-detail-year"><h2>${yearLabel(y)}</h2><div class="results-grid">${selectResources(resources,{year:y}).map(resourceCard).join('')}</div></section>`).join(''):`<p class="empty-state">${state.vocabularyStatus==='loading'?'Loading published resources…':state.vocabularyStatus==='error'?'Vocabulary is temporarily unavailable. Please try again later.':'No linked public resources for this topic'+(year!==null?' and year':'')+' yet.'}</p>`}
     <p class="data-note">Year labels come from available resource metadata. New resources appear here after their topic association has been reviewed.</p>`;
   }
-  return `<section class="banner green"><div><h1>Explore by Topic</h1><p class="subtitle">See how topics are taught across different year levels. Explore vocabulary, units and activities.</p></div><label class="topic-search">${icon('search')}<input id="topic-filter" type="search" placeholder="Search topics (e.g. numbers, food, family…)" aria-label="Search topics"></label></section><div class="topic-grid" id="topic-grid">${TOPICS.map(topicCard).join('')}</div><p class="data-note" id="topic-count" role="status">12 topics · Year badges reflect currently linked resources.</p>`;
+  return `<section class="banner green"><div><h1>Explore by Topic</h1><p class="subtitle">See how topics are taught across different year levels. Explore vocabulary, units and activities.</p></div><label class="topic-search">${icon('search')}<input id="topic-filter" type="search" placeholder="Search topics (e.g. numbers, food, family…)" aria-label="Search topics"></label></section><div class="topic-grid" id="topic-grid">${TOPICS.map(topic=>topicCard(topic)).join('')}</div><p class="data-note" id="topic-count" role="status">12 topics · Year badges reflect currently linked resources.</p>`;
 }
 const learning={
   pinyin:{title:'Pinyin',colour:'pink',description:'Learn and practise Chinese Pinyin.<br>Explore sounds, tones and useful words.',banner:[1015,130,460,105],items:[
@@ -152,21 +147,6 @@ function searchPage(params) {
   const query=params.get('q')||'';
   const resources=selectResources(allResources(),{query});
   return `<section class="banner green"><div><h1>Search resources</h1><p class="subtitle">Find published vocabulary and public unit previews.</p></div><label class="topic-search">${icon('search')}<input id="resource-search" type="search" value="${escape(query)}" placeholder="Search in English or Chinese…" aria-label="Search published resources"></label></section><p class="search-summary" id="search-summary" role="status">${resources.length} resources${query?' found':''}</p><div class="results-grid" id="search-results">${resources.map(resourceCard).join('')||'<p class="no-results">No matching public resources. Try another word.</p>'}</div>${state.vocabularyStatus==='error'||state.unitsStatus==='error'?'<p class="notice">Some resources could not be loaded. <button class="text-button" data-action="retry">Try again</button></p>':''}`;
-}
-let pendingFilterFocus=null;
-function wireCatalogFilters() {
-  const form=document.querySelector('#catalog-filters');
-  if(!form)return;
-  const apply=event=>{
-    event.preventDefault();
-    const year=form.elements.year.value;
-    const next=resourceRoute(route().page,{year:year===''?null:Number(year),topic:form.elements.topic.value,query:form.elements.q.value});
-    pendingFilterFocus=event.type==='change'?event.target.id:'catalog-query';
-    if(location.hash!==next)location.hash=next;
-    else pendingFilterFocus=null;
-  };
-  form.addEventListener('submit',apply);
-  form.querySelectorAll('select').forEach(select=>select.addEventListener('change',apply));
 }
 let currentAudio=null;
 let currentUtterance=null;
@@ -208,7 +188,7 @@ function render({focus=false}={}){
   if(activeNav){const nav=activeNav.parentElement,linkRect=activeNav.getBoundingClientRect(),navRect=nav.getBoundingClientRect();if(linkRect.left<navRect.left)nav.scrollLeft-=navRect.left-linkRect.left+8;else if(linkRect.right>navRect.right)nav.scrollLeft+=linkRect.right-navRect.right+8;}
   const topicInput=document.querySelector('#topic-filter');if(topicInput)topicInput.addEventListener('input',()=>{
     const q=topicInput.value.trim().toLowerCase();const matched=TOPICS.filter(t=>`${t.title} ${t.chinese} ${t.description}`.toLowerCase().includes(q));
-    document.querySelector('#topic-grid').innerHTML=matched.map(topicCard).join('')||'<p class="no-results">No matching topics. Try another word.</p>';
+    document.querySelector('#topic-grid').innerHTML=matched.map(topic=>topicCard(topic)).join('')||'<p class="no-results">No matching topics. Try another word.</p>';
     document.querySelector('#topic-count').textContent=`${matched.length} topic${matched.length===1?'':'s'}`;
   });
   const search=document.querySelector('#resource-search');if(search)search.addEventListener('input',()=>{
@@ -218,8 +198,7 @@ function render({focus=false}={}){
     history.replaceState(null,'',`#/search${search.value?'?q='+encodeURIComponent(search.value):''}`);
   });
   const form=document.querySelector('.contact-form');if(form)form.addEventListener('submit',e=>e.preventDefault());
-  wireCatalogFilters();
-  if(focus){main.focus({preventScroll:true});window.scrollTo(0,0);if(page==='home' && /^[0-6]$/.test(params.get('year')||'')){document.querySelector('#year-resource-heading')?.focus({preventScroll:true});main.querySelector('.resource-area')?.scrollIntoView({block:'start'});}if(pendingFilterFocus){document.getElementById(pendingFilterFocus)?.focus({preventScroll:true});pendingFilterFocus=null;}}
+  if(focus){main.focus({preventScroll:true});window.scrollTo(0,0);if(page==='home' && /^[0-6]$/.test(params.get('year')||'')){document.querySelector('#year-resource-heading')?.focus({preventScroll:true});main.querySelector('.resource-area')?.scrollIntoView({block:'start'});}}
 }
 const backdrop=document.querySelector('#modal'),modal=backdrop.querySelector('.modal');let returnFocus=null;
 function showModal(title,html){returnFocus=document.activeElement;document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">${title}</h2>${html}`;backdrop.hidden=false;document.body.style.overflow='hidden';main.setAttribute('aria-hidden','true');document.querySelector('.site-header').setAttribute('aria-hidden','true');document.querySelector('.site-footer').setAttribute('aria-hidden','true');modal.focus();}

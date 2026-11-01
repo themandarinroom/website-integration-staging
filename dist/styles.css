@@ -82,3 +82,12 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 .resource-cover-text{display:flex;align-items:center;justify-content:center;padding:18px;text-align:center;font-family:"PingFang SC","Microsoft YaHei",sans-serif;font-size:32px;color:#397458;line-height:1.4;background:#ffffffa8;overflow-wrap:anywhere}
 .banner>.button{gap:8px;white-space:nowrap}
 @media(max-width:700px){.banner>.button{margin-top:18px}}
+
+/* Catalog pages share Topics card dimensions and responsive grid. */
+.catalog-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 24px}
+.catalog-heading h1{margin:0}
+.catalog-resource-open{position:absolute;inset:0;border-radius:inherit;z-index:1}
+.catalog-resource-open:focus-visible{outline:3px solid var(--ink,#23354b);outline-offset:3px}
+.catalog-cards .year-tags{position:relative;z-index:2;pointer-events:none}
+.catalog-cards .year-tags a{pointer-events:auto}
+.catalog-placeholder{display:flex;align-items:center;justify-content:center;font-family:KaiTi,STKaiti,serif;font-size:64px;color:#47745b;object-fit:contain}
