@@ -118,10 +118,10 @@ function topics(params) {
     ${years.length?years.map(y=>`<section class="topic-detail-year"><h2>${yearLabel(y)}</h2><div class="results-grid">${selectResources(resources,{year:y}).map(resourceCard).join('')}</div></section>`).join(''):`<p class="empty-state">${state.vocabularyStatus==='loading'?'Loading published resources…':state.vocabularyStatus==='error'?'Vocabulary is temporarily unavailable. Please try again later.':'No linked public resources for this topic'+(year!==null?' and year':'')+' yet.'}</p>`}
     <p class="data-note">Year labels come from available resource metadata. New resources appear here after their topic association has been reviewed.</p>`;
   }
-  return `<section class="banner green"><div><h1>Explore by Topic</h1><p class="subtitle">See how topics are taught across different year levels. Explore vocabulary, units and activities.</p></div><label class="topic-search">${icon('search')}<input id="topic-filter" type="search" placeholder="Search topics (e.g. numbers, food, family…)" aria-label="Search topics"></label></section><div class="topic-grid" id="topic-grid">${TOPICS.map(topic=>topicCard(topic)).join('')}</div><p class="data-note" id="topic-count" role="status">12 topics · Year badges reflect currently linked resources.</p>`;
+  return `<div class="catalog-heading topics-heading"><h1>Topics <span lang="zh-Hans">主题</span></h1><label class="topic-search">${icon('search')}<input id="topic-filter" type="search" placeholder="Search topics (e.g. numbers, food, family…)" aria-label="Search topics"></label></div><div class="topic-grid" id="topic-grid">${TOPICS.map(topic=>topicCard(topic)).join('')}</div><p class="data-note" id="topic-count" role="status">12 topics · Year badges reflect currently linked resources.</p>`;
 }
 const learning={
-  pinyin:{title:'Pinyin',colour:'pink',description:'Learn and practise Chinese Pinyin.<br>Explore sounds, tones and useful words.',banner:[1015,130,460,105],items:[
+  pinyin:{title:'Pinyin',colour:'pink',description:'Pinyin (<span lang="zh-Hans">拼音</span>) is the official system for writing Mandarin sounds with the English alphabet, using tone marks to show how each syllable is said.',banner:[1015,130,460,105],items:[
     ['initials','Initials & Finals','Learn the building blocks of Pinyin.',70,298,178,76,'pink',true],
     ['tones','Tones','Learn the four tones and the neutral tone.',319,300,178,74,'peach',true],
     ['chart','Pinyin Chart','View the complete Pinyin chart.',566,281,166,102,'yellow',false],
@@ -129,7 +129,7 @@ const learning={
     ['games','Games','Fun activities to build confidence.',1060,281,141,105,'blue',false],
     ['words','Useful Words','Practise with common words.',1310,281,149,107,'lavender',false]
   ]},
-  hanzi:{title:'Hanzi',colour:'green',description:'Explore Chinese characters.<br>Learn strokes, meanings and practise writing.',banner:[1000,121,442,116],items:[
+  hanzi:{title:'<span lang="zh-Hans">中文好学</span>',colour:'green',description:'Hanzi (<span lang="zh-Hans">汉字</span>) are Chinese characters. Each one has a shape, a sound and a meaning — learn them step by step.',banner:[1000,121,442,116],items:[
     ['basic','Basic Characters','Learn high-frequency characters.',100,289,109,92,'pink',true],
     ['strokes','Stroke Order','Watch and practise the correct strokes.',330,281,145,112,'peach',false],
     ['library','Character Library','Explore characters with meanings.',585,281,120,112,'yellow',false],
