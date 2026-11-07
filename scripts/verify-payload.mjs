@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-const root=new URL('../dist/',import.meta.url);
+// Optional argument: another payload folder to check (e.g. build/production). Default: dist/.
+const root=process.argv[2]?new URL('file://'+path.resolve(process.argv[2])+'/'):new URL('../dist/',import.meta.url);
 const allowed=new Set(['unit-management.html','unit-management.mjs','teacher-unit-data.mjs','teacher-units/index.js','teacher-units/styles.css','teacher-units/library-order.mjs','units/index.html','admin-session.mjs','journey-model.mjs','journey-data.mjs','journey-view.mjs','journey-admin.mjs','journey-admin.html','journey.css','.nojekyll','index.html','robots.txt','styles.css','tmr-tokens.css','app.mjs','catalog.mjs','public-data.mjs','routing.mjs','assets/emblem.svg','assets/year-staircase.png','assets/topics.png','assets/pinyin.png','assets/hanzi.png','assets/about.png','assets/australia-states.png','assets/topic-covers-transparent.png','unit-viewer/unit-renderer.mjs','unit-viewer/student-data.mjs','unit-viewer/student-view.css','unit-viewer/firebase.js','unit-viewer/firebase-config.js','unit-publication.html','unit-publication.mjs','unit-publication.css']);
 function walk(dir,prefix=''){
  for(const entry of fs.readdirSync(dir,{withFileTypes:true})){
