@@ -35,13 +35,13 @@ test('pointer changes retry once; invalid or unavailable Journeys fail closed wi
  global.fetch=async url=>{count++;const value=url.includes('journeySettings')?pointer:{...doc,revision:2};return {ok:true,json:async()=>({fields:encode(value).mapValue.fields})};};
  try{assert.equal(await loadJourney(4),null);assert.equal(count,4);assert.equal(await loadJourney(null),null);}finally{global.fetch=original;}
 });
-test('timeline omits Upcoming references and content; Viewer actions and Explore More stay independent',()=>{
+test('timeline omits Upcoming references and content; Viewer actions remain and Explore More is removed',()=>{
  const journey={...doc,units:new Map([['completed-unit',unit('completed-unit')],['current-unit',unit('current-unit')],['secret-unit',{...unit('secret-unit'),englishTitle:'SECRET TITLE'}]])};
  const html=renderJourney(journey,4);
  assert(html.includes('Continue Learning'));assert(html.includes('Review'));assert(html.includes('#/unit?unit=current-unit'));assert(html.includes('#/unit?unit=completed-unit'));
  assert(renderJourney(journey,4,{base:'./'}).includes('href="./#/unit?unit=current-unit"'));
  assert(!html.includes('secret-unit'));assert(!html.includes('SECRET TITLE'));assert(html.includes('Coming Soon'));assert(html.includes('year-4'));
- for(const label of ['Explore Words','Explore Topics','Play &amp; Practise'])assert(html.includes(label)&&renderJourney(null,4).includes(label));
+ for(const label of ['Explore Words','Explore Topics','Play &amp; Practise'])assert(!html.includes(label)&&!renderJourney(null,4).includes(label));
  assert(!renderJourney({...journey,units:new Map()},4).includes('#/unit?unit='));
  assert(!renderJourney({...journey,units:new Map([['current-unit',{...unit('current-unit'),englishTitle:'<script>',description:'<img onerror=x>'}]])},4).includes('<script>'));
 });

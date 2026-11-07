@@ -129,7 +129,7 @@ const learning={
     ['games','Games','Fun activities to build confidence.',1060,281,141,105,'blue',false],
     ['words','Useful Words','Practise with common words.',1310,281,149,107,'lavender',false]
   ]},
-  hanzi:{title:'<span lang="zh-Hans">中文好学</span>',colour:'green',description:'Hanzi (<span lang="zh-Hans">汉字</span>) are Chinese characters. Each one has a shape, a sound and a meaning — learn them step by step.',banner:[1000,121,442,116],items:[
+  hanzi:{title:'Hanzi',colour:'green',description:'Hanzi (<span lang="zh-Hans">汉字</span>) are Chinese characters. Each one has a shape, a sound and a meaning — learn them step by step.',banner:[1000,121,442,116],items:[
     ['basic','Basic Characters','Learn high-frequency characters.',100,289,109,92,'pink',true],
     ['strokes','Stroke Order','Watch and practise the correct strokes.',330,281,145,112,'peach',false],
     ['library','Character Library','Explore characters with meanings.',585,281,120,112,'yellow',false],
