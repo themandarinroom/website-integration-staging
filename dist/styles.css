@@ -101,3 +101,4 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 .catalog-cover{object-fit:contain}
 
 .catalog-cards .topic-card{color:var(--ink)}
+.library-actions{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
