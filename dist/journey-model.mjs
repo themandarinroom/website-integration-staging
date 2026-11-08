@@ -22,3 +22,16 @@ export function changeStatus(placements, index, status, previousStatus = 'comple
 export function publicSlots(placements) {
   return validatePlacements(placements).map(({ unitId, status }, order) => status === 'upcoming' ? { order, status } : { order, status, unitId });
 }
+// Why a Journey cannot be published yet (mirrors publishJourney): Completed and Current Units must have an
+// approved, published public record. Upcoming Units may stay private and are never exposed.
+export function publishBlockers(placements, publishedUnits, titleOf = id => id) {
+  return validatePlacements(placements).filter(p => p.status !== 'upcoming' && !publishedUnits.has(p.unitId))
+    .map(p => `“${titleOf(p.unitId)}” is ${p.status === 'current' ? 'Current' : 'Completed'} but not published for students. Publish it in Unit Publication or set it to Upcoming.`);
+}
+// What each year level will show after switching the active public year (mirrors setActiveAcademicYear).
+export function yearSwitchSummary(year, publishedJourneys) {
+  return Array.from({length: 7}, (_, grade) => {
+    const found = publishedJourneys.find(j => j.id === journeyId(year, grade) && j.schemaVersion === 1 && j.academicYear === year && j.yearLevel === grade && Number.isSafeInteger(j.revision) && j.revision > 0);
+    return {grade, revision: found ? found.revision : 0};
+  });
+}

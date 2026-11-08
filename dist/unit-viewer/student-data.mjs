@@ -21,8 +21,7 @@ export function studentUnit(value, expectedId = value?.id) {
     if (!lesson || !validId(lesson.id) || ids.has(lesson.id) || typeof lesson.title !== 'string') return null;
     ids.add(lesson.id);
     lessons.push({ id: lesson.id, title: lesson.title, learningIntention: String(lesson.learningIntention || ''), content: String(lesson.content || ''),
-      links: (Array.isArray(lesson.links) ? lesson.links : []).filter(link => link && typeof link.label === 'string' && https(link.url)).map(link => ({ label: link.label, url: link.url })),
-      workedExamples: (Array.isArray(lesson.workedExamples) ? lesson.workedExamples : []).filter(example => example && https(example.url)).map(example => ({ url: example.url, alt: String(example.alt || '') })) });
+      links: (Array.isArray(lesson.links) ? lesson.links : []).filter(link => link && typeof link.label === 'string' && https(link.url)).map(link => ({ label: link.label, url: link.url })) });   // Worked Examples are teacher-only and never part of the student model.
   }
   return { id: value.id, yearLevel: value.yearLevel, englishTitle: value.englishTitle, chineseTitle: String(value.chineseTitle || ''), description: String(value.description || ''), topics: (Array.isArray(value.topics) ? value.topics : []).filter(topic => TOPICS.has(topic)), lessons };
 }
