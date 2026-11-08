@@ -1,0 +1,11 @@
+// Predeploy guard for firebase.hosting-default.json (Gate 4C-2): Hosting only, the existing DEFAULT site only.
+// Security headers are scoped to the site's own files and "/" so they never apply to Firebase's reserved
+// /__/ paths (the Google sign-in helper used by every Mandarin Room app). Rebuilds and re-checks the payload.
+import {execFileSync} from 'node:child_process';
+import fs from 'node:fs';
+const project = process.argv[2];
+if (project !== 'the-mandarin-room') { console.error(`Refusing Hosting deploy to "${project}".`); process.exit(1); }
+const config = JSON.parse(fs.readFileSync(new URL('../firebase.hosting-default.json', import.meta.url), 'utf8'));
+if (Object.keys(config).join() !== 'hosting' || config.hosting.site !== 'the-mandarin-room' || config.hosting.rewrites || config.hosting.redirects) { console.error('Config must deploy only static files to the default the-mandarin-room site.'); process.exit(1); }
+if (config.hosting.headers.some(h => h.source === '**' || h.source.startsWith('/__'))) { console.error('Headers must not match the reserved /__/ paths.'); process.exit(1); }
+for (const script of [['scripts/build-production.mjs'], ['scripts/verify-payload.mjs', 'build/production']]) execFileSync(process.execPath, script, {stdio: 'inherit', cwd: new URL('..', import.meta.url)});
