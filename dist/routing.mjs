@@ -25,3 +25,7 @@ export function resourceRoute(page,{year=null,topic=null,query=''}={}) {
   const encoded=params.toString();
   return `#/${page==='home'?'':page}${encoded?'?'+encoded:''}`;
 }
+// 2026 Public Beta indexing policy: only the homepage may be indexed; every other route (Journeys, Units,
+// catalogues, search, unknown pages) asks search engines not to index it. This is not access control:
+// unpublished content is refused by Firestore rules whatever this says.
+export function robotsFor(page) { return page==='home' ? null : 'noindex'; }

@@ -4,7 +4,7 @@ import {renderUnit,focusLesson} from './unit-viewer/unit-renderer.mjs';
 import {getStudentUnit} from './unit-viewer/student-data.mjs';
 import {LINKS,TOPICS,yearLabel,selectResources,topicYears} from './catalog.mjs';
 import {loadVocabulary,loadUnits,loadTeacherVoice} from './public-data.mjs';
-import {parseRoute,readFilters,resourceRoute} from './routing.mjs?v=units-admin-1';
+import {parseRoute,readFilters,resourceRoute,robotsFor} from './routing.mjs?v=public-beta-1';
 
 const main=document.querySelector('#main');
 const state={vocabulary:[],units:[],vocabularyStatus:'loading',unitsStatus:'loading'};
@@ -184,6 +184,8 @@ function wireAudio(){
     const fallback=document.createElement('span');fallback.className='missing';fallback.textContent='文';fallback.setAttribute('aria-label','Image unavailable');img.replaceWith(fallback);
   }));
 }
+// Route-level robots meta (#route-robots); a page's own static robots meta is never removed.
+function setRouteRobots(value){let m=document.getElementById('route-robots');if(!value){m?.remove();return;}if(!m){m=document.createElement('meta');m.name='robots';m.id='route-robots';document.head.append(m);}m.content=value;}
 function render({focus=false}={}){
   const {page,params}=route();
   const viewRequest=++studentViewRequest;
@@ -191,6 +193,7 @@ function render({focus=false}={}){
   const renderers={journey:()=>'<section id="journey-view"><p role="status">Loading Learning Journey…</p></section>',unit:()=>'<section class="student-unit-view" id="student-unit-view"><p role="status">Loading Unit…</p></section>',home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
   main.innerHTML=renderers[page]?renderers[page]():`<section class="banner green"><div><h1>Page not found</h1><p class="subtitle"><a class="inline-link" href="#/">Return Home</a></p></div></section>`;
   document.title=`${({'home':'Home',journey:'Learning Journey',vocabulary:'Vocabulary',units:'Units',unit:'Unit',activities:'Activities',topics:'Topics',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
+  setRouteRobots(robotsFor(page));
   document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'||page==='journey'?'home':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   if(page==='journey'){
     const raw=params.get('year'), grade=/^[0-6]$/.test(raw||'')?Number(raw):null;

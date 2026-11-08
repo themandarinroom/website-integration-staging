@@ -30,14 +30,23 @@ test('every Firebase target is the production project and no staging reference r
   for (const page of ['index.html', 'unit-management.html', 'journey-admin.html', 'unit-publication.html']) assert(read(page).includes('https://the-mandarin-room.firebaseapp.com'), page);
 });
 
-test('public pages are indexable without preview labels; teacher pages stay noindex', () => {
+test('Public Beta indexing: homepage indexable with canonical domain; teacher pages and /units/ noindex', () => {
+  const pages = walk(out).filter(f => f.endsWith('.html')).map(f => path.relative(out, f)).sort();
+  assert.deepEqual(pages, ['index.html', 'journey-admin.html', 'unit-management.html', 'unit-publication.html', 'units/index.html']);
   const index = read('index.html');
-  assert(!index.includes('noindex') && !index.includes('Integration preview') && !index.includes('staging-label'));
-  for (const page of ['unit-management.html', 'journey-admin.html', 'unit-publication.html']) assert(read(page).includes('content="noindex,nofollow"'), page);
-  assert.match(read('robots.txt'), /Allow: \/\n/);
-  for (const page of ['/unit-management.html', '/journey-admin.html', '/unit-publication.html']) assert(read('robots.txt').includes('Disallow: ' + page));
+  assert(!/name="robots"/.test(index) && index.includes('<link rel="canonical" href="https://themandarinroom.au/">'));
+  for (const page of pages.slice(1)) assert(read(page).includes('<meta name="robots" content="noindex,nofollow">'), page);
+  assert.equal(read('robots.txt'), 'User-agent: *\nAllow: /\n');
+  assert(read('app.mjs').includes('setRouteRobots(robotsFor(page))'));
+  assert(!index.includes('Integration preview') && !index.includes('staging-label'));
   assert(!read('app.mjs').includes('LINKS.live') && !read('app.mjs').includes('live-preview'));
   assert(!read('catalog.mjs').includes('live:'));
+});
+
+test('every route except the homepage is noindex (teaching content stays out of search during the Beta)', async () => {
+  const {robotsFor} = await import(pathToFileURL(path.join(out, 'routing.mjs')).href);
+  assert.equal(robotsFor('home'), null);
+  for (const page of ['journey', 'unit', 'vocabulary', 'units', 'activities', 'topics', 'pinyin', 'hanzi', 'about', 'search', 'nonexistent']) assert.equal(robotsFor(page), 'noindex', page);
 });
 
 test('approved routes and UI decisions are preserved in the production build', async () => {
@@ -76,4 +85,21 @@ test('production Hosting config deploys only the new site, and its guard refuses
   assert(headers.includes("frame-ancestors 'none'") && headers.includes('nosniff'));
   assert(!headers.includes('Cross-Origin-Opener-Policy'), 'COOP same-origin would break Google sign-in popups');
   assert.throws(() => execFileSync(process.execPath, [path.join(root, 'scripts/guard-production-deploy.mjs'), 'the-mandarin-room-staging'], {stdio: 'pipe'}));
+});
+
+test('default-site Hosting config: static files only, selective noindex headers, nothing applied to the reserved /__/ sign-in paths', () => {
+  const config = JSON.parse(fs.readFileSync(path.join(root, 'firebase.hosting-default.json'), 'utf8'));
+  assert.deepEqual(Object.keys(config), ['hosting']);
+  assert.equal(config.hosting.site, 'the-mandarin-room');
+  assert.equal(config.hosting.public, 'build/production');
+  assert(!config.hosting.rewrites && !config.hosting.redirects && !config.hosting.cleanUrls);
+  assert(config.hosting.predeploy[0].includes('guard-hosting-default.mjs'));
+  const get = (src, key) => config.hosting.headers.filter(h => h.source === src).flatMap(h => h.headers).find(x => x.key === key)?.value;
+  for (const src of ['/', '**/*.@(html|mjs|js|css|txt|png|svg|webp|ico)']) { assert.equal(get(src, 'X-Frame-Options'), 'DENY', src); assert.equal(get(src, 'X-Content-Type-Options'), 'nosniff', src); assert.equal(get(src, 'X-Robots-Tag'), undefined, src); }
+  assert.equal(get('/@(unit-management|journey-admin|unit-publication).html', 'X-Robots-Tag'), 'noindex, nofollow');
+  assert.equal(get('/units/**', 'X-Robots-Tag'), 'noindex, nofollow');
+  assert.equal(get('**/*.@(mjs|js|css|txt|png|svg|webp|ico)', 'X-Robots-Tag'), 'noindex');
+  assert(config.hosting.headers.every(h => h.source !== '**' && !h.source.startsWith('/__')), 'no header rule may match the reserved /__/ sign-in paths');
+  assert(!JSON.stringify(config).includes('Cross-Origin-Opener-Policy'), 'COOP same-origin would break Google sign-in popups');
+  assert.throws(() => execFileSync(process.execPath, [path.join(root, 'scripts/guard-hosting-default.mjs'), 'the-mandarin-room-staging'], {stdio: 'pipe'}));
 });

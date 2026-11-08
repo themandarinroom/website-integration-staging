@@ -1,4 +1,4 @@
-// Builds the production website (themandarinroom.au) from the reviewed staging payload in dist/.
+// Builds the production website (2026 Public Beta: themandarinroom.au on the default Hosting site the-mandarin-room) from the reviewed staging payload in dist/.
 // dist/ stays pinned to staging. This script writes build/production/ only and never deploys.
 // Every rewrite is listed below with its exact expected match count; any mismatch stops the build,
 // so a later change to dist/ cannot silently ship a staging reference.
@@ -27,7 +27,9 @@ const LIVE_PREVIEW = /<aside class="live-preview">[\s\S]*?<\/aside>/;
 
 // [file, from, to, expected count]
 const REWRITES = [
-  ['index.html', '<meta name="robots" content="noindex,nofollow">', '', 1],
+  // Public Beta indexing: the homepage is indexable (canonical: the official domain); app.mjs marks every other
+  // route noindex; teacher pages and the /units/ redirect keep their static noindex.
+  ['index.html', '<meta name="robots" content="noindex,nofollow">', '<link rel="canonical" href="https://themandarinroom.au/">', 1],
   ['index.html', AUTH_HOST_STAGING, AUTH_HOST, 2],
   ['index.html', ' · <span class="staging-label">Integration preview</span>', '', 1],
   ['unit-management.html', AUTH_HOST_STAGING, AUTH_HOST, 2],
@@ -66,9 +68,8 @@ for (const [file, from, to, expected] of REWRITES) {
 }
 fs.writeFileSync(path.join(out, 'unit-viewer/firebase-config.js'),
   `// Production public Firebase Web SDK configuration (not a secret; Auth and rules enforce access).\nexport const firebaseConfig = Object.freeze(${JSON.stringify(config, null, 2)});\n`);
-// Public pages are indexable; teacher pages also carry noindex.
-fs.writeFileSync(path.join(out, 'robots.txt'), 'User-agent: *\nAllow: /\nDisallow: /unit-management.html\nDisallow: /journey-admin.html\nDisallow: /unit-publication.html\nDisallow: /units/\n');
-
+// Crawling is allowed so that search engines can see each page's noindex (a robots.txt Disallow would hide it).
+fs.writeFileSync(path.join(out, 'robots.txt'), 'User-agent: *\nAllow: /\n');
 // Final scan: nothing may still point at staging or preview-only features.
 const problems = [];
 const walk = dir => fs.readdirSync(dir, {withFileTypes: true}).flatMap(e => e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]);
@@ -78,7 +79,9 @@ for (const file of walk(out).filter(f => /\.(html|mjs|js|css|txt)$/.test(f))) {
   if (/Integration preview|word-randomiser-staging|firebase=staging/.test(text)) problems.push(`${rel}: preview-only content`);
   if (/PRIVATE KEY|service_account|client_secret|refresh_token|gh[pousr]_[A-Za-z0-9]{20,}/.test(text)) problems.push(`${rel}: secret pattern`);
 }
-for (const page of ['unit-management.html', 'journey-admin.html', 'unit-publication.html'])
-  if (!fs.readFileSync(path.join(out, page), 'utf8').includes('content="noindex,nofollow"')) problems.push(`${page}: teacher page lost noindex`);
+for (const page of ['unit-management.html', 'journey-admin.html', 'unit-publication.html', 'units/index.html'])
+  if (!fs.readFileSync(path.join(out, page), 'utf8').includes('<meta name="robots" content="noindex,nofollow">')) problems.push(`${page}: page lost noindex`);
+if (/name="robots"/.test(fs.readFileSync(path.join(out, 'index.html'), 'utf8'))) problems.push('index.html: homepage must be indexable');
+if (!fs.readFileSync(path.join(out, 'app.mjs'), 'utf8').includes('setRouteRobots(robotsFor(page))')) problems.push('app.mjs: route noindex missing');
 if (problems.length) throw new Error('Production build check failed:\n' + problems.join('\n'));
 console.log(`Production website built in ${path.relative(process.cwd(), out) || out} for project ${PRODUCTION}; no staging references remain. Not deployed.`);
