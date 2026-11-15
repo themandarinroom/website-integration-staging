@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; style-src 'self'; connect-src 'self' https://*.googleapis.com https://the-mandarin-room-staging.firebaseapp.com https://australia-southeast1-the-mandarin-room-staging.cloudfunctions.net; frame-src https://the-mandarin-room-staging.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>Comments Management · The Mandarin Room</title>
+  <link rel="stylesheet" href="styles.css?v=feedback-1">
+</head>
+<body>
+  <main>
+    <a href="./#/">← The Mandarin Room</a>
+    <h1>Comments <span lang="zh-Hans">留言管理</span></h1>
+    <p role="status" id="comments-status">Checking administrator access… / 正在验证管理员权限…</p>
+    <section id="comments-panel" hidden aria-label="Moderate comments / 审核留言">
+      <p>Check for personal information, spam and inappropriate content before approving feedback. Legitimate feedback can be approved at any rating.
+        <span lang="zh-Hans">审批前请检查个人信息、垃圾信息和不当内容。任何评分的真实反馈均可通过审核。</span></p>
+      <div class="feedback-admin-controls">
+        <label for="comments-filter">Status / 状态</label>
+        <select id="comments-filter">
+          <option value="pending">Pending / 待审核</option>
+          <option value="approved">Approved / 已通过</option>
+          <option value="rejected">Rejected / 已拒绝</option>
+        </select>
+        <button type="button" class="button secondary" id="comments-refresh">Refresh / 刷新</button>
+      </div>
+      <div id="comments-entries"></div>
+      <button type="button" class="button secondary" id="comments-more" hidden>Load more / 加载更多</button>
+    </section>
+  </main>
+  <script type="module" src="feedback-admin.mjs"></script>
+</body>
+</html>

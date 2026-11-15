@@ -1,3 +1,4 @@
+import {feedbackForm, communityFeedback, wireFeedback} from './feedback.mjs';
 import {loadJourney} from './journey-data.mjs';
 import {renderJourney} from './journey-view.mjs';
 import {renderUnit,focusLesson} from './unit-viewer/unit-renderer.mjs';
@@ -147,8 +148,8 @@ function about() {
   <div class="about-grid"><section class="about-card pink"><div class="card-title"><span aria-hidden="true">💗</span><div><h2>Our Vision</h2><h3 lang="zh-Hans">我们的愿景</h3></div></div><p>To make Chinese language learning engaging, accessible and meaningful for all students.</p><p lang="zh-Hans">让每一位学生都能以有趣、易于接触且有意义的方式学习中文。</p>${art('about',365,491,112,141)}</section>
   <section class="about-card blue"><div class="card-title"><span aria-hidden="true">👥</span><div><h2>Our Resources</h2><h3 lang="zh-Hans">我们的资源</h3></div></div><p>Explore vocabulary, units, activities and cultural content designed for primary learners.</p><p lang="zh-Hans">提供词汇、教学单元、课堂活动和文化内容，专为小学学习者设计。</p>${art('about',818,470,155,172)}</section>
   <section class="about-card yellow"><div class="card-title"><span aria-hidden="true">⭐</span><div><h2>For Students and Teachers</h2><h3 lang="zh-Hans">面向学生与教师</h3></div></div><p>Free to explore, easy to use, and designed to support Mandarin learning in classrooms and at home.</p><p lang="zh-Hans">免费使用，操作简单，适合课堂教学和家庭学习。</p>${art('about',1310,472,192,190)}</section></div>
-  <section class="contact" aria-labelledby="contact-title"><div class="contact-copy"><h2 id="contact-title">Contact Admin</h2><h3 lang="zh-Hans">联系管理员</h3><p>Have a question, suggestion or feedback? We’d love to hear from you!</p><p lang="zh-Hans">如有问题、建议或意见，欢迎与我们联系。</p><span class="badge">Coming soon · 暂未开放</span>${art('about',415,734,235,227)}</div>
-  <form class="contact-form" aria-describedby="contact-unavailable"><p class="data-note" id="contact-unavailable">Contact delivery is not configured yet. This form is unavailable and does not collect or send information. Planned address: info@themandarinroom.au.</p><fieldset disabled><legend class="sr-only">Contact form — coming soon</legend><div class="form-row"><label>Name 姓名（可选）<input name="name" autocomplete="off" placeholder="Your name 您的姓名"></label><label>Email 邮箱（必填）<input type="email" name="email" required autocomplete="off" placeholder="your@email.com"></label></div><label>Message 留言（必填）<textarea name="message" required placeholder="Type your message here…&#10;请输入您的留言…"></textarea></label><button type="submit" class="button">Send Message 发送留言</button></fieldset></form></section>`;
+  <section class="contact" aria-labelledby="contact-title"><div class="contact-copy"><h2 id="contact-title">Leave a Comment</h2><h3 lang="zh-Hans">留言与反馈</h3><p>Have a question, suggestion or feedback? We’d love to hear from you!</p><p lang="zh-Hans">如有问题、建议或意见，欢迎与我们联系。</p><button type="button" class="text-button private-contact" disabled>Contact Admin <span lang="zh-Hans">联系管理员</span></button><p class="private-contact-status">Private contact unavailable <span lang="zh-Hans">暂不提供私信</span></p>${art('about',415,734,235,227)}</div>
+  ${feedbackForm()}</section>${communityFeedback()}`;
 }
 function searchPage(params) {
   const query=params.get('q')||'';
@@ -218,7 +219,7 @@ function render({focus=false}={}){
     document.querySelector('#search-results').innerHTML=resources.map(resourceCard).join('')||'<p class="no-results">No matching public resources. Try another word.</p>';
     history.replaceState(null,'',`#/search${search.value?'?q='+encodeURIComponent(search.value):''}`);
   });
-  const form=document.querySelector('.contact-form');if(form)form.addEventListener('submit',e=>e.preventDefault());
+  if(page==='about')wireFeedback(main);
   if(focus){main.focus({preventScroll:true});window.scrollTo(0,0);if(page==='home' && /^[0-6]$/.test(params.get('year')||'')){document.querySelector('#year-resource-heading')?.focus({preventScroll:true});main.querySelector('.resource-area')?.scrollIntoView({block:'start'});}}
 }
 const backdrop=document.querySelector('#modal'),modal=backdrop.querySelector('.modal');let returnFocus=null;
@@ -237,14 +238,14 @@ document.querySelector('#admin-open').onclick=async()=>{
   adminMode=true;
   showModal('Admin Login','<p>Sign in to manage The Mandarin Room.</p><p role="status">Loading Google sign-in…</p><p class="data-note">Authorised administrators only</p>');
   try{
-    if(!adminSessionPromise)adminSessionPromise=import('./admin-session.mjs?v=units-admin-1').then(({startAdminSession})=>startAdminSession(panel=>{
+    if(!adminSessionPromise)adminSessionPromise=import('./admin-session.mjs?v=feedback-1').then(({startAdminSession})=>startAdminSession(panel=>{
       if(adminMode&&!backdrop.hidden)document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">${panel.title}</h2>${panel.html}`;
     })).catch(error=>{adminSessionPromise=null;throw error;});
     const session=await adminSessionPromise;if(adminMode&&!backdrop.hidden)session.open();
   }catch(error){if(adminMode&&!backdrop.hidden)document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">Admin Login</h2><p role="status">Sign-in unavailable: ${escape(error.message)}</p><p>Close and reopen Admin to try again.</p>`;}
 };
 backdrop.addEventListener('click',async event=>{const action=event.target.closest('[data-admin-action]');if(action&&adminSessionPromise)(await adminSessionPromise).act(action.dataset.adminAction);});
-document.querySelector('#privacy-open').onclick=()=>showModal('Privacy',`<p>This integration frontend has no analytics, advertising trackers, student accounts or student information forms. It does not save search terms or curriculum content in browser storage.</p><p>Published resources and images are loaded from existing Google Firebase and GitHub Pages services. Those services receive ordinary network requests. Existing applications retain their own authentication, storage and microphone behaviour.</p><p>The contact form is disabled and sends nothing. Student speaking recordings remain under the existing app’s device-local workflow.</p>`);
+document.querySelector('#privacy-open').onclick=()=>showModal('Privacy',`<p>This integration frontend has no analytics, advertising trackers or student accounts. Anyone can leave feedback. Approved names, ratings and comments may appear publicly. Email is optional and visible only to authorised administrators. It does not save search terms or curriculum content in browser storage.</p><p>Published resources and images are loaded from existing Google Firebase and GitHub Pages services. Those services receive ordinary network requests. Existing applications retain their own authentication, storage and microphone behaviour.</p><p>The contact form is disabled and sends nothing. Student speaking recordings remain under the existing app’s device-local workflow.</p>`);
 function openUnit(id){if(state.units.some(unit=>unit.id===id))location.hash=`#/unit?unit=${encodeURIComponent(id)}`;}
 function openLearning(key){
   if(key==='pinyin:initials')showModal('Initials & Finals',`<p>An initial begins a syllable; a final follows it. Some syllables have no initial.</p><h3>Common initials</h3><p class="letter-list" lang="zh-Latn-pinyin">b p m f · d t n l · g k h · j q x · zh ch sh r · z c s</p><h3>Simple finals</h3><p class="letter-list" lang="zh-Latn-pinyin">a o e i u ü</p><p>Examples: m + ā → mā; n + ǐ → nǐ. The tone mark shows how the syllable is pronounced. A complete chart and listening practice are coming soon.</p>`);
@@ -263,6 +264,7 @@ async function refreshData(){
   const [vocabulary,units]=await Promise.allSettled([loadVocabulary(),loadUnits()]);if(version!==refreshVersion)return;
   state.vocabularyStatus=vocabulary.status==='fulfilled'?'ready':'error';state.unitsStatus=units.status==='fulfilled'?'ready':'error';
   state.vocabulary=vocabulary.status==='fulfilled'?vocabulary.value:[];state.units=units.status==='fulfilled'?units.value:[];
+  if(route().page==='about')return; // Keep the active feedback form intact.
   // Preserve an in-progress search while initial public data finishes loading.
   const active=document.activeElement;const activeId=active?.id;const value=(active instanceof HTMLInputElement||active instanceof HTMLSelectElement)?active.value:null;
   render();if(activeId&&value!==null){const input=document.getElementById(activeId);if(input){input.value=value;input.focus();input.dispatchEvent(new Event('input'));}}

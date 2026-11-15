@@ -69,9 +69,10 @@ test('seven navigation links, staging noindex, restrictive CSP, and no third-par
  const html=fs.readFileSync(new URL('../dist/index.html',import.meta.url),'utf8');
  assert.deepEqual([...html.matchAll(/data-page="([^"]+)"/g)].map(m=>m[1]),['home','vocabulary','activities','topics','pinyin','hanzi','about']);assert.match(html,/noindex,nofollow/);assert.match(html,/form-action 'none'/);assert.match(html,/object-src 'none'/);assert(!/<script[^>]+src="https:/.test(html));assert(!html.includes('Teacher Login'));
 });
-test('frontend cannot write Firebase, collect contact data or add tracking',()=>{
+test('catalog frontend cannot write directly to Firebase or add tracking',()=>{
  const app=fs.readFileSync(new URL('../dist/app.mjs',import.meta.url),'utf8');
- assert.match(app,/<fieldset disabled>/);assert.match(app,/required/);assert.match(app,/role="status"/);
+ assert.match(app,/class="text-button private-contact" disabled/);
+ assert.match(app,/role="status"/);
  const sources=['app.mjs','public-data.mjs','catalog.mjs','routing.mjs'].map(p=>fs.readFileSync(new URL('../dist/'+p,import.meta.url),'utf8')).join('');
  assert(!/setDoc|addDoc|updateDoc|deleteDoc|signIn|localStorage|sessionStorage|sendBeacon|gtag\(|analytics\(/.test(sources));
 });
