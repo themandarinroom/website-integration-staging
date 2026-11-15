@@ -4,6 +4,7 @@ export const LINKS = Object.freeze({
   unitIndex: 'https://themandarinroom.github.io/units/unit-library-index.json',
   speaking: 'https://themandarinroom.github.io/speaking/student.html',
   randomiser: 'https://themandarinroom.github.io/vocabularylibrary/tools/word-randomizer/',
+  bingo: 'https://themandarinroom.github.io/vocabularylibrary/tools/bingo-board/',
   live: 'https://themandarinroom.github.io/word-randomiser-staging/tools/word-randomizer/?firebase=staging'
 });
 export const TOPICS = [
