@@ -102,7 +102,11 @@ function topicCard(topic,resource=null) {
   if(resource && typeof resource==='object') {
     const title=escape(resource.title);
     const cover=TOPIC_COVERS[topic.id];
-    return `<article class="topic-card year-${resource.year}"><div class="topic-top">${resource.id==='year4-australian-states'?'<img class="clip-art catalog-cover" src="assets/australia-states.png" alt="Australian states and territories with a red location pin at Melbourne" loading="lazy">':cover?art('topic-covers-transparent',...cover):'<span class="clip-art catalog-placeholder" lang="zh-Hans" aria-hidden="true">文</span>'}<div class="topic-copy"><h2>${title}</h2>${resource.chinese?`<div class="chinese-title" lang="zh-Hans">${escape(resource.chinese)}</div>`:''}</div></div><span class="circle" aria-hidden="true">${arrow}</span><a class="catalog-resource-open" href="${escape(resource.url)}" ${resource.type==='unit'?`data-unit="${escape(resource.id)}"`:''} aria-label="Open ${title}"></a><div class="year-tags"><a href="${resourceRoute(resource.type==='unit'?'units':'vocabulary',{year:resource.year})}" class="year-badge year-${resource.year}" aria-label="Filter ${yearLabel(resource.year)}">${yearLabel(resource.year)}</a></div></article>`;
+    const defaultArt=resource.id==='year4-australian-states'?'<img class="clip-art catalog-cover" src="assets/australia-states.png" alt="Australian states and territories with a red location pin at Melbourne" loading="lazy">':cover?art('topic-covers-transparent',...cover):'<span class="clip-art catalog-placeholder" lang="zh-Hans" aria-hidden="true">文</span>';
+    // A saved Vocabulary Set cover (uploaded, URL or AI-generated) takes the artwork slot; if it fails to load,
+    // wireCatalogCovers() swaps in the card's previous default artwork.
+    const artwork=resource.coverImage?`<img class="clip-art catalog-cover catalog-saved-cover" src="${escape(resource.coverImage)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-catalog-cover><template data-cover-fallback>${defaultArt}</template>`:defaultArt;
+    return `<article class="topic-card year-${resource.year}"><div class="topic-top">${artwork}<div class="topic-copy"><h2>${title}</h2>${resource.chinese?`<div class="chinese-title" lang="zh-Hans">${escape(resource.chinese)}</div>`:''}</div></div><span class="circle" aria-hidden="true">${arrow}</span><a class="catalog-resource-open" href="${escape(resource.url)}" ${resource.type==='unit'?`data-unit="${escape(resource.id)}"`:''} aria-label="Open ${title}"></a><div class="year-tags"><a href="${resourceRoute(resource.type==='unit'?'units':'vocabulary',{year:resource.year})}" class="year-badge year-${resource.year}" aria-label="Filter ${yearLabel(resource.year)}">${yearLabel(resource.year)}</a></div></article>`;
   }
   const years=topicYears(allResources(),topic.id);
   const empty=state.vocabularyStatus==='loading'||state.unitsStatus==='loading'?'Loading resources…':state.vocabularyStatus==='error'||state.unitsStatus==='error'?'Library temporarily unavailable':'Resources coming soon';
@@ -184,6 +188,13 @@ function wireAudio(){
     const fallback=document.createElement('span');fallback.className='missing';fallback.textContent='文';fallback.setAttribute('aria-label','Image unavailable');img.replaceWith(fallback);
   }));
 }
+// Saved Vocabulary covers fall back to the card's default artwork when the image cannot load.
+function wireCatalogCovers(){
+  main.querySelectorAll('img[data-catalog-cover]').forEach(img=>{
+    const fallback=()=>{const template=img.nextElementSibling;if(!img.isConnected)return;if(template?.matches('template[data-cover-fallback]')){img.replaceWith(template.content.cloneNode(true));template.remove();}else img.remove();};
+    if(img.complete&&img.naturalWidth===0&&img.getAttribute('src'))fallback();else img.addEventListener('error',fallback,{once:true});
+  });
+}
 // Route-level robots meta (#route-robots); a page's own static robots meta is never removed.
 function setRouteRobots(value){let m=document.getElementById('route-robots');if(!value){m?.remove();return;}if(!m){m=document.createElement('meta');m.name='robots';m.id='route-robots';document.head.append(m);}m.content=value;}
 function render({focus=false}={}){
@@ -208,6 +219,7 @@ function render({focus=false}={}){
     focusLesson(container,params.get('lesson'));
   });
   if(page==='vocabulary')wireAudio();
+  wireCatalogCovers();
   const activeNav=document.querySelector('.site-header nav [aria-current=page]');
   if(activeNav){const nav=activeNav.parentElement,linkRect=activeNav.getBoundingClientRect(),navRect=nav.getBoundingClientRect();if(linkRect.left<navRect.left)nav.scrollLeft-=navRect.left-linkRect.left+8;else if(linkRect.right>navRect.right)nav.scrollLeft+=linkRect.right-navRect.right+8;}
   const topicInput=document.querySelector('#topic-filter');if(topicInput)topicInput.addEventListener('input',()=>{

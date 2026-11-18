@@ -48,7 +48,7 @@ export function topicYears(resources, topic) {
 }
 export function vocabularyResources(sets) {
   return sets.filter(s=>s.published===true && s.deleted!==true && validId(s.id) && validYear(s.yearLevel) && typeof s.title==='string')
-    .map(s=>({id:s.id,type:'vocabulary',title:s.title,chinese:String(s.chineseTitle||''),description:String(s.description||''),year:s.yearLevel,
+    .map(s=>({id:s.id,type:'vocabulary',title:s.title,chinese:String(s.chineseTitle||''),description:String(s.description||''),year:s.yearLevel,coverImage:safeHttps(s.coverImage),
       topics:VOCABULARY_TOPICS[s.id]||[],url:`${LINKS.vocabulary}student.html?set=${encodeURIComponent(s.id)}`,
       items:(Array.isArray(s.items)?s.items:[]).filter(i=>validId(i.id) && typeof i.chinese==='string').map(i=>({
         id:i.id,chinese:i.chinese,pinyin:String(i.pinyin||''),english:String(i.english||''),image:safeHttps(i.image),aiEnabled:i.audio?.aiEnabled!==false
