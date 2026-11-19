@@ -1,0 +1,2 @@
+13:    match /feedbackSubmissions/{id} { allow read, write: if false; }
+15:    match /feedbackRateLimits/{id} { allow read, write: if false; }

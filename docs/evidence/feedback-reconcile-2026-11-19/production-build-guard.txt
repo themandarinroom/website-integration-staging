@@ -1,0 +1,9 @@
+if (problems.length) throw new Error('Production build check failed:\n' + problems.join('\n'));
+                           ^
+
+Error: Production build check failed:
+feedback-admin.html: contains "staging"
+feedback.mjs: contains "staging"
+index.html: contains "staging"
+    at file://<repo>/scripts/build-production.mjs:86:28
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)

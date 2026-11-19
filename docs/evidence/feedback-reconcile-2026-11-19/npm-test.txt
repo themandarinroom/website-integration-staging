@@ -1,0 +1,154 @@
+
+> the-mandarin-room-integration@1.0.0 test
+> node --test tests/*.test.mjs
+
+✔ private management is linked only in the authorised Dashboard (1.6195ms)
+✔ direct teacher routes render no private content before server-checked auth (1.924292ms)
+✔ legacy browsing redirects Home, while Student Viewer and Journey routes are preserved (0.7985ms)
+✔ student rendering still strips all teacher notes and editing controls (0.889375ms)
+✔ reuse build sources the existing list/editor links rather than shipping a duplicate editor (0.457541ms)
+✔ real teacher authorisation fails closed for signed-out, unverified, inactive and denied responses (0.903917ms)
+✔ teacher authorisation reads only its staging allowlist record with current credentials and no cache (0.160209ms)
+✔ Bingo Games links to the released Production Bingo Solo only (0.726958ms)
+✔ Activities shows a Bingo Games card reusing the existing card design, opening in a new tab safely (0.238875ms)
+✔ Activities exposes no Bingo Live Mode and keeps the other activity cards (0.19925ms)
+✔ feedback form enforces server-matching limits, optional fields, spam trap and privacy notice (2.712375ms)
+✔ community feedback section has a status region and hidden pagination (0.132417ms)
+✔ feedbackCall posts JSON to the staging callable without cookies and only sends a token for admins (1.427667ms)
+✔ feedbackCall surfaces server errors instead of reporting success (0.345375ms)
+✔ About page hosts the feedback form and community list; refresh does not wipe an open form (0.319625ms)
+✔ reconciliation keeps Production features alongside feedback (1.125125ms)
+✔ moderation page checks the authorised-teacher allowlist before any list or moderation call (0.710208ms)
+✔ A1: reopening restores every published selection exactly (cross-year Vocabulary and Speaking kept) (2.453125ms)
+✔ A1: untouched fields are never silently dropped; removals need explicit confirmation (0.297ms)
+✔ A1: selections that cannot be reconstructed reliably produce warnings, never guesses (0.202125ms)
+✔ B4/B5: teacher-only lessons and Worked Examples can never enter a payload (0.245041ms)
+✔ A3: Draft, Published and Unpublished Unit states are distinct (0.100958ms)
+✔ A2: unpublished Units may be Upcoming; Current/Completed must be published; Upcoming stays hidden (0.259833ms)
+✔ C3: the switch summary shows exactly which year levels have a published Journey (0.148959ms)
+✔ C4: students never see a calendar-derived year; the semester appears only within the Journey’s year (32.683167ms)
+✔ all seven staircase links open shareable Journey routes without replacing artwork (1.702166ms)
+✔ published projection validates active year, grade, revision and unique Current (1.011334ms)
+✔ student adapter fetches only active publication and visible approved Units with anonymous no-cache requests (0.950458ms)
+✔ pointer changes retry once; invalid or unavailable Journeys fail closed without private fallbacks (0.400708ms)
+✔ timeline omits Upcoming references and content; Viewer actions remain and Explore More is removed (28.405041ms)
+✔ copy retains stable Unit order, resets every status, and never mutates original records (0.348417ms)
+✔ changing Current offers Completed or Upcoming for previous Current without creating duplicates (0.176459ms)
+✔ Admin reuses existing auth and callables; no direct writes, production targets or private preview links (1.317417ms)
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: <node> <local-path> Mandarin Room - Claude/website-integration/scripts/build-production.mjs <tmp>
+file://<repo>/scripts/build-production.mjs:86
+if (problems.length) throw new Error('Production build check failed:\n' + problems.join('\n'));
+                           ^
+
+Error: Production build check failed:
+feedback-admin.html: contains "staging"
+feedback.mjs: contains "staging"
+index.html: contains "staging"
+    at file://<repo>/scripts/build-production.mjs:86:28
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.6.0
+
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at checkExecSyncError (node:child_process:942:11)
+    at execFileSync (node:child_process:978:15)
+    at file://<repo>/tests/production-build.test.mjs:13:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  status: 1,
+  signal: null,
+  output: [
+    null,
+    Buffer(0) [Uint8Array] [],
+    Buffer(753) [Uint8Array] [
+      102, 105, 108, 101,  58,  47,  47,  47,  85, 115, 101, 114,
+      115,  47, 119, 101, 105, 119,  97, 110, 103,  47,  68, 111,
+       99, 117, 109, 101, 110, 116, 115,  47,  67, 104,  97, 116,
+       71,  80,  84,  47,  84, 104, 101,  37,  50,  48,  77,  97,
+      110, 100,  97, 114, 105, 110,  37,  50,  48,  82, 111, 111,
+      109,  37,  50,  48,  45,  37,  50,  48,  67, 108,  97, 117,
+      100, 101,  47, 119, 101,  98, 115, 105, 116, 101,  45, 105,
+      110, 116, 101, 103, 114,  97, 116, 105, 111, 110,  47, 115,
+       99, 114, 105, 112,
+      ... 653 more items
+    ]
+  ],
+  pid: 88920,
+  stdout: Buffer(0) [Uint8Array] [],
+  stderr: Buffer(753) [Uint8Array] [
+    102, 105, 108, 101,  58,  47,  47,  47,  85, 115, 101, 114,
+    115,  47, 119, 101, 105, 119,  97, 110, 103,  47,  68, 111,
+     99, 117, 109, 101, 110, 116, 115,  47,  67, 104,  97, 116,
+     71,  80,  84,  47,  84, 104, 101,  37,  50,  48,  77,  97,
+    110, 100,  97, 114, 105, 110,  37,  50,  48,  82, 111, 111,
+    109,  37,  50,  48,  45,  37,  50,  48,  67, 108,  97, 117,
+    100, 101,  47, 119, 101,  98, 115, 105, 116, 101,  45, 105,
+    110, 116, 101, 103, 114,  97, 116, 105, 111, 110,  47, 115,
+     99, 114, 105, 112,
+    ... 653 more items
+  ]
+}
+
+Node.js v26.6.0
+✖ tests/production-build.test.mjs (170.617041ms)
+✔ unpublished, deleted, invalid-year and invalid-ID vocabulary cannot enter the catalog (0.763459ms)
+✔ preview strips author metadata and embedded audio paths (0.113833ms)
+✔ unknown set IDs never acquire guessed topic or year relationships (1.617667ms)
+✔ topic badges reflect published resource years only (0.557083ms)
+✔ search supports English, Chinese and year labels without interpreting markup (0.840459ms)
+✔ unsafe image schemes and credentials are rejected (0.137917ms)
+✔ Units accepts only its public index contract and reconstructs canonical URLs (0.180958ms)
+✔ Firestore decoding preserves nested arrays, booleans, null and numbers (0.162833ms)
+✔ anonymous query includes published predicate and excludes identity fields (0.125792ms)
+✔ network adapter uses anonymous no-cache read-only endpoints (0.727375ms)
+✔ Teacher Voice rejects mismatched identities and arbitrary audio hosts (0.325458ms)
+✔ seven navigation links, staging noindex, restrictive CSP, and no third-party scripts (0.364708ms)
+✔ catalog frontend cannot write directly to Firebase or add tracking (1.974542ms)
+✔ topic IDs are unique and all twelve approved categories are present (0.072833ms)
+✔ all seven compact headers use active year, Melbourne semester and selected grade (33.214333ms)
+✔ Completed details start closed and retain approved details and Review only inside disclosure (0.472625ms)
+✔ no year-level page shows the removed early-finisher section (1.220917ms)
+✔ Admin Login exposes no management links before verified authorisation (0.19525ms)
+✔ authorised dashboard has exactly six management links, sign-out and legacy auth notice (0.106916ms)
+✔ Admin session reuses existing staging auth, restoration and verified active-teacher checks without client writes (0.39525ms)
+✔ bare root and hash root both resolve to the staircase home (0.904458ms)
+✔ legacy Year Levels links redirect to Home without losing year/filter parameters (1.780584ms)
+✔ all seven top-level destinations remain independent routes (0.189416ms)
+✔ shareable filters round-trip Prep, reviewed topic and bilingual search safely (0.595333ms)
+✔ student Unit and lesson direct links retain stable IDs without year restrictions (0.093541ms)
+✔ public Unit browsing redirects Home while stable student Unit deep links survive (0.085375ms)
+✔ every relative module, script and stylesheet referenced by the website exists in the payload (4.525667ms)
+✔ embedded board shares the Admin Firebase app, keeps editor links external and never writes Firestore directly (0.441084ms)
+✔ website ordering module is the Unit Library module unchanged (1.481042ms)
+✔ authorised teacher sees seven year columns with counts, handles and the existing editor links (5.770333ms)
+✔ keyboard reorder saves with the expected revision and keeps the confirmed order (10.021958ms)
+✔ a rejected save (revision conflict) restores the previous order and reloads the server order (7.207375ms)
+✔ inactive or unverified accounts load no Units, and sign-out clears the board (7.155708ms)
+✔ an older board replaced by a newer Admin session does not load Units or poll (2.42725ms)
+✔ the public query requests the saved cover field and still excludes private fields (0.497792ms)
+✔ uploaded, external and AI-generated covers all map to the card (0.292458ms)
+✔ missing, removed or unsafe covers fall back to no cover (0.141541ms)
+✔ a Firestore REST document with a cover decodes end to end (0.156875ms)
+✔ card renderer uses the saved cover first and keeps the old artwork as the load-failure fallback (0.303834ms)
+ℹ tests 73
+ℹ suites 0
+ℹ pass 72
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 203.29775
+
+✖ failing tests:
+
+test at tests/production-build.test.mjs:1:1
+✖ tests/production-build.test.mjs (170.617041ms)
+  'test failed'

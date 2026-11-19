@@ -1,0 +1,4 @@
+
+> the-mandarin-room-integration@1.0.0 check
+> node --check dist/feedback.mjs && node --check dist/feedback-admin.mjs && node --check dist/app.mjs && node --check dist/catalog.mjs && node --check dist/public-data.mjs && node --check dist/routing.mjs && node --check dist/unit-publication.mjs && node --check dist/unit-viewer/student-data.mjs && node --check dist/unit-viewer/unit-renderer.mjs && node --check dist/journey-data.mjs && node --check dist/journey-view.mjs && node --check dist/journey-model.mjs && node --check dist/publication-model.mjs && node --check dist/journey-admin.mjs && node --check dist/admin-session.mjs && node --check dist/unit-management.mjs && node --check dist/teacher-unit-data.mjs
+

@@ -1,0 +1,1 @@
+Deployment payload verified: 43 allowlisted static files; no backend, credentials, rules or private content.

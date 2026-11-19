@@ -1,0 +1,22 @@
+161:  Object.assign(exports, require("./feedback").feedbackFunctions());
+    if (error instanceof HttpsError) throw error;
+    console.error("[Vocabulary image generation]", error);
+    throw new HttpsError("internal", "Image generation could not complete. No vocabulary data was changed.");
+  }
+});
+}
+
+// Word Randomiser live sessions belong only to staging. Production exposes the
+// Unit Library metadata endpoint alongside the existing vocabulary function.
+if (isStagingLiveSessionProject) {
+  Object.assign(exports, require("./live-game-sessions"));
+  Object.assign(exports, require("./feedback").feedbackFunctions());
+  const journeys = require("./learning-journeys");
+  exports.saveJourney = journeys.saveJourney;
+  exports.publishJourney = journeys.publishJourney;
+  const publicUnits = require("./public-units");
+  exports.publishPublicUnit = publicUnits.publishPublicUnit;
+  exports.unpublishPublicUnit = publicUnits.unpublishPublicUnit;
+}
+else exports.unitLibraryIndex = require("./unit-library-index").unitLibraryIndex;
+
