@@ -75,16 +75,22 @@ function yearActivities(year) {
     ${vocab.length?`<a class="resource-link" href="${LINKS.randomiser}?set=${encodeURIComponent(vocab[0].id)}"><strong>Word Randomiser ${arrow}</strong><p>Start with ${escape(vocab[0].title)} in Local Mode.</p></a>`:'<p class="muted">Word Randomiser will be available here when vocabulary for this year is published.</p>'}
     <p class="data-note">Bingo Board and Listening Game · Coming soon</p>`;
 }
+// Homepage year-level card line icons (24px grid, stroked in the year colour): Prep → Year 6.
+const YEAR_CARDS=[
+  '<path d="M12 4c5 0 9 3.1 9 7s-4 7-9 7c-1.1 0-2.1-.1-3-.4L4.5 19.5l1.4-3.7C4.1 14.5 3 12.8 3 11c0-3.9 4-7 9-7z"/>',
+  '<ellipse cx="12" cy="16.2" rx="4.3" ry="3.6"/><circle cx="5.6" cy="10.6" r="1.9"/><circle cx="9.4" cy="6.4" r="2"/><circle cx="14.6" cy="6.4" r="2"/><circle cx="18.4" cy="10.6" r="1.9"/>',
+  '<circle cx="7" cy="6.5" r="2.5"/><circle cx="17" cy="6.5" r="2.5"/><circle cx="12" cy="11.6" r="2"/><path d="M2.5 19v-2.2A4.5 4.5 0 0 1 9.6 13M21.5 19v-2.2a4.5 4.5 0 0 0-7.1-3.8M8.4 20v-.4a3.6 3.6 0 0 1 7.2 0v.4"/>',
+  '<path d="M12 8.2c-1.6-1.1-4.2-1.4-6 .2-2.3 2-2 6.1-.3 9.1 1.4 2.5 3.4 3.9 4.7 3.5.6-.2 1-.5 1.6-.5s1 .3 1.6.5c1.3.4 3.3-1 4.7-3.5 1.7-3 2-7.1-.3-9.1-1.8-1.6-4.4-1.3-6-.2z"/><path d="M12 8.2c0-2.1.7-3.8 2.3-4.9M12.6 5.6c1.4-.6 3.1-.5 4.3.4-1.3 1.1-3 1.2-4.3-.4z"/>',
+  '<path d="M3 10.5 12 6l9 4.5M5 9.6V20h14V9.6M3 20h18M10 20v-4.2h4V20M12 6V2.5h3.4l-.9 1 .9 1H12"/><circle cx="12" cy="11.2" r="1.5"/><path d="M7 13.8h1.6M15.4 13.8H17"/>',
+  '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.7 5.6 3.7 9s-1.3 6.5-3.7 9c-2.4-2.5-3.7-5.6-3.7-9S9.6 5.5 12 3z"/>',
+  '<circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/>'
+];
 function home(params) {
   const raw=params.get('year'); const selected=/^[0-6]$/.test(raw||'')?Number(raw):null;
   const vocab=selectResources(state.vocabulary,{year:selected}); const units=selectResources(state.units,{year:selected});
-  return `<p class="sr-only">Select a step from Prep to Year 6 to explore resources for your year.</p>
-  <section class="year-journey" aria-label="Choose your year level"><div class="year-scene-scroll" role="region" aria-label="Year level staircase; scroll horizontally to explore all seven steps" tabindex="0"><div class="year-scene">
-  <svg class="staircase-art" width="1624" height="804" viewBox="0 164 1624 804" aria-hidden="true" focusable="false"><defs><clipPath id="welcome-art-clip"><path d="M0 164H1624V968H0Z M32 220H800V350H32Z" clip-rule="evenodd"/></clipPath></defs><svg x="32" y="220" width="768" height="130" viewBox="0 220 24 130" preserveAspectRatio="none" overflow="hidden"><image href="assets/year-staircase.png" width="1624" height="968"/></svg><image href="assets/year-staircase.png" width="1624" height="968" clip-path="url(#welcome-art-clip)"/></svg>
-  <div class="welcome-copy"><h1>Welcome to The Mandarin Room</h1><p>Explore Mandarin through vocabulary, lessons and activities.</p></div>
-  <nav class="staircase-links" aria-label="Year level steps">${Array.from({length:7},(_,y)=>`<a class="stair-step stair-step-${y}" href="#/journey?year=${y}" aria-label="Explore ${yearLabel(y)} resources" ${selected===y?'aria-current="true"':''}><span class="sr-only">${yearLabel(y)}</span></a>`).join('')}</nav>
-  </div></div><p class="staircase-hint">Choose a step to explore. <span>Swipe the picture to see the higher steps, or choose below.</span></p>
-  <nav class="year-shortcuts" aria-label="Year levels on smaller screens">${Array.from({length:7},(_,y)=>`<a class="year-badge year-${y}" href="#/journey?year=${y}" ${selected===y?'aria-current="true"':''}>${yearLabel(y)}</a>`).join('')}</nav></section>
+  return `<h1 class="sr-only">The Mandarin Room: Primary Mandarin Teaching Resources</h1>
+  <section class="home-hero" aria-label="Welcome"><img class="home-hero-art" src="assets/home-hero-1755.webp" srcset="assets/home-hero-900.webp 900w, assets/home-hero-1755.webp 1755w" sizes="(min-width:1755px) 1755px, 100vw" width="1755" height="609" fetchpriority="high" decoding="async" alt="Primary Mandarin Teaching Resources. Seven students from Prep to Year 6 walk up an accessible ramp with handrails, carrying schoolbags in their year-level colours. A Year 1 boy helps push a Year 2 girl in a wheelchair, a Year 3 boy carries a basketball, and a kookaburra, koala and kangaroo watch from the bush."></section>
+  <nav class="year-cards" aria-label="Choose your year level">${YEAR_CARDS.map((icon,y)=>`<a class="year-level-card year-${y}" href="#/journey?year=${y}" ${selected===y?'aria-current="true"':''}><svg class="year-level-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${icon}</svg><span class="year-level-name">${yearLabel(y)}</span><span class="year-level-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>`).join('')}</nav>
   ${selected!==null?`<section class="resource-area"><h2 id="year-resource-heading" tabindex="-1">${yearLabel(selected)} resources</h2><p class="muted">Published vocabulary and public units for this year.</p><div class="resource-columns"><section class="resource-panel"><h3>Vocabulary</h3>${vocab.length?vocab.map(resourceCard).join(''):loadingOrEmpty('vocabulary','No published vocabulary for this year yet.')}<a class="button secondary panel-action" href="#/vocabulary?year=${selected}">Explore Vocabulary ${arrow}</a></section><section class="resource-panel"><h3>Activities</h3>${yearActivities(selected)}<a class="button secondary panel-action" href="#/activities">Explore Activities ${arrow}</a></section></div></section>`:''}`;
 }
 function catalogPage(type,params) {
@@ -256,7 +262,7 @@ document.querySelector('#admin-open').onclick=async()=>{
       if(adminMode&&!backdrop.hidden)document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">${panel.title}</h2>${panel.html}`;
     })).catch(error=>{adminSessionPromise=null;throw error;});
     const session=await adminSessionPromise;if(adminMode&&!backdrop.hidden)session.open();
-  }catch(error){if(adminMode&&!backdrop.hidden)document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">Admin Login</h2><p role="status">Sign-in unavailable: ${escape(error.message)}</p><p>Close and reopen Admin to try again.</p>`;}
+  }catch(error){if(adminMode&&!backdrop.hidden)document.querySelector('#modal-content').innerHTML=`<h2 id="modal-title">Admin Login</h2><p role="status">Sign-in unavailable: ${escape(error.message)}</p><p>Close and reopen Teacher Login to try again.</p>`;}
 };
 backdrop.addEventListener('click',async event=>{const action=event.target.closest('[data-admin-action]');if(action&&adminSessionPromise)(await adminSessionPromise).act(action.dataset.adminAction);});
 document.querySelector('#privacy-open').onclick=()=>showModal('Privacy',`<p>This integration frontend has no analytics, advertising trackers, student accounts or student information forms. It does not save search terms or curriculum content in browser storage.</p><p>Published resources and images are loaded from existing Google Firebase and GitHub Pages services. Those services receive ordinary network requests. Existing applications retain their own authentication, storage and microphone behaviour.</p><p>The contact form is disabled and sends nothing. Student speaking recordings remain under the existing app’s device-local workflow.</p>`);

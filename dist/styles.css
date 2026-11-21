@@ -102,3 +102,50 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 
 .catalog-cards .topic-card{color:var(--ink)}
 .library-actions{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+
+/* Homepage redesign (2026-11): watercolour hero, compact year-level cards, Teacher Login header button. */
+.brand strong{color:var(--tmr-green,#27875b)}
+.brand small{color:#1f55a5;font-weight:550}
+.admin-button{background:#fff;border:2px solid var(--tmr-green,#27875b);color:var(--tmr-green-icon,#138452);font-weight:600;min-height:var(--tmr-control-height,44px)}
+.admin-button:hover{background:var(--tmr-green-soft,#e2f0e9);filter:none}
+.year-level-page{max-width:1755px}
+.home-hero{margin:0;line-height:0;background:#eef7fb}
+.home-hero-art{display:block;width:100%;height:auto;aspect-ratio:1755/609}
+.year-cards{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:clamp(10px,1vw,16px);padding:clamp(22px,3vw,48px) clamp(16px,2vw,34px) 8px}
+.year-level-card{--card-ink:var(--tmr-ink,#0c193b);--card-bg:#f6f8fa;display:flex;align-items:center;gap:clamp(8px,.8vw,14px);min-height:clamp(72px,5.6vw,94px);padding:12px clamp(12px,1.1vw,20px);border-radius:var(--tmr-radius-card,16px);background:var(--card-bg);color:var(--card-ink);box-shadow:0 4px 12px #1422390f,0 1px 2px #1422390a;font-weight:600;text-decoration:none;min-width:0}
+.year-level-card:hover{text-decoration:none;box-shadow:0 6px 16px #14223917,0 1px 3px #1422390d}
+.year-level-card:focus-visible{outline:3px solid #216daf;outline-offset:3px}
+.year-level-card[aria-current=true]{box-shadow:0 0 0 2px var(--card-ink),0 4px 12px #1422390f}
+.year-level-icon{flex:none;width:clamp(30px,2.5vw,44px);height:clamp(30px,2.5vw,44px);fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.year-level-name{flex:1;min-width:0;font-size:clamp(17px,1.45vw,25px);letter-spacing:-.3px;white-space:nowrap}
+.year-level-arrow{flex:none;display:inline-flex;align-items:center;justify-content:center;width:clamp(30px,2.3vw,40px);height:clamp(30px,2.3vw,40px);border-radius:50%;background:#fff;box-shadow:0 2px 6px #1422390d}
+.year-level-arrow svg{width:55%;height:55%;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.year-level-card.year-0{--card-ink:var(--tmr-year-0,#c32f68);--card-bg:#fff1f5}
+.year-level-card.year-1{--card-ink:var(--tmr-year-1,#b65500);--card-bg:#fff4ea}
+.year-level-card.year-2{--card-ink:var(--tmr-year-2,#946500);--card-bg:#fffae6}
+.year-level-card.year-3{--card-ink:var(--tmr-year-3,#168449);--card-bg:#eef9f2}
+.year-level-card.year-4{--card-ink:var(--tmr-year-4,#087d8c);--card-bg:#e9f8fa}
+.year-level-card.year-5{--card-ink:var(--tmr-year-5,#0868d3);--card-bg:#edf4ff}
+.year-level-card.year-6{--card-ink:var(--tmr-year-6,#7b42d0);--card-bg:#f4efff}
+@media(prefers-reduced-motion:no-preference){.year-level-card{transition:box-shadow .15s,transform .15s}.year-level-card:hover{transform:translateY(-2px)}}
+@media(max-width:1180px){.year-cards{display:flex;flex-wrap:wrap;justify-content:center}
+.year-level-card{flex:0 1 calc(25% - 12px);min-width:150px;min-height:72px}
+.year-level-icon{width:32px;height:32px}
+.year-level-name{font-size:19px}
+.year-level-arrow{width:32px;height:32px}}
+@media(max-width:700px){.admin-button{border-width:1.5px}
+.year-cards{gap:10px;padding:20px 14px 4px}
+.year-level-card{flex:1 1 calc(50% - 10px);min-width:0;min-height:64px;padding:10px 12px;gap:10px}
+.year-level-card:last-child{flex-basis:100%}
+.year-level-icon{width:28px;height:28px}
+.year-level-name{font-size:17px}
+.year-level-arrow{width:30px;height:30px}}
+@media(min-width:1251px){.site-header nav a{font-size:clamp(15px,1.12vw,19px);font-weight:550;color:var(--tmr-ink,#0c193b)}
+.site-header nav a[aria-current=page]{color:var(--tmr-green,#27875b);font-weight:650}}
+@media(max-width:520px){.header-actions .circle,.admin-button{width:40px;height:40px;min-width:40px;min-height:40px;padding:0;justify-content:center;border-radius:50%;gap:0}
+.admin-button svg{display:block;width:18px;height:18px}
+.admin-label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}}
+@media(min-width:1300px) and (max-width:1450px){.site-header{flex-wrap:nowrap;gap:20px}
+.site-header nav[aria-label="Main navigation"]{order:0;width:auto;height:auto;gap:clamp(14px,1.5vw,24px)}
+.site-header nav a[aria-current=page]:after{bottom:9px}
+.brand{gap:14px}}

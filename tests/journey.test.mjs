@@ -10,9 +10,9 @@ const pointer={academicYear:2026,yearLevel:4,journeyId:'2026_year-4',revision:3}
 const doc={schemaVersion:1,academicYear:2026,yearLevel:4,revision:3,slots:publicSlots(placements)};
 const unit=id=>({id,schemaVersion:1,yearLevel:1,englishTitle:'Approved '+id,chineseTitle:'中文',description:'Approved description',published:true,approvedForStudents:true,lessons:[{id:'first',title:'First lesson',workedExamples:[{url:'https://example.org/map.png'}]}]});
 const encode=v=>typeof v==='string'?{stringValue:v}:typeof v==='number'?{integerValue:String(v)}:typeof v==='boolean'?{booleanValue:v}:Array.isArray(v)?{arrayValue:{values:v.map(encode)}}:{mapValue:{fields:Object.fromEntries(Object.entries(v).map(([k,v])=>[k,encode(v)]))}};
-test('all seven staircase links open shareable Journey routes without replacing artwork',()=>{
+test('all seven homepage year-level cards open shareable Journey routes beneath the approved hero artwork',()=>{
  const source=fs.readFileSync(new URL('../dist/app.mjs',import.meta.url),'utf8');
- assert(source.includes('href="#/journey?year=${y}"'));assert(source.includes('assets/year-staircase.png'));
+ assert(source.includes('href="#/journey?year=${y}"'));assert(source.includes('assets/home-hero-1755.webp'));
  for(let year=0;year<7;year++){const r=parseRoute(`#/journey?year=${year}`);assert.equal(r.page,'journey');assert.equal(r.params.get('year'),String(year));}
 });
 test('published projection validates active year, grade, revision and unique Current',()=>{
