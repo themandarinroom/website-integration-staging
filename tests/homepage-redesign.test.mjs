@@ -40,5 +40,5 @@ test('header keeps nav order, routes and the existing admin sign-in control, rel
   assert.match(html, /<button class="admin-button" id="admin-open" aria-haspopup="dialog">.*<span class="admin-label">Teacher Login<\/span><\/button>/);
   assert.match(html, /src="assets\/emblem\.svg"/);
   assert.match(html, /<strong>The Mandarin Room<\/strong><small>Language · Culture · Classroom<\/small>/);
-  assert.match(html, /styles\.css\?v=listening-games-1/); assert.match(html, /app\.mjs\?v=listening-games-1/);
+  assert.match(html, /styles\.css\?v=card-navigation-1/); assert.match(html, /app\.mjs\?v=card-navigation-1/);
 });

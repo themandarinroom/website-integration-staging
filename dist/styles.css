@@ -177,3 +177,8 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 @media(max-width:1000px){.activities-page .activity-card{padding:17px 15px 14px;min-height:180px}.activities-page .activity-card h3{font-size:19px}.activities-page .activity-card p{font-size:14px}.game-grid{gap:16px}.game-copy{padding:15px 16px 16px}.game-copy h2{font-size:22px}.game-copy p{font-size:15px}}
 @media(max-width:700px){.activities-intro h1{font-size:31px}.activities-page .activity-grid,.game-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.activities-page .activity-card,.game-card{transition:none}.activities-page .activity-card:hover,.game-card:hover{transform:none}}
+
+/* Full-card targets keep their existing layout and use native link interaction. */
+.catalog-resource-open,.year-level-card{cursor:pointer}
+.topic-card:has(>.catalog-resource-open):hover{box-shadow:0 3px 12px #14223918}
+.topic-card:has(>.catalog-resource-open:focus-visible){outline:3px solid #216daf;outline-offset:4px}
