@@ -67,7 +67,7 @@ function wordCards() {
 function activityTiles() {
   return `<div class="activity-grid"><article class="activity-card yellow"><span class="symbol">${icon('shuffle')}</span><h3>Word Randomiser</h3><p>Turn vocabulary into fun classroom activities.</p><a class="circle" href="${LINKS.randomiser}" aria-label="Open Word Randomiser Local Mode">${arrow}</a></article>
   <article class="activity-card lavender"><span class="symbol">${icon('mic')}</span><h3>Speaking App</h3><p>Build confidence with listening and speaking practice.</p><a class="circle" href="${LINKS.speaking}" aria-label="Open Speaking App">${arrow}</a></article>
-  <article class="activity-card blue"><span class="symbol">${icon('grid')}</span><h3>Bingo Board</h3><p>Classroom bingo activities.</p><span class="badge">Coming soon</span></article>
+  <article class="activity-card blue"><span class="symbol">${icon('grid')}</span><h3>Bingo Games</h3><p>Listen to a Chinese word, find it on your board and make a Bingo!</p><a class="circle" href="${LINKS.bingo}" target="_blank" rel="noopener noreferrer" aria-label="Open Bingo Games (opens in a new tab)">${arrow}</a></article>
   <article class="activity-card green"><span class="symbol">${icon('headphones')}</span><h3>Listening Game</h3><p>Interactive listening activities.</p><span class="badge">Coming soon</span></article></div>`;
 }
 function yearActivities(year) {
