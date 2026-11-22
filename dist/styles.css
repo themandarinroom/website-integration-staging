@@ -88,8 +88,8 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 .catalog-heading h1{margin:0}
 .catalog-resource-open{position:absolute;inset:0;border-radius:inherit;z-index:1}
 .catalog-resource-open:focus-visible{outline:3px solid var(--ink,#23354b);outline-offset:3px}
-.catalog-cards .year-tags{position:relative;z-index:2;pointer-events:none}
-.catalog-cards .year-tags a{pointer-events:auto}
+.topic-card .year-tags{position:relative;z-index:2;pointer-events:none}
+.topic-card .year-tags a{pointer-events:auto}
 .catalog-placeholder{display:flex;align-items:center;justify-content:center;font-family:KaiTi,STKaiti,serif;font-size:32px;line-height:1.4;overflow-wrap:anywhere;color:#47745b;object-fit:contain}
 
 .catalog-cover{object-fit:contain}
@@ -119,3 +119,8 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 .feedback-card time { color: var(--muted); font-size: .875rem; }
 .feedback-admin-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 12px 0; }
 .feedback-admin-controls select { min-height: 44px; font: inherit; }
+
+/* Full-card navigation: visual feedback never changes card geometry. */
+.catalog-resource-open{cursor:pointer}
+.topic-card:has(>.catalog-resource-open):hover{box-shadow:0 3px 12px #14223918}
+.topic-card:has(>.catalog-resource-open:focus-visible){outline:3px solid #216daf;outline-offset:4px}
