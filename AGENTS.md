@@ -69,6 +69,8 @@ Isolated staging preview channels and local testing need no extra approval when 
 
 | Date | Hosting release | Source commit | Change |
 |---|---|---|---|
+| 2026-11-22 | `909bc1` | `c90c040` | Activities: three cards; Listening Games page (Bingo, Build The Great Wall) |
+| before 2026-11-22 | not recorded | `db8f33d` | Units Management card fixes (`a6c9941`, `db8f33d`); live was byte-identical to this build on 22 Nov. Hash: see Hosting release history |
 | 2026-11-21 | `c64ec0` | `9aaa4a5` | Homepage redesign: watercolour hero, year-level cards, Teacher Login |
 | 2026-11-18 | `cd0d03` | `6d2d8ca` | Vocabulary Set covers on website cards |
 | 2026-11-18 | `738afa` | `71d7432` | Units Management responsive layout |
