@@ -4,7 +4,7 @@ import {renderUnit,focusLesson} from './unit-viewer/unit-renderer.mjs';
 import {getStudentUnit} from './unit-viewer/student-data.mjs';
 import {LINKS,TOPICS,yearLabel,selectResources,topicYears} from './catalog.mjs';
 import {loadVocabulary,loadUnits,loadTeacherVoice} from './public-data.mjs';
-import {parseRoute,readFilters,resourceRoute,robotsFor} from './routing.mjs?v=public-beta-1';
+import {parseRoute,readFilters,resourceRoute,robotsFor} from './routing.mjs?v=listening-games-1';
 
 const main=document.querySelector('#main');
 const state={vocabulary:[],units:[],vocabularyStatus:'loading',unitsStatus:'loading'};
@@ -64,16 +64,31 @@ function wordCards() {
     <div class="audio-buttons"><button class="audio-button" data-ai="${i}" ${!item.aiEnabled||!canSpeak()?'disabled':''} aria-label="AI Voice: ${escape(item.chinese)}">▶ AI Voice</button><button class="audio-button" data-teacher="${i}" disabled aria-label="Teacher Voice: ${escape(item.chinese)}">Checking…</button></div></div></article>`).join('')}</div>`;
 }
 function activityTiles() {
+  // Each card is fully clickable: the arrow link stretches over the card (.activity-card .circle::after).
   return `<div class="activity-grid"><article class="activity-card yellow"><span class="symbol">${icon('shuffle')}</span><h3>Word Randomiser</h3><p>Turn vocabulary into fun classroom activities.</p><a class="circle" href="${LINKS.randomiser}" aria-label="Open Word Randomiser Local Mode">${arrow}</a></article>
-  <article class="activity-card lavender"><span class="symbol">${icon('mic')}</span><h3>Speaking App</h3><p>Build confidence with listening and speaking practice.</p><a class="circle" href="${LINKS.speaking}" aria-label="Open Speaking App">${arrow}</a></article>
-  <article class="activity-card blue"><span class="symbol">${icon('grid')}</span><h3>Bingo Games</h3><p>Listen to a Chinese word, find it on your board and make a Bingo!</p><a class="circle" href="${LINKS.bingo}" target="_blank" rel="noopener noreferrer" aria-label="Open Bingo Games (opens in a new tab)">${arrow}</a></article>
-  <article class="activity-card green"><span class="symbol">${icon('headphones')}</span><h3>Listening Game</h3><p>Interactive listening activities.</p><span class="badge">Coming soon</span></article></div>`;
+  <article class="activity-card lavender"><span class="symbol">${icon('mic')}</span><h3>Speaking Practice</h3><p>Build confidence with listening and speaking practice.</p><a class="circle" href="${LINKS.speaking}" aria-label="Open Speaking Practice">${arrow}</a></article>
+  <article class="activity-card green"><span class="symbol">${icon('headphones')}</span><h3>Listening Games</h3><p>Play Bingo and Build The Great Wall by listening to Chinese words.</p><a class="circle" href="#/activities/listening-games" aria-label="Open Listening Games">${arrow}</a></article></div>`;
+}
+// Listening Games: each game is one link covering the whole card. Titles and descriptions are HTML text; covers carry no lettering.
+const LISTENING_GAMES=[
+  {id:'bingo',title:'Bingo',href:LINKS.bingo,description:'Listen to a Chinese word, find it on your board and make a Bingo!',
+    cover:'bingo-cover',alt:'Two smiling children beside a red Bingo board of picture cards (apple, panda, football, car, sun, flower, fish, book and house) labelled with Chinese words, surrounded by gold stars.'},
+  {id:'great-wall',title:'Build The Great Wall',href:LINKS.greatWall,description:'Listen, answer and build the Great Wall brick by brick!',
+    cover:'great-wall-cover',alt:'The Great Wall winding over green mountains to a stone watchtower, with a red dragon banner and a trowel resting on a stack of bricks.'}
+];
+function gameCard(game) {
+  return `<a class="game-card" href="${game.href}" target="_blank" rel="noopener noreferrer" data-game="${game.id}" aria-labelledby="game-${game.id}-title game-${game.id}-hint" aria-describedby="game-${game.id}-description">
+    <div class="game-cover"><img src="assets/listening-games/${game.cover}-800.webp" srcset="assets/listening-games/${game.cover}-800.webp 800w, assets/listening-games/${game.cover}-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 50vw" width="1600" height="900" alt="${escape(game.alt)}" decoding="async"></div>
+    <div class="game-copy"><h2 id="game-${game.id}-title">${game.title}</h2><p id="game-${game.id}-description">${game.description}</p><span class="game-play"><span id="game-${game.id}-hint">Play · opens in a new tab</span><span class="circle">${arrow}</span></span></div></a>`;
+}
+function listeningGamesPage() {
+  return `<a class="back-link" href="#/activities">← Back to Activities</a><header class="page-intro activities-intro"><h1>Listening Games</h1></header><section class="game-grid" aria-label="Listening games">${LISTENING_GAMES.map(gameCard).join('')}</section>`;
 }
 function yearActivities(year) {
   const vocab=selectResources(state.vocabulary,{year});
-  return `<a class="resource-link" href="${LINKS.speaking}?year=${year===0?'prep':'year-'+year}"><strong>Speaking App ${arrow}</strong><p>Open this year’s published practice channel. The app will explain if no practice is published.</p></a>
+  return `<a class="resource-link" href="${LINKS.speaking}?year=${year===0?'prep':'year-'+year}"><strong>Speaking Practice ${arrow}</strong><p>Open this year’s published practice channel. The app will explain if no practice is published.</p></a>
     ${vocab.length?`<a class="resource-link" href="${LINKS.randomiser}?set=${encodeURIComponent(vocab[0].id)}"><strong>Word Randomiser ${arrow}</strong><p>Start with ${escape(vocab[0].title)} in Local Mode.</p></a>`:'<p class="muted">Word Randomiser will be available here when vocabulary for this year is published.</p>'}
-    <p class="data-note">Bingo Board and Listening Game · Coming soon</p>`;
+    <a class="resource-link" href="#/activities/listening-games"><strong>Listening Games ${arrow}</strong><p>Play Bingo and Build The Great Wall.</p></a>`;
 }
 // Homepage year-level card line icons (24px grid, stroked in the year colour): Prep → Year 6.
 const YEAR_CARDS=[
@@ -101,7 +116,7 @@ function catalogPage(type,params) {
   <div class="topic-grid catalog-cards">${shown.length?shown.map(resource=>topicCard(TOPICS.find(topic=>resource.topics.includes(topic.id))||{colour:'aqua'},resource)).join(''):loadingOrEmpty(vocabulary?'vocabulary':'units','No resources match this year yet.')}</div>`;
 }
 function activitiesPage() {
-  return `<section class="banner blue"><div><h1>Activities</h1><p class="subtitle">Play, listen and practise Mandarin with classroom activities.</p></div></section><section class="activities-page" aria-label="Classroom activities">${activityTiles()}</section><aside class="live-preview"><h2>Live classroom preview</h2><p class="muted">Try the separate Word Randomiser staging environment for live sessions.</p><a class="button secondary" href="${LINKS.live}">Open Live Word Randomiser — staging ${arrow}</a></aside>`;
+  return `<header class="page-intro activities-intro"><h1>Activities</h1></header><section class="activities-page" aria-label="Classroom activities">${activityTiles()}</section><aside class="live-preview"><h2>Live classroom preview</h2><p class="muted">Try the separate Word Randomiser staging environment for live sessions.</p><a class="button secondary" href="${LINKS.live}">Open Live Word Randomiser — staging ${arrow}</a></aside>`;
 }
 function topicCard(topic,resource=null) {
   // Reuse the Topics card markup and sizing; year links remain independent of the resource link.
@@ -207,11 +222,11 @@ function render({focus=false}={}){
   const {page,params}=route();
   const viewRequest=++studentViewRequest;
   main.classList.toggle('year-level-page',page==='home');
-  const renderers={journey:()=>'<section id="journey-view"><p role="status">Loading Learning Journey…</p></section>',unit:()=>'<section class="student-unit-view" id="student-unit-view"><p role="status">Loading Unit…</p></section>',home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
+  const renderers={journey:()=>'<section id="journey-view"><p role="status">Loading Learning Journey…</p></section>',unit:()=>'<section class="student-unit-view" id="student-unit-view"><p role="status">Loading Unit…</p></section>',home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,'listening-games':listeningGamesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
   main.innerHTML=renderers[page]?renderers[page]():`<section class="banner green"><div><h1>Page not found</h1><p class="subtitle"><a class="inline-link" href="#/">Return Home</a></p></div></section>`;
-  document.title=`${({'home':'Home',journey:'Learning Journey',vocabulary:'Vocabulary',units:'Units',unit:'Unit',activities:'Activities',topics:'Topics',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
+  document.title=`${({'home':'Home',journey:'Learning Journey',vocabulary:'Vocabulary',units:'Units',unit:'Unit',activities:'Activities','listening-games':'Listening Games',topics:'Topics',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
   setRouteRobots(robotsFor(page));
-  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'||page==='journey'?'home':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'||page==='journey'?'home':page==='listening-games'?'activities':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   if(page==='journey'){
     const raw=params.get('year'), grade=/^[0-6]$/.test(raw||'')?Number(raw):null;
     if(grade===null)document.querySelector('#journey-view').innerHTML='<h1>Choose your year level</h1><p><a href="#/">Return to the homepage</a></p>';

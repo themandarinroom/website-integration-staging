@@ -6,6 +6,8 @@ export function parseRoute(hash='') {
   const path=split<0?raw:raw.slice(0,split);
   const params=new URLSearchParams(split<0?'':raw.slice(split+1));
   const name=path.split('/')[1]||'home';
+  // Sub-page of Activities; the top-level navigation still marks Activities as current.
+  if(path.replace(/\/$/,'')==='/activities/listening-games')return {page:'listening-games',params,redirect:null};
   if(name==='units')return {page:'home',params:new URLSearchParams(),redirect:'#/'};
   const legacy=name==='year-levels';
   const query=params.toString();

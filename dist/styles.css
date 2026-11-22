@@ -149,3 +149,31 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 .site-header nav[aria-label="Main navigation"]{order:0;width:auto;height:auto;gap:clamp(14px,1.5vw,24px)}
 .site-header nav a[aria-current=page]:after{bottom:9px}
 .brand{gap:14px}}
+
+/* Activities and Listening Games (2026-11-22): plain heading on white, three activity cards, two game cards. */
+.activities-intro{margin:4px 0 22px}
+.activities-intro h1{font-size:40px}
+.activities-page .activity-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.activities-page .activity-card{position:relative;min-height:190px;padding:20px 20px 16px;transition:transform .15s ease,box-shadow .15s ease}
+.activities-page .activity-card h3{font-size:21px}
+.activities-page .activity-card p{font-size:15px}
+.activity-card .circle::after{content:"";position:absolute;inset:0;border-radius:12px}
+.activity-card .circle:focus-visible{outline:0}
+.activity-card .circle:focus-visible::after{outline:3px solid #216daf;outline-offset:3px}
+.activities-page .activity-card:hover{transform:translateY(-2px);box-shadow:0 8px 18px #14223914}
+.game-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.game-card{display:flex;flex-direction:column;min-width:0;border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:0 3px 10px #1422390d;color:inherit;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease}
+.game-card:hover{text-decoration:none;transform:translateY(-3px);box-shadow:0 10px 24px #1422391a}
+.game-card:focus-visible{outline:3px solid #216daf;outline-offset:4px}
+.game-cover{aspect-ratio:16/9;background:#fff3c4;overflow:hidden}
+.game-card[data-game=great-wall] .game-cover{background:#cdeef3}
+.game-cover img{display:block;width:100%;height:100%;object-fit:cover}
+.game-copy{flex:1;display:flex;flex-direction:column;gap:8px;padding:18px 22px 20px;background:var(--yellow)}
+.game-card[data-game=great-wall] .game-copy{background:var(--mint)}
+.game-copy h2{font-size:26px;line-height:1.2;margin:0}
+.game-copy p{margin:0;color:var(--muted);font-size:16px;line-height:1.45}
+.game-play{margin-top:auto;padding-top:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;font-weight:600;color:var(--green)}
+.game-play .circle{width:38px;height:38px;min-width:38px;font-size:21px;color:var(--ink)}
+@media(max-width:1000px){.activities-page .activity-card{padding:17px 15px 14px;min-height:180px}.activities-page .activity-card h3{font-size:19px}.activities-page .activity-card p{font-size:14px}.game-grid{gap:16px}.game-copy{padding:15px 16px 16px}.game-copy h2{font-size:22px}.game-copy p{font-size:15px}}
+@media(max-width:700px){.activities-intro h1{font-size:31px}.activities-page .activity-grid,.game-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.activities-page .activity-card,.game-card{transition:none}.activities-page .activity-card:hover,.game-card:hover{transform:none}}

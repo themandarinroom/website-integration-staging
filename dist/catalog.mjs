@@ -5,6 +5,9 @@ export const LINKS = Object.freeze({
   speaking: 'https://themandarinroom.github.io/speaking/student.html',
   randomiser: 'https://themandarinroom.github.io/vocabularylibrary/tools/word-randomizer/',
   bingo: 'https://themandarinroom.github.io/vocabularylibrary/tools/bingo-board/',
+  // Build The Great Wall v0.2 is released only to its isolated staging channel (vocabularylibrary 49131a8).
+  // scripts/build-production.mjs rewrites this; see the release prerequisite there.
+  greatWall: 'https://the-mandarin-room-staging--great-wall-v02-18cuihj9.web.app/tools/great-wall/',
   live: 'https://themandarinroom.github.io/word-randomiser-staging/tools/word-randomizer/?firebase=staging'
 });
 export const TOPICS = [
