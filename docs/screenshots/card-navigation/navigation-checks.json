@@ -1,0 +1,188 @@
+[
+  {
+    "area": "home",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=0",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=0",
+    "pass": true
+  },
+  {
+    "area": "home",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=1",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=1",
+    "pass": true
+  },
+  {
+    "area": "home",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=2",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=2",
+    "pass": true
+  },
+  {
+    "area": "home",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=3",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=3",
+    "pass": true
+  },
+  {
+    "area": "home",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=4",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=4",
+    "pass": true
+  },
+  {
+    "area": "home",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=5",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=5",
+    "pass": true
+  },
+  {
+    "area": "home",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=6",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/journey?year=6",
+    "pass": true
+  },
+  {
+    "area": "topics",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=numbers",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=numbers",
+    "pass": true
+  },
+  {
+    "area": "topics",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=family",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=family",
+    "pass": true
+  },
+  {
+    "area": "topics",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=food",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=food",
+    "pass": true
+  },
+  {
+    "area": "topics",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=animals",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=animals",
+    "pass": true
+  },
+  {
+    "area": "topics",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=countries",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=countries",
+    "pass": true
+  },
+  {
+    "area": "topics",
+    "expected": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=body-parts",
+    "actual": "https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app/#/topics?topic=body-parts",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=prep-colours-i",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=prep-colours-i",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=prep-numbers",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=prep-numbers",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year1-body-parts",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year1-body-parts",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year1-pets",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year1-pets",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year1-pets-ii",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year1-pets-ii",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year2-family",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year2-family",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year2-wild-animals-i",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year2-wild-animals-i",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year2-wild-animals-ii",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year2-wild-animals-ii",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year3-age",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year3-age",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year3-food-i",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year3-food-i",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year3-food-ii",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year3-food-ii",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year3-fruit",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year3-fruit",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year4-australian-states",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year4-australian-states",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year4-places-at-school-i",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year4-places-at-school-i",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year4-places-at-school-ii",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year4-places-at-school-ii",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year5-countries",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year5-countries",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year5-sports-i",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year5-sports-i",
+    "pass": true
+  },
+  {
+    "area": "vocabulary",
+    "expected": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year5-sports-ii",
+    "actual": "https://themandarinroom.github.io/vocabularylibrary/student.html?set=year5-sports-ii",
+    "pass": true
+  }
+]

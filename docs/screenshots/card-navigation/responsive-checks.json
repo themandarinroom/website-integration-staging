@@ -1,0 +1,176 @@
+[
+  {
+    "active": 7,
+    "arrows": 0,
+    "cards": 7,
+    "height": 1000,
+    "inactive": [],
+    "overflow": false,
+    "route": "#/",
+    "width": 1440,
+    "sameGeometry": true
+  },
+  {
+    "active": 18,
+    "arrows": 0,
+    "cards": 18,
+    "height": 1000,
+    "inactive": [],
+    "overflow": false,
+    "route": "#/vocabulary",
+    "width": 1440,
+    "sameGeometry": true
+  },
+  {
+    "active": 6,
+    "arrows": 0,
+    "cards": 12,
+    "height": 1000,
+    "inactive": [
+      {
+        "links": 0,
+        "title": "Weather"
+      },
+      {
+        "links": 0,
+        "title": "School"
+      },
+      {
+        "links": 0,
+        "title": "Colours"
+      },
+      {
+        "links": 0,
+        "title": "Time"
+      },
+      {
+        "links": 0,
+        "title": "People"
+      },
+      {
+        "links": 0,
+        "title": "Culture"
+      }
+    ],
+    "overflow": false,
+    "route": "#/topics",
+    "width": 1440,
+    "sameGeometry": true
+  },
+  {
+    "active": 7,
+    "arrows": 0,
+    "cards": 7,
+    "height": 1024,
+    "inactive": [],
+    "overflow": false,
+    "route": "#/",
+    "width": 768,
+    "sameGeometry": true
+  },
+  {
+    "active": 18,
+    "arrows": 0,
+    "cards": 18,
+    "height": 1024,
+    "inactive": [],
+    "overflow": false,
+    "route": "#/vocabulary",
+    "width": 768,
+    "sameGeometry": true
+  },
+  {
+    "active": 6,
+    "arrows": 0,
+    "cards": 12,
+    "height": 1024,
+    "inactive": [
+      {
+        "links": 0,
+        "title": "Weather"
+      },
+      {
+        "links": 0,
+        "title": "School"
+      },
+      {
+        "links": 0,
+        "title": "Colours"
+      },
+      {
+        "links": 0,
+        "title": "Time"
+      },
+      {
+        "links": 0,
+        "title": "People"
+      },
+      {
+        "links": 0,
+        "title": "Culture"
+      }
+    ],
+    "overflow": false,
+    "route": "#/topics",
+    "width": 768,
+    "sameGeometry": true
+  },
+  {
+    "active": 7,
+    "arrows": 0,
+    "cards": 7,
+    "height": 768,
+    "inactive": [],
+    "overflow": false,
+    "route": "#/",
+    "width": 1024,
+    "sameGeometry": true
+  },
+  {
+    "active": 18,
+    "arrows": 0,
+    "cards": 18,
+    "height": 768,
+    "inactive": [],
+    "overflow": false,
+    "route": "#/vocabulary",
+    "width": 1024,
+    "sameGeometry": true
+  },
+  {
+    "active": 6,
+    "arrows": 0,
+    "cards": 12,
+    "height": 768,
+    "inactive": [
+      {
+        "links": 0,
+        "title": "Weather"
+      },
+      {
+        "links": 0,
+        "title": "School"
+      },
+      {
+        "links": 0,
+        "title": "Colours"
+      },
+      {
+        "links": 0,
+        "title": "Time"
+      },
+      {
+        "links": 0,
+        "title": "People"
+      },
+      {
+        "links": 0,
+        "title": "Culture"
+      }
+    ],
+    "overflow": false,
+    "route": "#/topics",
+    "width": 1024,
+    "sameGeometry": true
+  }
+]

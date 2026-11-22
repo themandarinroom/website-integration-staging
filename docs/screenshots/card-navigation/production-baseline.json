@@ -1,0 +1,186 @@
+[
+  {
+    "path": "unit-publication.html",
+    "match": true
+  },
+  {
+    "path": "routing.mjs",
+    "match": true
+  },
+  {
+    "path": "unit-management.mjs",
+    "match": true
+  },
+  {
+    "path": "index.html",
+    "match": true
+  },
+  {
+    "path": "styles.css",
+    "match": true
+  },
+  {
+    "path": "unit-publication.css",
+    "match": true
+  },
+  {
+    "path": "journey.css",
+    "match": true
+  },
+  {
+    "path": "public-data.mjs",
+    "match": true
+  },
+  {
+    "path": "journey-admin.mjs",
+    "match": true
+  },
+  {
+    "path": "teacher-unit-data.mjs",
+    "match": true
+  },
+  {
+    "path": "catalog.mjs",
+    "match": true
+  },
+  {
+    "path": "journey-view.mjs",
+    "match": true
+  },
+  {
+    "path": "unit-management-layout.css",
+    "match": true
+  },
+  {
+    "path": "unit-publication.mjs",
+    "match": true
+  },
+  {
+    "path": "journey-data.mjs",
+    "match": true
+  },
+  {
+    "path": "admin-session.mjs",
+    "match": true
+  },
+  {
+    "path": "app.mjs",
+    "match": true
+  },
+  {
+    "path": "publication-model.mjs",
+    "match": true
+  },
+  {
+    "path": "journey-admin.html",
+    "match": true
+  },
+  {
+    "path": "journey-model.mjs",
+    "match": true
+  },
+  {
+    "path": "robots.txt",
+    "match": true
+  },
+  {
+    "path": "unit-management.html",
+    "match": true
+  },
+  {
+    "path": "tmr-tokens.css",
+    "match": true
+  },
+  {
+    "path": "units/index.html",
+    "match": true
+  },
+  {
+    "path": "teacher-units/styles.css",
+    "match": true
+  },
+  {
+    "path": "teacher-units/index.js",
+    "match": true
+  },
+  {
+    "path": "teacher-units/library-order.mjs",
+    "match": true
+  },
+  {
+    "path": "unit-viewer/student-view.css",
+    "match": true
+  },
+  {
+    "path": "unit-viewer/unit-renderer.mjs",
+    "match": true
+  },
+  {
+    "path": "unit-viewer/firebase-config.js",
+    "match": true
+  },
+  {
+    "path": "unit-viewer/firebase.js",
+    "match": true
+  },
+  {
+    "path": "unit-viewer/student-data.mjs",
+    "match": true
+  },
+  {
+    "path": "assets/hanzi.png",
+    "match": true
+  },
+  {
+    "path": "assets/topic-covers-transparent.png",
+    "match": true
+  },
+  {
+    "path": "assets/emblem.svg",
+    "match": true
+  },
+  {
+    "path": "assets/topics.png",
+    "match": true
+  },
+  {
+    "path": "assets/pinyin.png",
+    "match": true
+  },
+  {
+    "path": "assets/year-staircase.png",
+    "match": true
+  },
+  {
+    "path": "assets/home-hero-1755.webp",
+    "match": true
+  },
+  {
+    "path": "assets/about.png",
+    "match": true
+  },
+  {
+    "path": "assets/australia-states.png",
+    "match": true
+  },
+  {
+    "path": "assets/home-hero-900.webp",
+    "match": true
+  },
+  {
+    "path": "assets/listening-games/great-wall-cover-800.webp",
+    "match": true
+  },
+  {
+    "path": "assets/listening-games/bingo-cover-1600.webp",
+    "match": true
+  },
+  {
+    "path": "assets/listening-games/bingo-cover-800.webp",
+    "match": true
+  },
+  {
+    "path": "assets/listening-games/great-wall-cover-1600.webp",
+    "match": true
+  }
+]

@@ -1,0 +1,41 @@
+The Mandarin Room — Card navigation verification
+Date: 23 November 2026 (Australia/Melbourne)
+Source: origin/production 87b9c7789d97d67882df2ae3a7c972fda81a7a66
+Feature: codex/card-navigation, commit 1126930
+Staging: https://the-mandarin-room-staging--card-navigation-7zqr447i.web.app
+Preview expiry: 7 December 2026
+
+Scope and changes
+- Removed circular navigation arrows from all 18 published Vocabulary Set cards, all 12 Topics cards, and all seven Home year cards.
+- Retained each active card's original main destination; badges are unchanged visually and now belong to the full-card target.
+- Six Topics without resources remain non-navigating (no anchors or keyboard stops).
+- Native anchors provide pointer cursor, full-card targets, Tab focus and Enter activation. Existing Home hover/focus behavior retained; Topics/Vocabulary have subtle shadow feedback and visible focus outlines.
+- Existing current Home hero, illustrations, cover-image fallbacks, text, colours, corners, grid and responsive behavior retained. No bitmap assets changed.
+- Unrelated Unit, Activity and learning-page arrows retained.
+- App and stylesheet cache versions updated.
+
+Tests
+- Production baseline: 46/46 served files byte-identical to a clean build of origin/production before changes. No Production deployment or writes performed.
+- 86/86 Node tests pass, including five card navigation regression tests.
+- Module syntax checks, 46-file payload allowlist/secret scan and Production build compatibility check pass. Build compatibility is a local build only.
+- Live Staging: clicked all 31 active cards (7 Home + 18 Vocabulary + 6 Topics); exact original destinations reached, 0 failures.
+- Six coming-soon cards have no links. Clicking Weather leaves Topics URL unchanged.
+- Keyboard: Tab reaches Explore Numbers with focus-visible and a solid outline; Enter opens its correct route. Home and Vocabulary retain native keyboard links.
+- Whole-card bounding boxes match their anchors; visible corner hit checks and pointer cursors pass in all nine area/viewport combinations. Badges cannot intercept navigation.
+- Desktop 1440x1000, iPad portrait 768x1024 and iPad landscape 1024x768: all three areas checked. Card positions and dimensions match Production exactly; no document horizontal overflow; no targeted arrows remain.
+- Additional local phone-width check at 390x844: no targeted arrows or horizontal overflow.
+- No browser console errors observed during the final live Staging verification.
+
+Limitation
+The iPad checks use browser viewport dimensions, not physical iPad Safari or actual touch events. Physical iPad portrait/landscape touch verification remains pending before final device sign-off.
+
+Evidence
+Nine live Staging screenshots: home/vocabulary/topics × desktop/ipad-portrait/ipad-landscape.
+keyboard-focus.jpg: live visible keyboard focus.
+responsive-checks.json: viewport, arrow counts and before/after card geometry.
+navigation-checks.json: all 31 clicked destinations.
+full-card-checks.json: full-card bounds, pointer cursor and visible corner hit checks.
+production-baseline.json: read-only Production baseline comparison.
+
+Deployment status
+Only an isolated Firebase Staging preview channel contains this current-site implementation. Production remains unchanged. No GitHub feature push or Production approval has been requested. Earlier exploratory changes used the older shared GitHub Pages staging source; that older design is not the release candidate linked above.
