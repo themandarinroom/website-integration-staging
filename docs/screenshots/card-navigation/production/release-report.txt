@@ -1,0 +1,31 @@
+The Mandarin Room — approved Production release
+Date: 23 November 2026 (Australia/Melbourne)
+Owner approval: explicit approval in the current conversation.
+Deployed source: d1b1e05 (codex/card-navigation)
+Firebase project/site: the-mandarin-room / the-mandarin-room
+Hosting version: 060baebe6e68aadd
+Hosting release: 1795378286167000
+Live: https://themandarinroom.au/ and https://the-mandarin-room.web.app/
+
+Preflight
+- Fresh origin/production: 87b9c7789d97d67882df2ae3a7c972fda81a7a66.
+- All 46 baseline files byte-identical to live Production before deployment.
+- Clean source tree; runtime .firebase cache excluded locally.
+- Approved feature source pushed to codex/card-navigation before deployment; push guard retained.
+- 86 tests pass; module syntax, static payload and Production build guards pass.
+- Only index.html, app.mjs and styles.css differ from the previous Production build.
+
+Deployment and verification
+- Firebase Hosting-only deployment completed successfully; Functions, rules, Auth, data, IAM and DNS not changed.
+- 92/92 deployed file checks pass (46 files on each of the two Production hostnames).
+- Browser: seven Home cards and Vocabulary/Topics cards have no target navigation arrows.
+- Six coming-soon Topics contain no links. Unrelated Activity arrows remain.
+- Home, Vocabulary, Topics, Activities and About render successfully.
+- Prep Journey finishes loading with Current Numbers 0-10 I and Continue Learning.
+- Units Management restores the existing authorised teacher session and displays its protected management shell; Unit Publication displays its existing sign-in entry. No edits or publication actions performed.
+- No console errors observed.
+- Production screenshots: home.jpg, vocabulary.jpg and topics.jpg.
+
+Device limitation remains unchanged from Staging: iPad portrait/landscape viewport checks passed; no physical iPad touch test was performed.
+
+Rollback: Firebase Console > Hosting > the-mandarin-room > Release history > roll back to the preceding release (909bc1). Exact deployed source is also tagged production/2026-11-23-060baebe6e68aadd.
