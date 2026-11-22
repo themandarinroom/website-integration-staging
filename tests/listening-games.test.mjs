@@ -31,7 +31,7 @@ test('Listening Games route is a sub-page of Activities, noindex, with a way bac
 });
 test('Bingo and Build The Great Wall cards: approved text, verified links, whole-card links, safe new tab',()=>{
  assert.equal(LINKS.bingo,'https://themandarinroom.github.io/vocabularylibrary/tools/bingo-board/');
- assert.equal(LINKS.greatWall,'https://the-mandarin-room-staging--great-wall-v02-18cuihj9.web.app/tools/great-wall/');
+ assert.equal(LINKS.greatWall,'https://themandarinroom.github.io/vocabularylibrary/tools/great-wall/');
  assert(games.includes(`title:'Bingo',href:LINKS.bingo,description:'Listen to a Chinese word, find it on your board and make a Bingo!'`));
  assert(games.includes(`title:'Build The Great Wall',href:LINKS.greatWall,description:'Listen, answer and build the Great Wall brick by brick!'`));
  assert.match(games,/<a class="game-card" href="\$\{game\.href\}" target="_blank" rel="noopener noreferrer"/);

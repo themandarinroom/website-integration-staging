@@ -53,11 +53,6 @@ const REWRITES = [
   ['unit-publication.mjs', 'No cloud Units are available in staging. Original production Units are not copied.', 'No Units are available yet.', 1],
   ['catalog.mjs', `,\n  live: 'https://themandarinroom.github.io/word-randomiser-staging/tools/word-randomizer/?firebase=staging'`, '', 1],
   ['app.mjs', LIVE_PREVIEW, '', 1],
-  // RELEASE PREREQUISITE (2026-11-22): Build The Great Wall is only on the staging channel. Its Production home is
-  // expected at the path its source uses (vocabularylibrary tools/great-wall/, beside Bingo). That URL returned 404 on
-  // 22 Nov 2026: release the game to vocabularylibrary main and confirm a 200 before any Production website release.
-  ['catalog.mjs', 'https://the-mandarin-room-staging--great-wall-v02-18cuihj9.web.app/tools/great-wall/', 'https://themandarinroom.github.io/vocabularylibrary/tools/great-wall/', 1],
-  ['catalog.mjs', '  // Build The Great Wall v0.2 is released only to its isolated staging channel (vocabularylibrary 49131a8).\n  // scripts/build-production.mjs rewrites this; see the release prerequisite there.\n', '', 1]
 ];
 
 function count(text, from) { return from instanceof RegExp ? (text.match(new RegExp(from.source, 'g')) || []).length : text.split(from).length - 1; }
