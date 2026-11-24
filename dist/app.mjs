@@ -2,9 +2,9 @@ import {loadJourney} from './journey-data.mjs';
 import {renderJourney} from './journey-view.mjs';
 import {renderUnit,focusLesson} from './unit-viewer/unit-renderer.mjs';
 import {getStudentUnit} from './unit-viewer/student-data.mjs';
-import {LINKS,TOPICS,yearLabel,selectResources,topicYears} from './catalog.mjs';
+import {LINKS,TOPICS,yearLabel,selectResources,topicYears,sortTopicResources} from './catalog.mjs';
 import {loadVocabulary,loadUnits,loadTeacherVoice} from './public-data.mjs';
-import {parseRoute,readFilters,resourceRoute,robotsFor} from './routing.mjs?v=listening-games-1';
+import {parseRoute,readFilters,resourceRoute,robotsFor} from './routing.mjs?v=topics-1';
 
 const main=document.querySelector('#main');
 const state={vocabulary:[],units:[],vocabularyStatus:'loading',unitsStatus:'loading'};
@@ -24,8 +24,19 @@ function art(source,x,y,w,h,className='') {
   const height=source==='topics'?1024:source==='pinyin'?500:source==='hanzi'?524:1024;
   return `<svg class="clip-art ${className}" viewBox="0 0 ${w} ${h}" aria-hidden="true" focusable="false"><svg width="${w}" height="${h}" viewBox="${x} ${y} ${w} ${h}" overflow="hidden"><image href="assets/${source}.png" width="1536" height="${height}"/></svg></svg>`;
 }
-// Full illustration bounds in the transparent cover sheet; shared by Topics and resources.
-const TOPIC_COVERS={numbers:[65,230,250,220],family:[470,230,250,220],food:[790,230,270,220],animals:[1210,230,250,220],weather:[65,480,250,220],countries:[470,480,220,220],school:[790,480,280,220],colours:[1200,480,280,220],'body-parts':[65,700,260,230],time:[470,700,250,250],people:[790,700,280,250],culture:[1210,700,250,250]};
+// Full illustration bounds in the transparent cover sheet (unchanged file; clipped in the browser).
+const SPRITE={numbers:[65,230,250,220],family:[470,230,250,220],food:[790,230,270,220],animals:[1210,230,250,220],weather:[65,480,250,220],countries:[470,480,220,220],school:[790,480,280,220],colours:[1200,480,280,220],'body-parts':[65,700,260,230],time:[470,700,250,250],people:[790,700,280,250],culture:[1210,700,250,250]};
+// Fixed, owner-approved topic illustrations (24 Nov 2026). They never follow a vocabulary set's cover.
+// Free Time and Time & Weather are the supplied transparent PNGs, framed on their artwork bounds; the files are unchanged.
+const TOPIC_ART={numbers:['topic-covers-transparent',...SPRITE.numbers],colours:['topic-covers-transparent',...SPRITE.colours],
+  people:['topic-covers-transparent',...SPRITE.people],animals:['topic-covers-transparent',...SPRITE.animals],
+  greetings:['topic-covers-transparent',...SPRITE['body-parts']],'food-drinks':['topic-covers-transparent',...SPRITE.food],
+  school:['topic-covers-transparent',...SPRITE.school],'free-time':['topic-free-time',352,0,830,1024],
+  countries:['topic-covers-transparent',...SPRITE.countries],'time-weather':['topic-time-weather',240,50,1035,955],
+  culture:['topic-covers-transparent',...SPRITE.culture]};
+// Vocabulary cards without a saved cover keep the artwork they showed before the topic restructure.
+const SET_FALLBACK_ART={'prep-numbers':SPRITE.numbers,'year1-body-parts':SPRITE['body-parts'],'year2-family':SPRITE.family,'year3-age':SPRITE.numbers};
+const topicArt=id=>TOPIC_ART[id]?art(...TOPIC_ART[id]):'';
 const yearBadge=year=>`<span class="year-badge year-${year}">${yearLabel(year)}</span>`;
 function route() {
   const current=parseRoute(location.hash);
@@ -122,8 +133,8 @@ function topicCard(topic,resource=null) {
   // Reuse the Topics card sizing; active Vocabulary and Topics badges share the main card destination.
   if(resource && typeof resource==='object') {
     const title=escape(resource.title);
-    const cover=TOPIC_COVERS[topic.id];
-    const defaultArt=resource.id==='year4-australian-states'?'<img class="clip-art catalog-cover" src="assets/australia-states.png" alt="Australian states and territories with a red location pin at Melbourne" loading="lazy">':cover?art('topic-covers-transparent',...cover):'<span class="clip-art catalog-placeholder" lang="zh-Hans" aria-hidden="true">文</span>';
+    const legacy=SET_FALLBACK_ART[resource.id];
+    const defaultArt=resource.id==='year4-australian-states'?'<img class="clip-art catalog-cover" src="assets/australia-states.png" alt="Australian states and territories with a red location pin at Melbourne" loading="lazy">':legacy?art('topic-covers-transparent',...legacy):topicArt(topic.id)||'<span class="clip-art catalog-placeholder" lang="zh-Hans" aria-hidden="true">文</span>';
     // A saved Vocabulary Set cover (uploaded, URL or AI-generated) takes the artwork slot; if it fails to load,
     // wireCatalogCovers() swaps in the card's previous default artwork.
     const artwork=resource.coverImage?`<img class="clip-art catalog-cover catalog-saved-cover" src="${escape(resource.coverImage)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-catalog-cover><template data-cover-fallback>${defaultArt}</template>`:defaultArt;
@@ -131,19 +142,22 @@ function topicCard(topic,resource=null) {
   }
   const years=topicYears(allResources(),topic.id);
   const empty=state.vocabularyStatus==='loading'||state.unitsStatus==='loading'?'Loading resources…':state.vocabularyStatus==='error'||state.unitsStatus==='error'?'Library temporarily unavailable':'Resources coming soon';
-  return `<article class="topic-card ${topic.colour}"><div class="topic-top">${art('topic-covers-transparent',...TOPIC_COVERS[topic.id])}<div class="topic-copy"><h2>${topic.title}</h2><div class="chinese-title" lang="zh-Hans">${topic.chinese}</div><p>${topic.description}</p></div></div>${years.length?`<a href="#/topics?topic=${topic.id}" class="catalog-resource-open" aria-label="Explore ${topic.title}"></a>`:''}<div class="year-tags">${years.length?years.map(yearBadge).join(''):`<span class="muted">${empty}</span>`}</div></article>`;
+  return `<article class="topic-card ${topic.colour}"><div class="topic-top">${topicArt(topic.id)}<div class="topic-copy"><h2>${topic.title}</h2><div class="chinese-title" lang="zh-Hans">${topic.chinese}</div><p>${topic.description}</p></div></div>${years.length?`<a href="#/topics?topic=${topic.id}" class="catalog-resource-open" aria-label="Explore ${topic.title}"></a>`:''}<div class="year-tags">${years.length?years.map(yearBadge).join(''):`<span class="muted">${empty}</span>`}</div></article>`;
 }
 function topics(params) {
   const topic=TOPICS.find(t=>t.id===params.get('topic'));
   if(topic){
     const year=/^[0-6]$/.test(params.get('year')||'')?Number(params.get('year')):null;
-    const resources=selectResources(allResources(),{topic:topic.id,year}); const years=topicYears(resources,topic.id);
+    const resources=sortTopicResources(selectResources(allResources(),{topic:topic.id,year}));
+    const status=state.vocabularyStatus;
+    const empty=status==='loading'?'<p class="empty-state" role="status">Loading published resources…</p>':status==='error'?'<p class="empty-state">Vocabulary is temporarily unavailable. <button class="text-button" data-action="retry">Try again</button></p>':`<p class="empty-state">No published resources for ${topic.title}${year!==null?' in '+yearLabel(year):''} yet. Resources coming soon.</p>`;
+    // The same cards as the Vocabulary page (saved cover, titles, year label, existing student view).
     return `<a class="back-link" href="#/topics">← All Topics</a><section class="banner ${topic.colour}"><div><h1>${topic.title} <span lang="zh-Hans">${topic.chinese}</span></h1><p class="subtitle">${topic.description}</p></div></section>
     ${year!==null?`<p><a class="inline-link" href="#/topics?topic=${topic.id}">View all available year levels</a></p>`:''}
-    ${years.length?years.map(y=>`<section class="topic-detail-year"><h2>${yearLabel(y)}</h2><div class="results-grid">${selectResources(resources,{year:y}).map(resourceCard).join('')}</div></section>`).join(''):`<p class="empty-state">${state.vocabularyStatus==='loading'?'Loading published resources…':state.vocabularyStatus==='error'?'Vocabulary is temporarily unavailable. Please try again later.':'No linked public resources for this topic'+(year!==null?' and year':'')+' yet.'}</p>`}
-    <p class="data-note">Year labels come from available resource metadata. New resources appear here after their topic association has been reviewed.</p>`;
+    ${resources.length?`<div class="topic-grid catalog-cards topic-collection">${resources.map(resource=>topicCard(topic,resource)).join('')}</div>`:empty}
+    <p class="data-note">Sets appear here automatically from the Vocabulary Library, using the topic chosen for each set.</p>`;
   }
-  return `<div class="catalog-heading topics-heading"><h1>Topics <span lang="zh-Hans">主题</span></h1><label class="topic-search">${icon('search')}<input id="topic-filter" type="search" placeholder="Search topics (e.g. numbers, food, family…)" aria-label="Search topics"></label></div><div class="topic-grid" id="topic-grid">${TOPICS.map(topic=>topicCard(topic)).join('')}</div><p class="data-note" id="topic-count" role="status">12 topics · Year badges reflect currently linked resources.</p>`;
+  return `<div class="catalog-heading topics-heading"><h1>Topics <span lang="zh-Hans">主题</span></h1><label class="topic-search">${icon('search')}<input id="topic-filter" type="search" placeholder="Search topics (e.g. animals, 动物, food…)" aria-label="Search topics"></label></div><div class="topic-grid" id="topic-grid">${TOPICS.map(topic=>topicCard(topic)).join('')}</div><p class="data-note" id="topic-count" role="status">${TOPICS.length} topics · Year badges reflect published resources.</p>`;
 }
 const learning={
   pinyin:{title:'Pinyin',colour:'pink',description:'Pinyin (<span lang="zh-Hans">拼音</span>) is the official system for writing Mandarin sounds with the English alphabet, using tone marks to show how each syllable is said.',banner:[1015,130,460,105],items:[

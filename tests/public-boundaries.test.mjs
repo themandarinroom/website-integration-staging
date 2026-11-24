@@ -18,9 +18,9 @@ test('unknown set IDs never acquire guessed topic or year relationships',()=>{
  const [unknown]=vocabularyResources([{...sample,id:'unknown-numbers',title:'Numbers and every year'}]);
  assert.deepEqual(unknown.topics,[]);assert.deepEqual(topicYears([unknown],'numbers'),[]);
 });
-test('topic badges reflect published resource years only',()=>{
- const resources=vocabularyResources([sample,{...sample,id:'year3-age',yearLevel:3},{...sample,id:'year1-body-parts',yearLevel:1}]);
- assert.deepEqual(topicYears(resources,'numbers'),[0,3]);assert.deepEqual(topicYears(resources,'weather'),[]);
+test('topic badges reflect published resource years only, from each set\'s own topicId',()=>{
+ const resources=vocabularyResources([{...sample,topicId:'numbers'},{...sample,id:'year3-age',yearLevel:3,topicId:'people'},{...sample,id:'year1-body-parts',yearLevel:1,topicId:'people'},{...sample,id:'year3-numbers-ii',yearLevel:3,topicId:'numbers'}]);
+ assert.deepEqual(topicYears(resources,'numbers'),[0,3]);assert.deepEqual(topicYears(resources,'people'),[1,3]);assert.deepEqual(topicYears(resources,'time-weather'),[]);
  assert.equal(selectResources(resources,{topic:'numbers',year:3}).length,1);
 });
 test('search supports English, Chinese and year labels without interpreting markup',()=>{
@@ -75,6 +75,6 @@ test('frontend cannot write Firebase, collect contact data or add tracking',()=>
  const sources=['app.mjs','public-data.mjs','catalog.mjs','routing.mjs'].map(p=>fs.readFileSync(new URL('../dist/'+p,import.meta.url),'utf8')).join('');
  assert(!/setDoc|addDoc|updateDoc|deleteDoc|signIn|localStorage|sessionStorage|sendBeacon|gtag\(|analytics\(/.test(sources));
 });
-test('topic IDs are unique and all twelve approved categories are present',()=>{
- assert.equal(TOPICS.length,12);assert.equal(new Set(TOPICS.map(t=>t.id)).size,12);
+test('topic IDs are unique and exactly the eleven approved categories are present',()=>{
+ assert.deepEqual(TOPICS.map(t=>t.id),['numbers','colours','people','animals','greetings','food-drinks','school','free-time','countries','time-weather','culture']);assert.equal(new Set(TOPICS.map(t=>t.id)).size,11);
 });

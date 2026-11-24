@@ -1,5 +1,5 @@
 import {listStudentUnits} from './unit-viewer/student-data.mjs';
-import {LINKS,vocabularyResources,safeHttps,validId} from './catalog.mjs';
+import {LINKS,vocabularyResources,safeHttps,validId,currentTopicIds} from './catalog.mjs';
 const ROOT='https://firestore.googleapis.com/v1/projects/the-mandarin-room/databases/(default)/documents';
 export function decodeValue(value) {
   if('stringValue' in value)return value.stringValue;
@@ -20,14 +20,14 @@ async function request(url,options={}) {
 }
 export const publishedQuery={structuredQuery:{from:[{collectionId:'vocabularySets'}],
   where:{fieldFilter:{field:{fieldPath:'published'},op:'EQUAL',value:{booleanValue:true}}},
-  select:{fields:['id','yearLevel','title','chineseTitle','description','coverImage','items','published','deleted'].map(fieldPath=>({fieldPath}))}}};
+  select:{fields:['id','yearLevel','title','chineseTitle','description','coverImage','topicId','items','published','deleted'].map(fieldPath=>({fieldPath}))}}};
 export async function loadVocabulary() {
   const rows=await request(`${ROOT}:runQuery`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(publishedQuery)});
   if(!Array.isArray(rows))throw new Error('Invalid vocabulary response');
   return vocabularyResources(rows.filter(r=>r.document?.fields).map(r=>decodeFields(r.document.fields)));
 }
 export async function loadUnits() {
-  return (await listStudentUnits()).map(unit=>({id:unit.id,type:'unit',title:unit.englishTitle,chinese:unit.chineseTitle,description:unit.description,year:unit.yearLevel,topics:unit.topics,url:`#/unit?unit=${encodeURIComponent(unit.id)}`,lessons:unit.lessons.map(({id,title})=>({id,title}))}));
+  return (await listStudentUnits()).map(unit=>({id:unit.id,type:'unit',title:unit.englishTitle,chinese:unit.chineseTitle,description:unit.description,year:unit.yearLevel,topics:currentTopicIds(unit.topics),url:`#/unit?unit=${encodeURIComponent(unit.id)}`,lessons:unit.lessons.map(({id,title})=>({id,title}))}));
 }
 export async function loadTeacherVoice(setId,itemId) {
   if(!validId(setId)||!validId(itemId))return '';

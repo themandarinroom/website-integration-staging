@@ -8,28 +8,33 @@ export const LINKS = Object.freeze({
   greatWall: 'https://themandarinroom.github.io/vocabularylibrary/tools/great-wall/',
   live: 'https://themandarinroom.github.io/word-randomiser-staging/tools/word-randomizer/?firebase=staging'
 });
+// Canonical topic taxonomy (approved 24 November 2026). Must equal js/topic-taxonomy.js in the
+// Vocabulary Library, which is the source of truth (tests/topics-taxonomy.test.mjs checks this).
+// Colours and illustrations are website presentation only.
 export const TOPICS = [
-  ['numbers','Numbers','数字','Counting, age, dates and more.',60,285,'pink'],
-  ['family','Family','家庭','Family members and introducing family.',425,285,'peach'],
-  ['food','Food','食物','Fruits, meals and food preferences.',795,285,'yellow'],
-  ['animals','Animals','动物','Pets, wild animals and animal characteristics.',1156,285,'green'],
-  ['weather','Weather','天气','Describing the weather and seasons.',59,530,'blue'],
-  ['countries','Countries','国家','Country names, nationalities and places.',425,530,'lavender'],
-  ['school','School','学校','School places, subjects and everyday life.',795,530,'pink'],
-  ['colours','Colours','颜色','Recognising and using colours.',1156,530,'aqua'],
-  ['body-parts','Body Parts','身体部位','Naming body parts and simple descriptions.',59,775,'green'],
-  ['time','Time','时间','Telling the time and daily routines.',425,775,'yellow'],
-  ['people','People','人物','Describing people, nationalities and friends.',795,775,'blue'],
-  ['culture','Culture','文化','Festivals, traditions and cultural activities.',1156,775,'lavender']
-].map(([id,title,chinese,description,x,y,colour])=>({id,title,chinese,description,x,y,colour}));
-// Reviewed against anonymous published Vocabulary metadata on 26 October 2026.
-// Stable IDs only; no keyword-based year or curriculum inference.
-export const VOCABULARY_TOPICS = Object.freeze({
-  'prep-numbers':['numbers'], 'year1-body-parts':['body-parts'],
-  'year1-pets':['animals'], 'year1-pets-ii':['animals'],
-  'year2-family':['family'], 'year3-age':['numbers'],
-  'year3-fruit':['food'], 'year5-countries':['countries']
-});
+  ['numbers','Numbers','数字','Counting and using numbers.','pink'],
+  ['colours','Colours','颜色','Recognising and using colours.','aqua'],
+  ['people','People','人物','Family, body parts and personal information.','blue'],
+  ['animals','Animals','动物','Pets, wild animals and animal vocabulary.','green'],
+  ['greetings','Greetings','问候','Greetings, responses and everyday expressions.','peach'],
+  ['food-drinks','Food & Drinks','食物与饮料','Fruit, food, drinks and food preferences.','yellow'],
+  ['school','School','学校','School places and everyday school life.','pink'],
+  ['free-time','Free Time','休闲活动','Sports, hobbies and leisure activities.','green'],
+  ['countries','Countries','国家','Countries, nationalities and geographical places.','lavender'],
+  ['time-weather','Time & Weather','时间与天气','Time, dates, seasons and weather.','blue'],
+  ['culture','Culture','文化','Festivals, traditions and cultural vocabulary.','lavender']
+].map(([id,title,chinese,description,colour])=>Object.freeze({id,title,chinese,description,colour}));
+export const isTopicId = value => typeof value==='string' && TOPICS.some(t=>t.id===value);
+// Topic IDs from the 12-topic structure used before 24 November 2026. Only for old links and Unit metadata.
+export const LEGACY_TOPIC_IDS = Object.freeze({family:'people','body-parts':'people',food:'food-drinks',weather:'time-weather',time:'time-weather'});
+export const currentTopicId = value => isTopicId(value) ? value : (LEGACY_TOPIC_IDS[value] || null);
+export const currentTopicIds = values => [...new Set((Array.isArray(values)?values:[]).map(currentTopicId).filter(Boolean))];
+// Unit publication still offers the legacy IDs because the Unit publication Function validates them;
+// moving Units to the new IDs is a separate, approved Functions change. Read paths map them via currentTopicId().
+export const UNIT_PUBLICATION_TOPICS = Object.freeze([
+  ['numbers','Numbers'],['family','Family'],['food','Food'],['animals','Animals'],['weather','Weather'],['countries','Countries'],
+  ['school','School'],['colours','Colours'],['body-parts','Body Parts'],['time','Time'],['people','People'],['culture','Culture']
+].map(([id,title])=>Object.freeze({id,title})));
 // Only titles/relationships already published in the Units public metadata index.
 export const UNIT_TOPICS = Object.freeze({'year-5-countries':['countries'],'year-6-chinese-names':['culture']});
 export const yearLabel = year => year === 0 ? 'Prep' : `Year ${year}`;
@@ -50,7 +55,7 @@ export function topicYears(resources, topic) {
 export function vocabularyResources(sets) {
   return sets.filter(s=>s.published===true && s.deleted!==true && validId(s.id) && validYear(s.yearLevel) && typeof s.title==='string')
     .map(s=>({id:s.id,type:'vocabulary',title:s.title,chinese:String(s.chineseTitle||''),description:String(s.description||''),year:s.yearLevel,coverImage:safeHttps(s.coverImage),
-      topics:VOCABULARY_TOPICS[s.id]||[],url:`${LINKS.vocabulary}student.html?set=${encodeURIComponent(s.id)}`,
+      topicId:isTopicId(s.topicId)?s.topicId:null,topics:isTopicId(s.topicId)?[s.topicId]:[],url:`${LINKS.vocabulary}student.html?set=${encodeURIComponent(s.id)}`,
       items:(Array.isArray(s.items)?s.items:[]).filter(i=>validId(i.id) && typeof i.chinese==='string').map(i=>({
         id:i.id,chinese:i.chinese,pinyin:String(i.pinyin||''),english:String(i.english||''),image:safeHttps(i.image),aiEnabled:i.audio?.aiEnabled!==false
       }))}));
@@ -59,7 +64,13 @@ export function unitResources(index) {
   if(index?.schemaVersion!==1 || index?.provider!=='the-mandarin-room-unit-library' || !Array.isArray(index.units)) return [];
   return index.units.filter(u=>validId(u.id) && validYear(u.yearLevel) && typeof u.title==='string').map(u=>({
     id:u.id,type:'unit',title:u.title,chinese:'',description:'Unit preview · existing viewer may require Admin access.',year:u.yearLevel,
-    topics:UNIT_TOPICS[u.id]||[],url:`${LINKS.units}view.html?unit=${encodeURIComponent(u.id)}`,
+    topics:currentTopicIds(UNIT_TOPICS[u.id]),url:`${LINKS.units}view.html?unit=${encodeURIComponent(u.id)}`,
     lessons:(Array.isArray(u.lessons)?u.lessons:[]).filter(l=>validId(l.id)&&typeof l.title==='string').map(l=>({id:l.id,title:l.title}))
   }));
+}
+// Topic collections: Prep → Year 6, then the existing Vocabulary page order (stable set ID, so I < II < III),
+// vocabulary before units within a year.
+export function sortTopicResources(resources) {
+  const kind = r => r.type==='vocabulary'?0:1;
+  return [...resources].sort((a,b)=>a.year-b.year || kind(a)-kind(b) || (a.id<b.id?-1:a.id>b.id?1:0));
 }

@@ -1,5 +1,5 @@
 import { getFirebaseServices } from './unit-viewer/firebase.js';
-import { TOPICS, yearLabel } from './catalog.mjs';
+import { UNIT_PUBLICATION_TOPICS as TOPICS, yearLabel } from './catalog.mjs';
 import { unitPublicationStatus, reconstructSelections, publicationPayload, removedContent, publishableResources } from './publication-model.mjs';
 const q = selector => document.querySelector(selector), status = q('#publication-status');
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
