@@ -69,6 +69,7 @@ Isolated staging preview channels and local testing need no extra approval when 
 
 | Date | Hosting release | Source commit | Change |
 |---|---|---|---|
+| 2026-11-25 | `4aa80c` | `69d0a58` | Topics restructure: 11 topics, membership from Vocabulary Library `topicId` (with Vocabulary Library `6fc48a2`, Firestore rules `3c3d85b4`, topic migration of 22 sets) |
 | 2026-11-23 | `060baebe6e68aadd` | `d1b1e05` | Removed navigation arrows; full-card Home, Vocabulary and Topics links |
 | 2026-11-22 | `909bc1` | `c90c040` | Activities: three cards; Listening Games page (Bingo, Build The Great Wall) |
 | before 2026-11-22 | not recorded | `db8f33d` | Units Management card fixes (`a6c9941`, `db8f33d`); live was byte-identical to this build on 22 Nov. Hash: see Hosting release history |
