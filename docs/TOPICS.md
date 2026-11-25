@@ -1,5 +1,14 @@
 # Topics page (restructured 24 November 2026; taxonomy v1.1 on 25 November 2026)
 
+## Release record: Topics v1.1 (Production, 25 Nov 2026)
+- **Website:** Hosting `5b2c8405ab5fecf5` from `2d69017`, tag `production/2026-11-25-5b2c8405ab5fecf5`.
+- **Released with:** Vocabulary Library `56db84f`, Firestore rules `17af1788`, and Production `publishPublicUnit` `e399672`.
+- **Topics:** 13. Social Interactions 社交 replaced Greetings; Food & Drinks is now 餐饮; Nature 自然 and Community 社区 were added.
+- **Multi-topic sets:** a set may belong to several topics through `topicIds`.
+- **Data at release:** 25 published sets. Age is under Numbers and People; How are you? is under Social Interactions.
+- **Legacy field:** `topicId` is retained as a mirror and read here only as a fallback. Its deprecation plan, the import requirements and the full field inventory are in the Vocabulary Library's `docs/TOPICS.md`.
+- **Not repeated during Phase D:** an authenticated Unit publication on Production. It was tested on Staging by the owner.
+
 ## Taxonomy
 `dist/catalog.mjs` defines `TOPICS`, the 13 approved topics (v1.1) in display order: Numbers, Colours, People, Animals, Social Interactions (社交), Food & Drinks (餐饮), School, Free Time, Countries, Time & Weather, Culture, Nature (自然) and Community (社区). Greetings was replaced by Social Interactions; old `?topic=greetings` links redirect.
 
