@@ -69,6 +69,7 @@ Isolated staging preview channels and local testing need no extra approval when 
 
 | Date | Hosting release | Source commit | Change |
 |---|---|---|---|
+| 2026-11-25 | `5b2c84` | `2d69017` | Topics v1.1: 13 topics (Social Interactions, 餐饮, Nature, Community) and multi-topic sets (with Vocabulary Library `56db84f`, Firestore rules `17af1788`, Production `publishPublicUnit` from `e399672`, data: How are you? → social-interactions, topicIds backfill, Age → Numbers + People) |
 | 2026-11-25 | `4aa80c` | `69d0a58` | Topics restructure: 11 topics, membership from Vocabulary Library `topicId` (with Vocabulary Library `6fc48a2`, Firestore rules `3c3d85b4`, topic migration of 22 sets) |
 | 2026-11-23 | `060baebe6e68aadd` | `d1b1e05` | Removed navigation arrows; full-card Home, Vocabulary and Topics links |
 | 2026-11-22 | `909bc1` | `c90c040` | Activities: three cards; Listening Games page (Bingo, Build The Great Wall) |
