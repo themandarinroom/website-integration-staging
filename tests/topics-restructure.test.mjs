@@ -155,3 +155,37 @@ test('v1.1 labels: Food & Drinks is 餐饮; search finds the new and renamed top
   assert(search('greetings').includes('social-interactions'),'searching the old name finds Social Interactions');
   assert.equal(parseRoute('#/topics?topic=greetings').redirect,'#/topics?topic=social-interactions');
 });
+
+test('multi-topic: Age (Numbers + People) is one resource, listed under both topics and once everywhere else',()=>{
+  const sets=[set('year3-age',3,undefined,{topicIds:['people','numbers'],topicId:'people',title:'Age'}),set('year3-food-i',3,'food-drinks'),set('prep-numbers',0,'numbers')];
+  const all=vocabularyResources(sets);
+  const age=all.find(r=>r.id==='year3-age');
+  assert.deepEqual(age.topics,['numbers','people'],'canonical order, both topics');
+  assert.deepEqual(selectResources(all,{topic:'numbers'}).map(r=>r.id),['year3-age','prep-numbers']);
+  assert.deepEqual(selectResources(all,{topic:'people'}).map(r=>r.id),['year3-age']);
+  assert.equal(selectResources(all,{topic:'numbers'}).find(r=>r.id==='year3-age').url,selectResources(all,{topic:'people'})[0].url,'both topic cards open the same set');
+  assert.equal(selectResources(all,{year:3}).filter(r=>r.id==='year3-age').length,1,'once on the Vocabulary page / year list');
+  assert.equal(selectResources(all,{query:'age'}).filter(r=>r.id==='year3-age').length,1,'once in search');
+  assert.deepEqual(topicYears(all,'numbers'),[0,3]);assert.deepEqual(topicYears(all,'people'),[3]);
+  const removed=vocabularyResources([set('year3-age',3,undefined,{topicIds:['people'],topicId:'people'})]);
+  assert.deepEqual(selectResources(removed,{topic:'numbers'}),[]);assert.equal(selectResources(removed,{topic:'people'}).length,1,'removing one topic leaves the other');
+});
+
+test('multi-topic: legacy single topicId still works; topicIds wins when present; invalid and retired IDs are ignored',()=>{
+  const [legacy,arrayWins,empty,bad]=vocabularyResources([set('a-one',1,'animals'),set('b-two',1,'animals',{topicIds:['nature']}),set('c-three',1,'animals',{topicIds:[]}),set('d-four',1,undefined,{topicIds:['greetings','sports','nature','nature']})]);
+  assert.deepEqual(legacy.topics,['animals']);assert.deepEqual(arrayWins.topics,['nature']);assert.deepEqual(empty.topics,[]);assert.deepEqual(bad.topics,['nature']);
+  assert(publishedQuery.structuredQuery.select.fields.some(f=>f.fieldPath==='topicIds'));
+});
+
+test('cover precedence: a set\'s own cover is shown whenever it has one; the topic picture is only the fallback',()=>{
+  const source=app.slice(app.indexOf('function topicCard('),app.indexOf('function topics('));
+  const context=vm.createContext({SET_FALLBACK_ART:{},topicArt:id=>`<svg data-topic-art="${id}"></svg>`,art:()=>'<svg data-sprite></svg>',escape:s=>String(s),yearLabel,yearBadge:y=>`<span class="year-badge">${yearLabel(y)}</span>`,resourceRoute:()=>'',allResources:()=>[],topicYears:()=>[],state:{vocabularyStatus:'ready',unitsStatus:'ready'},arrow:''});
+  vm.runInContext(source,context);
+  const topic={id:'people',colour:'blue',title:'People',chinese:'人物',description:''};
+  const withCover=context.topicCard(topic,{type:'vocabulary',id:'year3-age',title:'Age',chinese:'年龄',year:3,url:'u',coverImage:'https://example.com/age.webp'});
+  assert.match(withCover,/<img class="clip-art catalog-cover catalog-saved-cover" src="https:\/\/example\.com\/age\.webp"/);
+  assert(withCover.indexOf('catalog-saved-cover')<withCover.indexOf('data-topic-art'),'cover first; topic art only inside the load-failure fallback template');
+  assert.match(withCover,/<template data-cover-fallback><svg data-topic-art="people"><\/svg><\/template>/);
+  const noCover=context.topicCard(topic,{type:'vocabulary',id:'zz-new',title:'New',chinese:'',year:3,url:'u',coverImage:''});
+  assert.match(noCover,/^<article[^>]*><div class="topic-top"><svg data-topic-art="people">/);assert.doesNotMatch(noCover,/catalog-saved-cover/);
+});

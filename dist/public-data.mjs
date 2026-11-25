@@ -20,7 +20,7 @@ async function request(url,options={}) {
 }
 export const publishedQuery={structuredQuery:{from:[{collectionId:'vocabularySets'}],
   where:{fieldFilter:{field:{fieldPath:'published'},op:'EQUAL',value:{booleanValue:true}}},
-  select:{fields:['id','yearLevel','title','chineseTitle','description','coverImage','topicId','items','published','deleted'].map(fieldPath=>({fieldPath}))}}};
+  select:{fields:['id','yearLevel','title','chineseTitle','description','coverImage','topicId','topicIds','items','published','deleted'].map(fieldPath=>({fieldPath}))}}};
 export async function loadVocabulary() {
   const rows=await request(`${ROOT}:runQuery`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(publishedQuery)});
   if(!Array.isArray(rows))throw new Error('Invalid vocabulary response');

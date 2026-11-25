@@ -7,7 +7,7 @@
 - `tests/topics-restructure.test.mjs` fails if the IDs, order, English or Chinese titles, or descriptions differ. Set `VOCABULARY_LIBRARY_DIR` to point the test at a checkout. By default it looks for the sibling folder `../vocabularylibrary-topics`, then `../vocabularylibrary`.
 
 ## Membership (dynamic)
-- **Where membership comes from:** a vocabulary set belongs to the topic in its own `topicId` field.
+- **Where membership comes from:** a vocabulary set belongs to every topic in its own `topicIds` field (multi-topic, v1.1), or, for sets saved before multi-topic, the single `topicId`. A multi-topic set (e.g. Age: Numbers and People) is still one resource with one ID and URL: it appears on each of its topic pages and once on the Vocabulary page, in search and in year lists.
   - `public-data.mjs` reads it with the existing anonymous published-sets query (`cache: 'no-store'`), so a normal refresh shows Vocabulary Library changes.
   - There is no hand-maintained set-to-topic map. Membership is never inferred from a set's ID or title.
 - **Year badges:** derived from the published sets in each topic.

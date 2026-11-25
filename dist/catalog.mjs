@@ -32,6 +32,9 @@ export const isTopicId = value => typeof value==='string' && TOPICS.some(t=>t.id
 export const LEGACY_TOPIC_IDS = Object.freeze({family:'people','body-parts':'people',food:'food-drinks',weather:'time-weather',time:'time-weather',greetings:'social-interactions'});
 export const currentTopicId = value => isTopicId(value) ? value : (LEGACY_TOPIC_IDS[value] || null);
 export const currentTopicIds = values => [...new Set((Array.isArray(values)?values:[]).map(currentTopicId).filter(Boolean))];
+// A vocabulary set's topics: topicIds (multi-topic) when present, else the single legacy topicId. Canonical order,
+// no duplicates, only current IDs. The set stays one resource; it is matched by every topic it lists.
+export const setTopics = s => { const list=Array.isArray(s?.topicIds)?s.topicIds:[s?.topicId]; const chosen=new Set(list.filter(isTopicId)); return TOPICS.map(t=>t.id).filter(id=>chosen.has(id)); };
 // Only titles/relationships already published in the Units public metadata index.
 export const UNIT_TOPICS = Object.freeze({'year-5-countries':['countries'],'year-6-chinese-names':['culture']});
 export const yearLabel = year => year === 0 ? 'Prep' : `Year ${year}`;
@@ -52,7 +55,7 @@ export function topicYears(resources, topic) {
 export function vocabularyResources(sets) {
   return sets.filter(s=>s.published===true && s.deleted!==true && validId(s.id) && validYear(s.yearLevel) && typeof s.title==='string')
     .map(s=>({id:s.id,type:'vocabulary',title:s.title,chinese:String(s.chineseTitle||''),description:String(s.description||''),year:s.yearLevel,coverImage:safeHttps(s.coverImage),
-      topicId:isTopicId(s.topicId)?s.topicId:null,topics:isTopicId(s.topicId)?[s.topicId]:[],url:`${LINKS.vocabulary}student.html?set=${encodeURIComponent(s.id)}`,
+      topicId:setTopics(s)[0]||null,topics:setTopics(s),url:`${LINKS.vocabulary}student.html?set=${encodeURIComponent(s.id)}`,
       items:(Array.isArray(s.items)?s.items:[]).filter(i=>validId(i.id) && typeof i.chinese==='string').map(i=>({
         id:i.id,chinese:i.chinese,pinyin:String(i.pinyin||''),english:String(i.english||''),image:safeHttps(i.image),aiEnabled:i.audio?.aiEnabled!==false
       }))}));
