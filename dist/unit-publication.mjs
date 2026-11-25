@@ -1,5 +1,5 @@
 import { getFirebaseServices } from './unit-viewer/firebase.js';
-import { UNIT_PUBLICATION_TOPICS as TOPICS, yearLabel } from './catalog.mjs';
+import { TOPICS, currentTopicIds, yearLabel } from './catalog.mjs';
 import { unitPublicationStatus, reconstructSelections, publicationPayload, removedContent, publishableResources } from './publication-model.mjs';
 const q = selector => document.querySelector(selector), status = q('#publication-status');
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -87,7 +87,7 @@ q('#source-unit').onchange = async () => {
     q('#source-title').textContent = `${current.englishTitle} ${current.chineseTitle || ''}`;
     q('#student-description').value = restored.description;
     q('#unit-approval').checked = false;
-    q('#publication-topics').innerHTML = TOPICS.map(topic => `<label><input type="checkbox" name="topic" value="${topic.id}" ${restored.topics.includes(topic.id) ? 'checked' : ''}>${topic.title}</label>`).join('');
+    q('#publication-topics').innerHTML = TOPICS.map(topic => `<label><input type="checkbox" name="topic" value="${topic.id}" ${currentTopicIds(restored.topics).includes(topic.id) ? 'checked' : ''}>${topic.title}</label>`).join('');
     renderLessons(current, restored.selections, available);
     q('#publication-warnings').innerHTML = restored.warnings.length ? `<p><strong>Review before republishing:</strong></p><ul>${restored.warnings.map(w => `<li>${escape(w)}</li>`).join('')}</ul>` : '';
     q('#publication-warnings').hidden = !restored.warnings.length;

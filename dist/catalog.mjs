@@ -8,33 +8,30 @@ export const LINKS = Object.freeze({
   greatWall: 'https://themandarinroom.github.io/vocabularylibrary/tools/great-wall/',
   live: 'https://themandarinroom.github.io/word-randomiser-staging/tools/word-randomizer/?firebase=staging'
 });
-// Canonical topic taxonomy (approved 24 November 2026). Must equal js/topic-taxonomy.js in the
-// Vocabulary Library, which is the source of truth (tests/topics-taxonomy.test.mjs checks this).
+// Canonical topic taxonomy (v1.1, approved 25 November 2026: 13 topics). Must equal js/topic-taxonomy.js in the
+// Vocabulary Library, which is the source of truth (tests/topics-restructure.test.mjs checks this).
 // Colours and illustrations are website presentation only.
 export const TOPICS = [
   ['numbers','Numbers','数字','Counting and using numbers.','pink'],
   ['colours','Colours','颜色','Recognising and using colours.','aqua'],
   ['people','People','人物','Family, body parts and personal information.','blue'],
   ['animals','Animals','动物','Pets, wild animals and animal vocabulary.','green'],
-  ['greetings','Greetings','问候','Greetings, responses and everyday expressions.','peach'],
-  ['food-drinks','Food & Drinks','食物与饮料','Fruit, food, drinks and food preferences.','yellow'],
+  ['social-interactions','Social Interactions','社交','Greetings, polite expressions and everyday social interactions.','peach'],
+  ['food-drinks','Food & Drinks','餐饮','Fruit, food, drinks and food preferences.','yellow'],
   ['school','School','学校','School places and everyday school life.','pink'],
   ['free-time','Free Time','休闲活动','Sports, hobbies and leisure activities.','green'],
   ['countries','Countries','国家','Countries, nationalities and geographical places.','lavender'],
   ['time-weather','Time & Weather','时间与天气','Time, dates, seasons and weather.','blue'],
-  ['culture','Culture','文化','Festivals, traditions and cultural vocabulary.','lavender']
+  ['culture','Culture','文化','Festivals, traditions and cultural vocabulary.','lavender'],
+  ['nature','Nature','自然','Plants, natural landscapes and the environment.','green'],
+  ['community','Community','社区','Community places, occupations, transport and everyday life.','blue']
 ].map(([id,title,chinese,description,colour])=>Object.freeze({id,title,chinese,description,colour}));
 export const isTopicId = value => typeof value==='string' && TOPICS.some(t=>t.id===value);
-// Topic IDs from the 12-topic structure used before 24 November 2026. Only for old links and Unit metadata.
-export const LEGACY_TOPIC_IDS = Object.freeze({family:'people','body-parts':'people',food:'food-drinks',weather:'time-weather',time:'time-weather'});
+// Retired topic IDs: the 12-topic structure used before 24 November 2026, and Greetings (24–25 November 2026).
+// Only for old links and Unit metadata; they are mapped, never shown.
+export const LEGACY_TOPIC_IDS = Object.freeze({family:'people','body-parts':'people',food:'food-drinks',weather:'time-weather',time:'time-weather',greetings:'social-interactions'});
 export const currentTopicId = value => isTopicId(value) ? value : (LEGACY_TOPIC_IDS[value] || null);
 export const currentTopicIds = values => [...new Set((Array.isArray(values)?values:[]).map(currentTopicId).filter(Boolean))];
-// Unit publication still offers the legacy IDs because the Unit publication Function validates them;
-// moving Units to the new IDs is a separate, approved Functions change. Read paths map them via currentTopicId().
-export const UNIT_PUBLICATION_TOPICS = Object.freeze([
-  ['numbers','Numbers'],['family','Family'],['food','Food'],['animals','Animals'],['weather','Weather'],['countries','Countries'],
-  ['school','School'],['colours','Colours'],['body-parts','Body Parts'],['time','Time'],['people','People'],['culture','Culture']
-].map(([id,title])=>Object.freeze({id,title})));
 // Only titles/relationships already published in the Units public metadata index.
 export const UNIT_TOPICS = Object.freeze({'year-5-countries':['countries'],'year-6-chinese-names':['culture']});
 export const yearLabel = year => year === 0 ? 'Prep' : `Year ${year}`;

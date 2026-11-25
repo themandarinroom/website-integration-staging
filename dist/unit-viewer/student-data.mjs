@@ -2,7 +2,10 @@
 export const STUDENT_PROJECT = 'the-mandarin-room-staging';
 const ROOT = `https://firestore.googleapis.com/v1/projects/${STUDENT_PROJECT}/databases/(default)/documents`;
 const validId = id => typeof id === 'string' && id.length <= 100 && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id);
-const TOPICS = new Set(['numbers','family','food','animals','weather','countries','school','colours','body-parts','time','people','culture']);
+// Canonical topic IDs (Topics v1.1, 25 Nov 2026) = TOPIC_IDS in vocabularylibrary js/topic-taxonomy.js.
+const TOPICS = new Set(['numbers','colours','people','animals','social-interactions','food-drinks','school','free-time','countries','time-weather','culture','nature','community']);
+// Units published before v1.1 may carry retired IDs; show them under their replacement topic.
+const LEGACY_TOPICS = Object.freeze({ family: 'people', 'body-parts': 'people', food: 'food-drinks', weather: 'time-weather', time: 'time-weather', greetings: 'social-interactions' });
 const https = value => { try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password ? value : ''; } catch { return ''; } };
 function decode(value) {
   if ('stringValue' in value) return value.stringValue;
@@ -23,7 +26,7 @@ export function studentUnit(value, expectedId = value?.id) {
     lessons.push({ id: lesson.id, title: lesson.title, learningIntention: String(lesson.learningIntention || ''), content: String(lesson.content || ''),
       links: (Array.isArray(lesson.links) ? lesson.links : []).filter(link => link && typeof link.label === 'string' && https(link.url)).map(link => ({ label: link.label, url: link.url })) });   // Worked Examples are teacher-only and never part of the student model.
   }
-  return { id: value.id, yearLevel: value.yearLevel, englishTitle: value.englishTitle, chineseTitle: String(value.chineseTitle || ''), description: String(value.description || ''), topics: (Array.isArray(value.topics) ? value.topics : []).filter(topic => TOPICS.has(topic)), lessons };
+  return { id: value.id, yearLevel: value.yearLevel, englishTitle: value.englishTitle, chineseTitle: String(value.chineseTitle || ''), description: String(value.description || ''), topics: [...new Set((Array.isArray(value.topics) ? value.topics : []).map(topic => LEGACY_TOPICS[topic] || topic))].filter(topic => TOPICS.has(topic)), lessons };
 }
 async function request(url, body) {
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 10000);

@@ -1,11 +1,11 @@
-// Topics restructure (24 Nov 2026): 11-topic taxonomy, membership from each set's topicId, fixed topic art.
+// Topics restructure (24 Nov 2026) and v1.1 (25 Nov 2026): 13-topic taxonomy, membership from each set's topicId, fixed topic art.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
-import {TOPICS,LEGACY_TOPIC_IDS,UNIT_PUBLICATION_TOPICS,currentTopicIds,vocabularyResources,selectResources,topicYears,sortTopicResources,yearLabel} from '../dist/catalog.mjs';
+import {TOPICS,LEGACY_TOPIC_IDS,currentTopicIds,vocabularyResources,selectResources,topicYears,sortTopicResources,yearLabel} from '../dist/catalog.mjs';
 import {publishedQuery} from '../dist/public-data.mjs';
 import {parseRoute,readFilters} from '../dist/routing.mjs';
 
@@ -66,8 +66,12 @@ test('old topic links redirect to their new topic and survive refresh',()=>{
 
 test('Units keep working: legacy Unit topics map to new ones; Unit publication keeps the IDs its Function accepts',()=>{
   assert.deepEqual(currentTopicIds(['family','body-parts','numbers','food','bogus']),['people','numbers','food-drinks']);
-  assert.deepEqual(UNIT_PUBLICATION_TOPICS.map(t=>t.id),['numbers','family','food','animals','weather','countries','school','colours','body-parts','time','people','culture']);
-  assert.match(fs.readFileSync(new URL('../dist/unit-publication.mjs',import.meta.url),'utf8'),/UNIT_PUBLICATION_TOPICS as TOPICS/);
+  assert.deepEqual(currentTopicIds(['greetings','social-interactions']),['social-interactions']);
+  const publication=fs.readFileSync(new URL('../dist/unit-publication.mjs',import.meta.url),'utf8');
+  assert.match(publication,/import \{ TOPICS, currentTopicIds, yearLabel \} from '\.\/catalog\.mjs';/,'Unit publication offers the canonical 13 topics');
+  assert.match(publication,/currentTopicIds\(restored\.topics\)\.includes\(topic\.id\)/,'a Unit published under a retired ID pre-ticks its replacement');
+  const viewer=fs.readFileSync(new URL('../dist/unit-viewer/student-data.mjs',import.meta.url),'utf8');
+  assert.match(viewer,/'social-interactions'.*'nature','community'/);assert.match(viewer,/greetings: 'social-interactions'/);
   assert.match(fs.readFileSync(new URL('../dist/public-data.mjs',import.meta.url),'utf8'),/topics:currentTopicIds\(unit\.topics\)/);
 });
 
@@ -82,12 +86,15 @@ test('every topic has its fixed, approved illustration',()=>{
   assert.deepEqual(Object.keys(TOPIC_ART),TOPICS.map(t=>t.id));
   const sprite=name=>['topic-covers-transparent',...SPRITE[name]];
   assert.deepEqual(TOPIC_ART.people,sprite('people'),'People: four friends');
-  assert.deepEqual(TOPIC_ART.greetings,sprite('body-parts'),'Greetings: waving boy (old Body Parts)');
+  assert.equal(TOPIC_ART.greetings,undefined,'Greetings is retired');
+  assert.deepEqual(TOPIC_ART['social-interactions'][0],'topic-social-interactions','Social Interactions: handshake');
+  assert.equal(TOPIC_ART.nature[0],'topic-nature');assert.equal(TOPIC_ART.community[0],'topic-community');
+  assert.deepEqual(TOPIC_ART['food-drinks'],sprite('food'),'Food & Drinks keeps its illustration');
   assert.deepEqual(TOPIC_ART.countries,sprite('countries'),'Countries keeps the globe');
   assert.deepEqual(TOPIC_ART['food-drinks'],sprite('food'));
   for(const id of ['numbers','colours','animals','school','culture'])assert.deepEqual(TOPIC_ART[id],sprite(id));
   assert.equal(TOPIC_ART['free-time'][0],'topic-free-time');assert.equal(TOPIC_ART['time-weather'][0],'topic-time-weather');
-  assert.equal(new Set(Object.values(TOPIC_ART).map(a=>a.join())).size,11,'no artwork is used twice');
+  assert.equal(new Set(Object.values(TOPIC_ART).map(a=>a.join())).size,13,'no artwork is used twice');
 });
 
 test('topic illustrations never follow a vocabulary set cover',()=>{
@@ -113,11 +120,13 @@ test('topic detail lists its published sets in order with Vocabulary page cards;
   assert.deepEqual([...html.matchAll(/<card ([^ ]+) /g)].map(m=>m[1]),['year1-pets','year1-pets-ii','year2-wild-animals-i']);
   assert.match(html,/class="topic-grid catalog-cards topic-collection"/);
   assert.match(html,/href="#\/topics">← All Topics<\/a>/);
-  assert.match(renderTopics('topic=greetings',vocabulary),/No published resources for Greetings yet\. Resources coming soon\./);
-  assert.match(renderTopics('topic=greetings',[],'loading'),/Loading published resources/);
-  assert.match(renderTopics('topic=greetings',[],'error'),/data-action="retry"/);
+  assert.match(renderTopics('topic=nature',vocabulary),/No published resources for Nature yet\. Resources coming soon\./);
+  assert.match(renderTopics('topic=community',vocabulary),/No published resources for Community yet\./);
+  assert.match(renderTopics('topic=social-interactions',vocabulary),/No published resources for Social Interactions yet\./);
+  assert.match(renderTopics('topic=nature',[],'loading'),/Loading published resources/);
+  assert.match(renderTopics('topic=nature',[],'error'),/data-action="retry"/);
   const landing=renderTopics('',vocabulary);
-  assert.equal((landing.match(/<topic /g)||[]).length,11);assert.match(landing,/11 topics/);
+  assert.equal((landing.match(/<topic /g)||[]).length,13);assert.match(landing,/13 topics/);
 });
 
 test('topic search matches English and Chinese names',()=>{
@@ -128,7 +137,7 @@ test('topic search matches English and Chinese names',()=>{
 });
 
 test('the two supplied illustrations are shipped unchanged as transparent RGBA PNGs',()=>{
-  const expected={'topic-time-weather.png':'70cc7260a765496326baa72be69d7b5e70c24e322e2cb1cea096d235dccabfd3','topic-free-time.png':'247efb48620ced69f6091e3406fcd3297f98580214866fb63b3c0a65a57b1948'};
+  const expected={'topic-time-weather.png':'70cc7260a765496326baa72be69d7b5e70c24e322e2cb1cea096d235dccabfd3','topic-free-time.png':'247efb48620ced69f6091e3406fcd3297f98580214866fb63b3c0a65a57b1948','topic-social-interactions.png':'06e6e4a2a5a44859a10bd8f526e984435f36a7d4c307f0805f3c89395611881d','topic-nature.png':'60d9edf25132501db2c754d4c76dfe031b05df17500daa9fbb7b6f589dba4e0e','topic-community.png':'3e53d3ba4151208b88801d4beb2f8fcb04bf50ecf4eabeed92608929044277aa'};
   for(const [file,sha] of Object.entries(expected)){
     const bytes=fs.readFileSync(new URL(`../dist/assets/${file}`,import.meta.url));
     assert.equal(bytes.subarray(1,4).toString(),'PNG');assert.equal(bytes.readUInt32BE(16),1536);assert.equal(bytes.readUInt32BE(20),1024);
@@ -138,3 +147,11 @@ test('the two supplied illustrations are shipped unchanged as transparent RGBA P
 });
 import {createHash as hash} from 'node:crypto';
 function createHash(bytes){return hash('sha256').update(bytes).digest('hex');}
+
+test('v1.1 labels: Food & Drinks is 餐饮; search finds the new and renamed topics in English and Chinese',()=>{
+  assert.equal(TOPICS.find(t=>t.id==='food-drinks').chinese,'餐饮');
+  const search=q=>TOPICS.filter(t=>`${t.title} ${t.chinese} ${t.description}`.toLowerCase().includes(q.toLowerCase())).map(t=>t.id);
+  for(const [q,id] of [['社交','social-interactions'],['Social','social-interactions'],['餐饮','food-drinks'],['自然','nature'],['Nature','nature'],['社区','community'],['Community','community']])assert(search(q).includes(id),q);
+  assert(search('greetings').includes('social-interactions'),'searching the old name finds Social Interactions');
+  assert.equal(parseRoute('#/topics?topic=greetings').redirect,'#/topics?topic=social-interactions');
+});

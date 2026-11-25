@@ -15,9 +15,9 @@ const read = file => fs.readFileSync(path.join(out, file), 'utf8');
 const walk = dir => fs.readdirSync(dir, {withFileTypes: true}).flatMap(e => e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]);
 test.after(() => fs.rmSync(out, {recursive: true, force: true}));
 
-test('production build passes the same 48-file payload allowlist and secret scan', () => {
+test('production build passes the same 51-file payload allowlist and secret scan', () => {
   const result = execFileSync(process.execPath, [path.join(root, 'scripts/verify-payload.mjs'), out], {encoding: 'utf8'});
-  assert.match(result, /48 allowlisted static files/);
+  assert.match(result, /51 allowlisted static files/);
 });
 
 test('every Firebase target is the production project and no staging reference remains', () => {

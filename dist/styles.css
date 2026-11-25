@@ -182,3 +182,9 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 .catalog-resource-open,.year-level-card{cursor:pointer}
 .topic-card:has(>.catalog-resource-open):hover{box-shadow:0 3px 12px #14223918}
 .topic-card:has(>.catalog-resource-open:focus-visible){outline:3px solid #216daf;outline-offset:4px}
+/* Topics v1.1: wide topic artworks (landscape scenes) use more width at the same height; the SVG keeps proportions, so nothing is cropped or stretched. */
+.topic-top .clip-art.wide-art{width:52%;max-width:175px}
+@media(max-width:1000px){.topic-top .clip-art.wide-art{width:100%;max-width:185px}}
+@media(max-width:700px){.topic-top .clip-art.wide-art{width:100%;max-width:155px}}
+/* Topics v1.1: every Topics row matches the tallest card (the longer Social Interactions text would otherwise make one row taller). */
+#topic-grid{grid-auto-rows:1fr}

@@ -26,17 +26,19 @@ function art(source,x,y,w,h,className='') {
 }
 // Full illustration bounds in the transparent cover sheet (unchanged file; clipped in the browser).
 const SPRITE={numbers:[65,230,250,220],family:[470,230,250,220],food:[790,230,270,220],animals:[1210,230,250,220],weather:[65,480,250,220],countries:[470,480,220,220],school:[790,480,280,220],colours:[1200,480,280,220],'body-parts':[65,700,260,230],time:[470,700,250,250],people:[790,700,280,250],culture:[1210,700,250,250]};
-// Fixed, owner-approved topic illustrations (24 Nov 2026). They never follow a vocabulary set's cover.
-// Free Time and Time & Weather are the supplied transparent PNGs, framed on their artwork bounds; the files are unchanged.
+// Fixed, owner-approved topic illustrations (v1.1, 25 Nov 2026). They never follow a vocabulary set's cover.
+// Free Time, Time & Weather, Social Interactions, Nature and Community are the supplied transparent PNGs, framed on
+// their artwork bounds in the browser; the files keep the supplied pixels.
 const TOPIC_ART={numbers:['topic-covers-transparent',...SPRITE.numbers],colours:['topic-covers-transparent',...SPRITE.colours],
   people:['topic-covers-transparent',...SPRITE.people],animals:['topic-covers-transparent',...SPRITE.animals],
-  greetings:['topic-covers-transparent',...SPRITE['body-parts']],'food-drinks':['topic-covers-transparent',...SPRITE.food],
+  'social-interactions':['topic-social-interactions',70,30,1444,996],'food-drinks':['topic-covers-transparent',...SPRITE.food],
   school:['topic-covers-transparent',...SPRITE.school],'free-time':['topic-free-time',352,0,830,1024],
   countries:['topic-covers-transparent',...SPRITE.countries],'time-weather':['topic-time-weather',240,50,1035,955],
-  culture:['topic-covers-transparent',...SPRITE.culture]};
+  culture:['topic-covers-transparent',...SPRITE.culture],nature:['topic-nature',0,20,1536,984],community:['topic-community',0,40,1536,970]};
 // Vocabulary cards without a saved cover keep the artwork they showed before the topic restructure.
 const SET_FALLBACK_ART={'prep-numbers':SPRITE.numbers,'year1-body-parts':SPRITE['body-parts'],'year2-family':SPRITE.family,'year3-age':SPRITE.numbers};
-const topicArt=id=>TOPIC_ART[id]?art(...TOPIC_ART[id]):'';
+// Landscape-shaped artworks (wider than 1.3:1, i.e. the v1.1 scenes) get a wider box so they read at the same visual size.
+const topicArt=id=>{const a=TOPIC_ART[id];return a?art(...a,a[3]/a[4]>1.3?'wide-art':''):'';};
 const yearBadge=year=>`<span class="year-badge year-${year}">${yearLabel(year)}</span>`;
 function route() {
   const current=parseRoute(location.hash);

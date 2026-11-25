@@ -75,6 +75,6 @@ test('frontend cannot write Firebase, collect contact data or add tracking',()=>
  const sources=['app.mjs','public-data.mjs','catalog.mjs','routing.mjs'].map(p=>fs.readFileSync(new URL('../dist/'+p,import.meta.url),'utf8')).join('');
  assert(!/setDoc|addDoc|updateDoc|deleteDoc|signIn|localStorage|sessionStorage|sendBeacon|gtag\(|analytics\(/.test(sources));
 });
-test('topic IDs are unique and exactly the eleven approved categories are present',()=>{
- assert.deepEqual(TOPICS.map(t=>t.id),['numbers','colours','people','animals','greetings','food-drinks','school','free-time','countries','time-weather','culture']);assert.equal(new Set(TOPICS.map(t=>t.id)).size,11);
+test('topic IDs are unique and exactly the thirteen approved categories (v1.1) are present',()=>{
+ assert.deepEqual(TOPICS.map(t=>t.id),['numbers','colours','people','animals','social-interactions','food-drinks','school','free-time','countries','time-weather','culture','nature','community']);assert.equal(new Set(TOPICS.map(t=>t.id)).size,13);
 });
