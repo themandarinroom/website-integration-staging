@@ -19,6 +19,7 @@ const icons={book:'<path d="M12 5C8 2 4 3 2 4v16c3-2 7-2 10 0 3-2 7-2 10 0V4c-3-
   shuffle:'<path d="M2 6h4c4 0 8 12 12 12h4m-4-4 4 4-4 4M2 18h4c4 0 8-12 12-12h4m-4-4 4 4-4 4"/>',
   mic:'<rect x="8" y="2" width="8" height="13" rx="4"/><path d="M5 11v2a7 7 0 0 0 14 0v-2M12 20v3M8 23h8"/>',
   headphones:'<path d="M3 16v-4a9 9 0 0 1 18 0v4"/><rect x="2" y="13" width="5" height="8" rx="2"/><rect x="17" y="13" width="5" height="8" rx="2"/>',
+  puzzle:'<path d="M12 3 22 20H2z"/><path d="M7 11.5h10L12 20z"/>',
   search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>'};
 const icon=name=>`<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name]||icons.book}</svg>`;
 // Clip supplied, approved illustrations in the browser; the PNG files remain unchanged.
@@ -81,7 +82,8 @@ function wordCards() {
 function activityTiles() {
   return `<div class="activity-grid"><a class="activity-card yellow" href="${LINKS.randomiser}" aria-label="Open Word Randomiser Local Mode"><span class="symbol">${icon('shuffle')}</span><h3>Word Randomiser</h3><p>Turn vocabulary into fun classroom activities.</p></a>
   <a class="activity-card lavender" href="${LINKS.speaking}" aria-label="Open Speaking Practice"><span class="symbol">${icon('mic')}</span><h3>Speaking Practice</h3><p>Build confidence with listening and speaking practice.</p></a>
-  <a class="activity-card green" href="#/activities/listening-games" aria-label="Open Listening Games"><span class="symbol">${icon('headphones')}</span><h3>Listening Games</h3><p>Play Bingo and Build The Great Wall by listening to Chinese words.</p></a></div>`;
+  <a class="activity-card green" href="#/activities/listening-games" aria-label="Open Listening Games"><span class="symbol">${icon('headphones')}</span><h3>Listening Games</h3><p>Play Bingo and Build The Great Wall by listening to Chinese words.</p></a>
+  <a class="activity-card pink" href="#/activities/vocabulary-games" aria-label="Open Vocabulary Games"><span class="symbol">${icon('puzzle')}</span><h3>Vocabulary Games</h3><p>Match Chinese words with their pinyin, English and pictures.</p></a></div>`;
 }
 // Listening Games: each game is one link covering the whole card. Titles and descriptions are HTML text; covers carry no lettering.
 const LISTENING_GAMES=[
@@ -94,6 +96,19 @@ function gameCard(game) {
   return `<a class="game-card" href="${game.href}" target="_blank" rel="noopener noreferrer" data-game="${game.id}" aria-labelledby="game-${game.id}-title game-${game.id}-hint" aria-describedby="game-${game.id}-description">
     <div class="game-cover"><img src="assets/listening-games/${game.cover}-800.webp" srcset="assets/listening-games/${game.cover}-800.webp 800w, assets/listening-games/${game.cover}-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 50vw" width="1600" height="900" alt="${escape(game.alt)}" decoding="async"></div>
     <div class="game-copy"><h2 id="game-${game.id}-title">${game.title}</h2><p id="game-${game.id}-description">${game.description}</p><span class="game-play" id="game-${game.id}-hint">Play · opens in a new tab</span></div></a>`;
+}
+// Vocabulary Games: whole-card links with no arrow or badge (owner decision, D3). Initially only Tarsia Puzzle.
+const VOCABULARY_GAMES=[
+  {id:'tarsia',title:'Tarsia Puzzle',href:LINKS.tarsia,description:'Match each word with its partner and fit the triangles together to complete the puzzle!',
+    cover:'tarsia-cover',alt:'A hexagon puzzle of coloured triangles matching xióng māo, 熊猫, panda, a panda picture, bamboo and 竹子 zhú zi, with two loose pieces showing the Chinese flag with 中国 Zhōng guó and the Temple of Heaven.'}
+];
+function vocabularyGameCard(game) {
+  return `<a class="game-card" href="${game.href}" target="_blank" rel="noopener noreferrer" data-game="${game.id}" aria-labelledby="game-${game.id}-title game-${game.id}-hint" aria-describedby="game-${game.id}-description">
+    <div class="game-cover"><img src="assets/vocabulary-games/${game.cover}-800.webp" srcset="assets/vocabulary-games/${game.cover}-800.webp 800w, assets/vocabulary-games/${game.cover}-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 50vw" width="1600" height="900" alt="${escape(game.alt)}" decoding="async"></div>
+    <div class="game-copy"><h2 id="game-${game.id}-title">${game.title}</h2><p id="game-${game.id}-description">${game.description}</p><span class="game-play"><span id="game-${game.id}-hint">Play · opens in a new tab</span></span></div></a>`;
+}
+function vocabularyGamesPage() {
+  return `<a class="back-link" href="#/activities">← Back to Activities</a><header class="page-intro activities-intro"><h1>Vocabulary Games</h1></header><section class="game-grid" aria-label="Vocabulary games">${VOCABULARY_GAMES.map(vocabularyGameCard).join('')}</section>`;
 }
 function listeningGamesPage() {
   return `<a class="back-link" href="#/activities">← Back to Activities</a><header class="page-intro activities-intro"><h1>Listening Games</h1></header><section class="game-grid" aria-label="Listening games">${LISTENING_GAMES.map(gameCard).join('')}</section>`;
@@ -244,11 +259,11 @@ function render({focus=false}={}){
   const {page,params}=route();
   const viewRequest=++studentViewRequest;
   main.classList.toggle('year-level-page',page==='home');
-  const renderers={reference:()=>referenceView(params.get('id'),params.get('topic')),journey:()=>'<section id="journey-view"><p role="status">Loading Learning Journey…</p></section>',unit:()=>'<section class="student-unit-view" id="student-unit-view"><p role="status">Loading Unit…</p></section>',home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,'listening-games':listeningGamesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
+  const renderers={reference:()=>referenceView(params.get('id'),params.get('topic')),journey:()=>'<section id="journey-view"><p role="status">Loading Learning Journey…</p></section>',unit:()=>'<section class="student-unit-view" id="student-unit-view"><p role="status">Loading Unit…</p></section>',home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,'listening-games':listeningGamesPage,'vocabulary-games':vocabularyGamesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
   main.innerHTML=renderers[page]?renderers[page]():`<section class="banner green"><div><h1>Page not found</h1><p class="subtitle"><a class="inline-link" href="#/">Return Home</a></p></div></section>`;
-  document.title=`${({'home':'Home',journey:'Learning Journey',vocabulary:'Vocabulary',units:'Units',unit:'Unit',activities:'Activities','listening-games':'Listening Games',topics:'Topics',reference:'Learning Reference',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
+  document.title=`${({'home':'Home',journey:'Learning Journey',vocabulary:'Vocabulary',units:'Units',unit:'Unit',activities:'Activities','listening-games':'Listening Games','vocabulary-games':'Vocabulary Games',topics:'Topics',reference:'Learning Reference',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
   setRouteRobots(robotsFor(page));
-  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'||page==='journey'?'home':page==='listening-games'?'activities':page==='reference'?'topics':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'||page==='journey'?'home':page==='listening-games'||page==='vocabulary-games'?'activities':page==='reference'?'topics':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   if(page==='journey'){
     const raw=params.get('year'), grade=/^[0-6]$/.test(raw||'')?Number(raw):null;
     if(grade===null)document.querySelector('#journey-view').innerHTML='<h1>Choose your year level</h1><p><a href="#/">Return to the homepage</a></p>';

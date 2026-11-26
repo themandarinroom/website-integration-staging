@@ -40,5 +40,5 @@ test('header keeps nav order, routes and the existing admin sign-in control, rel
   assert.match(html, /<button class="admin-button" id="admin-open" aria-haspopup="dialog">.*<span class="admin-label">Teacher Login<\/span><\/button>/);
   assert.match(html, /src="assets\/emblem\.svg"/);
   assert.match(html, /<strong>The Mandarin Room<\/strong><small>Language · Culture · Classroom<\/small>/);
-  assert.match(html, /styles\.css\?v=minor-ui-consistency-1/); assert.match(html, /app\.mjs\?v=minor-ui-consistency-1/);
+  assert.match(html, /styles\.css\?v=vocab-games-2/); assert.match(html, /app\.mjs\?v=vocab-games-2/);
 });

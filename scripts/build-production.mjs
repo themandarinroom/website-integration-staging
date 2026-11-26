@@ -53,6 +53,8 @@ const REWRITES = [
   ['unit-publication.mjs', 'No cloud Units are available in staging. Original production Units are not copied.', 'No Units are available yet.', 1],
   ['catalog.mjs', `,\n  live: 'https://themandarinroom.github.io/word-randomiser-staging/tools/word-randomizer/?firebase=staging'`, '', 1],
   ['app.mjs', LIVE_PREVIEW, '', 1],
+  ['catalog.mjs', `  // Staging Tarsia (temporary GitHub Pages repo, D3); build-production.mjs rewrites it to the Vocabulary Library path.\n`, '', 1],
+  ['catalog.mjs', 'https://themandarinroom.github.io/tarsia-staging/tools/tarsia-puzzle/', 'https://themandarinroom.github.io/vocabularylibrary/tools/tarsia-puzzle/', 1],
 ];
 
 function count(text, from) { return from instanceof RegExp ? (text.match(new RegExp(from.source, 'g')) || []).length : text.split(from).length - 1; }

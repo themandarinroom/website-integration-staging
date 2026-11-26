@@ -6,6 +6,8 @@ export const LINKS = Object.freeze({
   randomiser: 'https://themandarinroom.github.io/vocabularylibrary/tools/word-randomizer/',
   bingo: 'https://themandarinroom.github.io/vocabularylibrary/tools/bingo-board/',
   greatWall: 'https://themandarinroom.github.io/vocabularylibrary/tools/great-wall/',
+  // Staging Tarsia (temporary GitHub Pages repo, D3); build-production.mjs rewrites it to the Vocabulary Library path.
+  tarsia: 'https://themandarinroom.github.io/tarsia-staging/tools/tarsia-puzzle/',
   live: 'https://themandarinroom.github.io/word-randomiser-staging/tools/word-randomizer/?firebase=staging'
 });
 // Canonical topic taxonomy (v1.1, approved 25 November 2026: 13 topics). Must equal js/topic-taxonomy.js in the

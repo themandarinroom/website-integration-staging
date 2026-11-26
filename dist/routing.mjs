@@ -8,6 +8,7 @@ export function parseRoute(hash='') {
   const name=path.split('/')[1]||'home';
   // Sub-page of Activities; the top-level navigation still marks Activities as current.
   if(path.replace(/\/$/,'')==='/activities/listening-games')return {page:'listening-games',params,redirect:null};
+  if(path.replace(/\/$/,'')==='/activities/vocabulary-games')return {page:'vocabulary-games',params,redirect:null};
   if(name==='units')return {page:'home',params:new URLSearchParams(),redirect:'#/'};
   // Links to a pre-November 2026 topic (e.g. ?topic=family) open its new topic and keep working after refresh.
   const legacyTopic=LEGACY_TOPIC_IDS[params.get('topic')];

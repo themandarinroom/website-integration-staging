@@ -187,3 +187,11 @@ h1,h2,h3{font-weight:600}.brand strong{font-weight:600}
 @media(max-width:700px){.reference-card{grid-template-columns:minmax(0,1fr);gap:16px;padding:18px}.reference-card img{max-height:none}.reference-card h3{font-size:24px}.reference-chinese{font-size:22px}.reference-toolbar{gap:10px}.reference-toolbar a,.reference-toolbar button{font-size:14px;padding:10px 12px}.reference-heading h1{font-size:28px}.learning-references>h2,.topic-vocabulary>h2,.topic-units>h2{font-size:23px}}
 
 .reference-canvas.reference-overlay{position:fixed;inset:0;z-index:1000;width:100vw;height:100dvh;max-width:none;border:0;border-radius:0;padding-top:58px;background:white}.reference-canvas.reference-overlay .reference-exit{display:block;position:fixed;top:10px;right:16px;z-index:1001;padding:9px 16px;border:1px solid #9ab4a4;border-radius:8px;background:white;color:#26483f;font:inherit;cursor:pointer}.reference-canvas.reference-overlay img{width:max(100%,1600px)}
+
+/* Vocabulary Games (D3): fourth Activities card (whole-card link like the others, no arrow); Tarsia game card. */
+.activities-page .activity-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.activity-card.pink .symbol{color:#d0508a}
+.game-card[data-game=tarsia] .game-cover{background:#fff}
+.game-card[data-game=tarsia] .game-copy{background:var(--pink)}
+@media(max-width:1100px){.activities-page .activity-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.activities-page .activity-grid{grid-template-columns:1fr}}

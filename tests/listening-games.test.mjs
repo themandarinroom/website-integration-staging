@@ -1,4 +1,4 @@
-// Activities (three cards) and the Listening Games sub-page (Bingo, Build The Great Wall). Replaces bingo-games.test.mjs.
+// Activities (four cards since D3) and the Listening Games sub-page (Bingo, Build The Great Wall). Replaces bingo-games.test.mjs.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -7,12 +7,12 @@ import {parseRoute,robotsFor} from '../dist/routing.mjs';
 
 const read=file=>fs.readFileSync(new URL(`../dist/${file}`,import.meta.url),'utf8');
 const app=read('app.mjs');
-const tiles=app.slice(app.indexOf('function activityTiles()'),app.indexOf('const LISTENING_GAMES'));
-const games=app.slice(app.indexOf('const LISTENING_GAMES'),app.indexOf('function yearActivities('));
+const tiles=app.slice(app.indexOf('function activityTiles()'),app.indexOf('// Listening Games:'));
+const games=app.slice(app.indexOf('const LISTENING_GAMES'),app.indexOf('// Vocabulary Games:'));
 const activities=app.slice(app.indexOf('function activitiesPage()'),app.indexOf('function',app.indexOf('function activitiesPage()')+10));
 
-test('Activities shows exactly Word Randomiser, Speaking Practice and Listening Games',()=>{
- assert.deepEqual([...tiles.matchAll(/<h3>([^<]+)<\/h3>/g)].map(m=>m[1]),['Word Randomiser','Speaking Practice','Listening Games']);
+test('Activities shows exactly Word Randomiser, Speaking Practice, Listening Games and Vocabulary Games (D3)',()=>{
+ assert.deepEqual([...tiles.matchAll(/<h3>([^<]+)<\/h3>/g)].map(m=>m[1]),['Word Randomiser','Speaking Practice','Listening Games','Vocabulary Games']);
  assert(tiles.includes('href="${LINKS.randomiser}"')&&tiles.includes('href="${LINKS.speaking}"'),'existing apps stay linked');
  assert(tiles.includes('href="#/activities/listening-games"'));
  assert(!/Coming soon|Bingo Games|Speaking App|Listening Game</.test(tiles));
@@ -26,7 +26,7 @@ test('Listening Games route is a sub-page of Activities, noindex, with a way bac
  assert.equal(parseRoute('#/activities').page,'activities');
  assert.equal(robotsFor('listening-games'),'noindex');
  assert(app.includes(`'listening-games':listeningGamesPage`)&&app.includes(`'listening-games':'Listening Games'`));
- assert(app.includes(`page==='listening-games'?'activities'`),'top navigation keeps Activities current');
+ assert(app.includes(`page==='listening-games'||page==='vocabulary-games'?'activities'`),'top navigation keeps Activities current');
  assert.match(app,/<a class="back-link" href="#\/activities">← Back to Activities<\/a>/);
 });
 test('Bingo and Build The Great Wall cards: approved text, verified links, whole-card links, safe new tab',()=>{
@@ -54,8 +54,8 @@ test('the homepage year panel no longer calls Listening Games "coming soon"',()=
 });
 
 test('Activities and Listening Games use arrow-free full-card links',()=>{
- assert.equal((tiles.match(/<a class="activity-card /g)||[]).length,3);
- assert.equal((tiles.match(/<a /g)||[]).length,3);
+ assert.equal((tiles.match(/<a class="activity-card /g)||[]).length,4); // D3: Vocabulary Games is the fourth card
+ assert.equal((tiles.match(/<a /g)||[]).length,4);
  assert.doesNotMatch(tiles,/class="circle"|\$\{arrow\}/);
  assert.doesNotMatch(games,/class="circle"|\$\{arrow\}/);
  assert(games.includes('Play · opens in a new tab'));
