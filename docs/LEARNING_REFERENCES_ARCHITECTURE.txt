@@ -1,0 +1,68 @@
+Learning References — proposed architecture and Staging review
+26 November 2026, Australia/Melbourne
+
+Review status
+Implemented in an isolated worktree on codex/learning-references, based on origin/production cdf5d99 (Topics v1.1). No Production deploy, GitHub push, Firestore/Storage write, topic migration, rules change or Admin editor. The owner must approve the architecture and Production release before either is promoted. Claude's current 13-topic taxonomy and topicIds multi-topic classifications remain authoritative.
+
+Staging preview
+https://the-mandarin-room-staging--learning-references-qob6gc5u.web.app/#/topics?topic=numbers
+Reader:
+https://the-mandarin-room-staging--learning-references-qob6gc5u.web.app/#/reference?id=number-chart-0-100&topic=numbers
+This is an isolated Firebase Hosting preview channel, not the shared GitHub staging branch or a Production release. Auth authorised domains were not synchronised. Public Vocabulary reads remain anonymous/read-only against Production, per the existing website protocol. Other site adapters retain their existing environments. No publishing permissions or new backend services introduced.
+
+Proposed resource model
+A small versioned manifest in dist/learning-references.mjs contains independent learning resources. It is shipped with the website through code review and release approval; this phase has no authoring interface or database collection. It is separate from vocabularySets, Units and Teacher Voice.
+
+Each record contains:
+- id: stable slug, e.g. number-chart-0-100.
+- published: true for reviewed public entries; deleted/unpublished entries are excluded from listing and reader lookup.
+- title and chineseTitle: display names.
+- description and altText: resource-specific accessible descriptions.
+- topicIds: one or more CURRENT topic IDs, normalised by the existing catalogue setTopics() function. This reuses the canonical multi-topic order/validation and makes no new taxonomy.
+- yearLevels: null means All year levels; an explicit list can limit later resources to existing Prep–Year 6 levels. All-year references remain visible when a year filter is active.
+- assets.png: required preview; optional assets.svg for scalable viewing and assets.pdf for printing. Only reviewed same-site asset paths under assets/learning-references/ are accepted. No remote HTML or script schemes.
+- internal normalised type: learning-reference, with no vocabulary items or audio records.
+
+Only one manifest record is implemented: Number Chart 0–100 / 数字表 0–100, topicIds [numbers], all year levels. The data fields and image/PDF assets can also represent future maps, diagrams, calendars and printable sheets without new top-level navigation or topic structures, but none of those resources/types is implemented in this phase. New content would require its own approval.
+
+Publishing semantics
+The manifest is a public static release mechanism, not a security boundary for private drafts. Only approved public assets should be included in the Hosting payload; hiding a card is not intended to protect a file. A future Admin/editor or dynamic publishing backend is explicitly outside this phase.
+
+Page behaviour
+- Individual Topic header.
+- Learning References, only if a published reference matches that topic/year.
+- Vocabulary Sets, using the existing cards and published metadata.
+- Existing public Units retained after Vocabulary Sets so no prior resource disappears.
+- No added arrows or decorative navigation badges on reference cards.
+- Topics landing cards also remain navigable for a reference-only topic and use plain All year levels text.
+- Reference route is #/reference?id=...&topic=...; Topics remains the active top-level tab. Invalid IDs show Reference unavailable, and invalid parent topics resolve to an associated topic.
+- Card preview opens an anonymous reader. Fit/enlarge, contained horizontal/vertical scrolling, full-size SVG link and printable A4 PDF link are available. Native full screen is attempted when supported; otherwise the chart uses a full-window overlay. Exit button/Escape restores focus and scrolling. Background controls are inert while the overlay is active.
+- Later vocabulary/unit fetches do not reset the reference's zoom or full-window state. No student sign-in is required.
+
+Existing chart preserved
+SVG, PNG and PDF were copied directly from:
+/Users/weiwang/Desktop/🍊中文/Units of Work 🔢👀🍎🍰🐲⚽️✏️🐶/0001_Numbers/Number Chart/
+No chart regeneration, text edits, rasterisation replacement or resizing of source files. All three deployed files retain the original bytes and SHA-256 hashes in learning-reference-asset-hashes.json.
+
+Compatibility and safety
+No edits to dist/catalog.mjs, canonical topic definitions, public Vocabulary queries, Topic associations, Vocabulary Library, Teacher Voice, Units publication Functions or Firebase rules. Existing vocabulary/Unit adapters remain their sources of truth. Existing Units are rendered in their own retained section following vocabulary. No 101-item vocabulary set or duplicate Numbers topic created. No Admin editor or new main navigation tab.
+
+Verification
+- 113 tests pass, including canonical Topics v1.1 parity, existing cards/Units/audio links, references publication filtering, multi-topic association, year filters, independent reader routing, asset safety, preserved source hashes, fullscreen fallback/cleanup and late-load reader state.
+- npm run check passes for every shipped module.
+- verify-payload.mjs passes: 55 allowlisted files (previous 51 + reference module + 3 approved assets).
+- build-production.mjs passes without deploying; existing exact rewrite guards were retained.
+- Existing tests were updated for the new imported renderer dependency, intentional reference-only topic destinations, cache-busting and the 55-file payload count. No safety checks removed or relaxed.
+- The existing cross-repository taxonomy test uses the public Vocabulary Library main taxonomy downloaded into docs/verification/canonical-vocabulary, matching the deployed canonical 13 topics. This verification snapshot is not shipped or used as another taxonomy.
+- Before preview deployment, all 51 live Production files matched the origin/production build byte-for-byte. Subsequent read-only verification checks this again. Staging's 55 files and correct SVG/PNG/PDF MIME types are recorded in learning-references-deployment-verification.json.
+- Browser checks on the hosted Staging channel: desktop1280x720, simulated iPad portrait768x1024, landscape1024x768, phone390x844. Numbers shows header → Learning References → Vocabulary Sets; Animals has no reference section. Preview/reader images load; no page horizontal overflow. Enlarged charts scroll within their region. Full-window reading and Escape exit work. No console errors observed. Physical iPads and Safari native full screen were not tested; full-window fallback covers environments without native full screen.
+- Screenshot and structured checks are under docs/screenshots/learning-references/ and learning-references-browser-checks.json.
+
+Repeat checks from this worktree
+VOCABULARY_LIBRARY_DIR="$PWD/docs/verification/canonical-vocabulary" npm test
+npm run check
+node scripts/verify-payload.mjs
+node scripts/build-production.mjs /private/tmp/learning-references-production-check
+
+Approval requested
+Approve this independent static-reference architecture and the reviewed website change for Production. Production release must still follow AGENTS.md: verify current live/base, approved explicit-URL branch push/release bookkeeping, build exact payload, Hosting-only deployment, live byte comparison and smoke checks. No Production action has been taken in this phase.

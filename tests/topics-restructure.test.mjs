@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import {learningReferencesSection} from '../dist/learning-references.mjs';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {TOPICS,LEGACY_TOPIC_IDS,currentTopicIds,vocabularyResources,selectResources,topicYears,sortTopicResources,yearLabel} from '../dist/catalog.mjs';
@@ -109,7 +110,7 @@ test('Vocabulary cards without a saved cover keep their previous artwork',()=>{
 
 function renderTopics(query,vocabulary,status='ready'){
   const source=app.slice(app.indexOf('function topics('),app.indexOf('const learning={'));
-  const context=vm.createContext({TOPICS,selectResources,sortTopicResources,yearLabel,state:{vocabularyStatus:status,unitsStatus:status},allResources:()=>vocabulary,
+  const context=vm.createContext({TOPICS,selectResources,sortTopicResources,yearLabel,learningReferencesSection,state:{vocabularyStatus:status,unitsStatus:status},allResources:()=>vocabulary,
     topicCard:(topic,resource)=>resource?`<card ${resource.id} ${yearLabel(resource.year)}>`:`<topic ${topic.id}>`,icon:()=>''});
   vm.runInContext(source,context);
   return context.topics(new URLSearchParams(query));

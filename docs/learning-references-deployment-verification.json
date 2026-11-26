@@ -1,0 +1,32 @@
+{
+  "verifiedAt": "2026-11-26T06:29:50.711Z",
+  "previewUrl": "https://the-mandarin-room-staging--learning-references-qob6gc5u.web.app",
+  "expiry": "2026-12-10T06:26:38.206380073Z",
+  "previewFiles": 55,
+  "productionFiles": 51,
+  "failures": [],
+  "assetResults": [
+    {
+      "environment": "preview",
+      "file": "assets/learning-references/number-chart-0-100/number_chart_0_100.pdf",
+      "status": 200,
+      "matches": true,
+      "contentType": "application/pdf"
+    },
+    {
+      "environment": "preview",
+      "file": "assets/learning-references/number-chart-0-100/number_chart_0_100.svg",
+      "status": 200,
+      "matches": true,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "environment": "preview",
+      "file": "assets/learning-references/number-chart-0-100/number_chart_0_100.png",
+      "status": 200,
+      "matches": true,
+      "contentType": "image/png"
+    }
+  ],
+  "productionUnchanged": true
+}

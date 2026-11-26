@@ -1,3 +1,4 @@
+import {referencesForTopic,learningReferencesSection,referenceView,wireReferenceView,publishedReferences} from './learning-references.mjs';
 import {loadJourney} from './journey-data.mjs';
 import {renderJourney} from './journey-view.mjs';
 import {renderUnit,focusLesson} from './unit-viewer/unit-renderer.mjs';
@@ -9,6 +10,7 @@ import {parseRoute,readFilters,resourceRoute,robotsFor} from './routing.mjs?v=to
 const main=document.querySelector('#main');
 const state={vocabulary:[],units:[],vocabularyStatus:'loading',unitsStatus:'loading'};
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let releaseReferenceView=()=>{};
 const allResources=()=>[...state.vocabulary,...state.units];
 const arrow='<span aria-hidden="true">→</span>';
 const icons={book:'<path d="M12 5C8 2 4 3 2 4v16c3-2 7-2 10 0 3-2 7-2 10 0V4c-3-1-7-2-10 1ZM12 5v15"/>',
@@ -143,21 +145,25 @@ function topicCard(topic,resource=null) {
     return `<article class="topic-card year-${resource.year}"><div class="topic-top">${artwork}<div class="topic-copy"><h2>${title}</h2>${resource.chinese?`<div class="chinese-title" lang="zh-Hans">${escape(resource.chinese)}</div>`:''}</div></div>${resource.type==='unit'?`<span class="circle" aria-hidden="true">${arrow}</span>`:''}<a class="catalog-resource-open" href="${escape(resource.url)}" ${resource.type==='unit'?`data-unit="${escape(resource.id)}"`:''} aria-label="Open ${title}"></a><div class="year-tags">${resource.type==='unit'?`<a href="${resourceRoute('units',{year:resource.year})}" class="year-badge year-${resource.year}" aria-label="Filter ${yearLabel(resource.year)}">${yearLabel(resource.year)}</a>`:yearBadge(resource.year)}</div></article>`;
   }
   const years=topicYears(allResources(),topic.id);
+  const hasReferences=referencesForTopic(topic.id).length>0;
   const empty=state.vocabularyStatus==='loading'||state.unitsStatus==='loading'?'Loading resources…':state.vocabularyStatus==='error'||state.unitsStatus==='error'?'Library temporarily unavailable':'Resources coming soon';
-  return `<article class="topic-card ${topic.colour}"><div class="topic-top">${topicArt(topic.id)}<div class="topic-copy"><h2>${topic.title}</h2><div class="chinese-title" lang="zh-Hans">${topic.chinese}</div><p>${topic.description}</p></div></div>${years.length?`<a href="#/topics?topic=${topic.id}" class="catalog-resource-open" aria-label="Explore ${topic.title}"></a>`:''}<div class="year-tags">${years.length?years.map(yearBadge).join(''):`<span class="muted">${empty}</span>`}</div></article>`;
+  return `<article class="topic-card ${topic.colour}"><div class="topic-top">${topicArt(topic.id)}<div class="topic-copy"><h2>${topic.title}</h2><div class="chinese-title" lang="zh-Hans">${topic.chinese}</div><p>${topic.description}</p></div></div>${years.length||hasReferences?`<a href="#/topics?topic=${topic.id}" class="catalog-resource-open" aria-label="Explore ${topic.title}"></a>`:''}<div class="year-tags">${years.length?years.map(yearBadge).join(''):hasReferences?'':`<span class="muted">${empty}</span>`}${hasReferences?'<span class="reference-years">All year levels</span>':''}</div></article>`;
 }
 function topics(params) {
   const topic=TOPICS.find(t=>t.id===params.get('topic'));
   if(topic){
     const year=/^[0-6]$/.test(params.get('year')||'')?Number(params.get('year')):null;
     const resources=sortTopicResources(selectResources(allResources(),{topic:topic.id,year}));
+    const vocabulary=resources.filter(item=>item.type==='vocabulary'),units=resources.filter(item=>item.type==='unit');
     const status=state.vocabularyStatus;
     const empty=status==='loading'?'<p class="empty-state" role="status">Loading published resources…</p>':status==='error'?'<p class="empty-state">Vocabulary is temporarily unavailable. <button class="text-button" data-action="retry">Try again</button></p>':`<p class="empty-state">No published resources for ${topic.title}${year!==null?' in '+yearLabel(year):''} yet. Resources coming soon.</p>`;
     // The same cards as the Vocabulary page (saved cover, titles, year label, existing student view).
     return `<a class="back-link" href="#/topics">← All Topics</a><section class="banner ${topic.colour}"><div><h1>${topic.title} <span lang="zh-Hans">${topic.chinese}</span></h1><p class="subtitle">${topic.description}</p></div></section>
     ${year!==null?`<p><a class="inline-link" href="#/topics?topic=${topic.id}">View all available year levels</a></p>`:''}
-    ${resources.length?`<div class="topic-grid catalog-cards topic-collection">${resources.map(resource=>topicCard(topic,resource)).join('')}</div>`:empty}
-    <p class="data-note">Sets appear here automatically from the Vocabulary Library, using the topic chosen for each set.</p>`;
+    ${learningReferencesSection(topic.id,{year})}
+    <section class="topic-vocabulary" aria-labelledby="topic-vocabulary-heading"><h2 id="topic-vocabulary-heading">Vocabulary Sets</h2>${vocabulary.length?`<div class="topic-grid catalog-cards topic-collection">${vocabulary.map(resource=>topicCard(topic,resource)).join('')}</div>`:empty}</section>
+    ${units.length?`<section class="topic-units" aria-labelledby="topic-units-heading"><h2 id="topic-units-heading">Units</h2><div class="topic-grid catalog-cards topic-collection">${units.map(resource=>topicCard(topic,resource)).join('')}</div></section>`:''}
+    <p class="data-note">Sets appear here automatically from the Vocabulary Library, using the topics chosen for each set.</p>`;
   }
   return `<div class="catalog-heading topics-heading"><h1>Topics <span lang="zh-Hans">主题</span></h1><label class="topic-search">${icon('search')}<input id="topic-filter" type="search" placeholder="Search topics (e.g. animals, 动物, food…)" aria-label="Search topics"></label></div><div class="topic-grid" id="topic-grid">${TOPICS.map(topic=>topicCard(topic)).join('')}</div><p class="data-note" id="topic-count" role="status">${TOPICS.length} topics · Year badges reflect published resources.</p>`;
 }
@@ -235,14 +241,15 @@ function wireCatalogCovers(){
 // Route-level robots meta (#route-robots); a page's own static robots meta is never removed.
 function setRouteRobots(value){let m=document.getElementById('route-robots');if(!value){m?.remove();return;}if(!m){m=document.createElement('meta');m.name='robots';m.id='route-robots';document.head.append(m);}m.content=value;}
 function render({focus=false}={}){
+  releaseReferenceView();releaseReferenceView=()=>{};
   const {page,params}=route();
   const viewRequest=++studentViewRequest;
   main.classList.toggle('year-level-page',page==='home');
-  const renderers={journey:()=>'<section id="journey-view"><p role="status">Loading Learning Journey…</p></section>',unit:()=>'<section class="student-unit-view" id="student-unit-view"><p role="status">Loading Unit…</p></section>',home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,'listening-games':listeningGamesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
+  const renderers={reference:()=>referenceView(params.get('id'),params.get('topic')),journey:()=>'<section id="journey-view"><p role="status">Loading Learning Journey…</p></section>',unit:()=>'<section class="student-unit-view" id="student-unit-view"><p role="status">Loading Unit…</p></section>',home:()=>home(params),vocabulary:()=>catalogPage('vocabulary',params),units:()=>catalogPage('units',params),activities:activitiesPage,'listening-games':listeningGamesPage,topics:()=>topics(params),pinyin:()=>learningPage('pinyin'),hanzi:()=>learningPage('hanzi'),about,search:()=>searchPage(params)};
   main.innerHTML=renderers[page]?renderers[page]():`<section class="banner green"><div><h1>Page not found</h1><p class="subtitle"><a class="inline-link" href="#/">Return Home</a></p></div></section>`;
-  document.title=`${({'home':'Home',journey:'Learning Journey',vocabulary:'Vocabulary',units:'Units',unit:'Unit',activities:'Activities','listening-games':'Listening Games',topics:'Topics',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
+  document.title=`${({'home':'Home',journey:'Learning Journey',vocabulary:'Vocabulary',units:'Units',unit:'Unit',activities:'Activities','listening-games':'Listening Games',topics:'Topics',reference:'Learning Reference',pinyin:'Pinyin',hanzi:'Hanzi',about:'About',search:'Search'})[page]||'Page not found'} · The Mandarin Room`;
   setRouteRobots(robotsFor(page));
-  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'||page==='journey'?'home':page==='listening-games'?'activities':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  document.querySelectorAll('nav [data-page]').forEach(a=>{if(a.dataset.page===(page==='unit'||page==='journey'?'home':page==='listening-games'?'activities':page==='reference'?'topics':page))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   if(page==='journey'){
     const raw=params.get('year'), grade=/^[0-6]$/.test(raw||'')?Number(raw):null;
     if(grade===null)document.querySelector('#journey-view').innerHTML='<h1>Choose your year level</h1><p><a href="#/">Return to the homepage</a></p>';
@@ -256,6 +263,7 @@ function render({focus=false}={}){
     focusLesson(container,params.get('lesson'));
   });
   if(page==='vocabulary')wireAudio();
+  if(page==='reference'){releaseReferenceView=wireReferenceView(main)||(()=>{});const item=publishedReferences().find(item=>item.id===params.get('id'));if(item)document.title=`${item.title} · The Mandarin Room`;}
   wireCatalogCovers();
   const activeNav=document.querySelector('.site-header nav [aria-current=page]');
   if(activeNav){const nav=activeNav.parentElement,linkRect=activeNav.getBoundingClientRect(),navRect=nav.getBoundingClientRect();if(linkRect.left<navRect.left)nav.scrollLeft-=navRect.left-linkRect.left+8;else if(linkRect.right>navRect.right)nav.scrollLeft+=linkRect.right-navRect.right+8;}
@@ -315,6 +323,8 @@ async function refreshData(){
   const [vocabulary,units]=await Promise.allSettled([loadVocabulary(),loadUnits()]);if(version!==refreshVersion)return;
   state.vocabularyStatus=vocabulary.status==='fulfilled'?'ready':'error';state.unitsStatus=units.status==='fulfilled'?'ready':'error';
   state.vocabulary=vocabulary.status==='fulfilled'?vocabulary.value:[];state.units=units.status==='fulfilled'?units.value:[];
+  // The static reference view does not consume these results. Keep its zoom, focus and full-screen state.
+  if(route().page==='reference')return;
   // Preserve an in-progress search while initial public data finishes loading.
   const active=document.activeElement;const activeId=active?.id;const value=(active instanceof HTMLInputElement||active instanceof HTMLSelectElement)?active.value:null;
   render();if(activeId&&value!==null){const input=document.getElementById(activeId);if(input){input.value=value;input.focus();input.dispatchEvent(new Event('input'));}}
