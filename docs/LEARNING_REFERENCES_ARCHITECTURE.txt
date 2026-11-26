@@ -66,3 +66,7 @@ node scripts/build-production.mjs /private/tmp/learning-references-production-ch
 
 Approval requested
 Approve this independent static-reference architecture and the reviewed website change for Production. Production release must still follow AGENTS.md: verify current live/base, approved explicit-URL branch push/release bookkeeping, build exact payload, Hosting-only deployment, live byte comparison and smoke checks. No Production action has been taken in this phase.
+
+
+Production approval — 26 November 2026:
+Owner approved publication in the current conversation. Pre-release verification: origin/production remains cdf5d99, all51 current live files byte-identical,113 tests and all guards pass. Production build differs only in app.mjs,index.html,styles.css,new learning-references.mjs and three original chart assets; no removed files. Approved implementation commit551f4aa. Release will use the unchanged reviewed payload and Hosting-only procedure.
