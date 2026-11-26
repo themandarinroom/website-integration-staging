@@ -6,6 +6,7 @@ This file is the single shared protocol for every coding agent (Codex, Claude Co
 
 | Environment | Where | Deployed from | How |
 |---|---|---|---|
+| 2026-11-26 | `4d312a0c5ff6a8e0` | `fa016d2` | Learning References: Numbers chart, anonymous enlarged/full-window viewing and printable PDF; reused original SVG/PNG/PDF assets; Hosting only |
 | **Production** | themandarinroom.au (+ the-mandarin-room.web.app). Firebase Hosting site `the-mandarin-room`, project `the-mandarin-room` | a commit on **`production`** | `firebase deploy --only hosting --config firebase.hosting-default.json --project the-mandarin-room`, after explicit owner approval |
 | Shared staging (GitHub Pages) | themandarinroom.github.io/website-integration-staging | `codex/unified-website-v1` | **automatically on any push to that branch** (`.github/workflows/staging.yml`) |
 | Isolated staging previews | `the-mandarin-room-staging--<channel>.web.app` | any feature branch | `firebase hosting:channel:deploy <name> --expires 14d --project the-mandarin-room-staging` |

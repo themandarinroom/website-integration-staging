@@ -70,3 +70,6 @@ Approve this independent static-reference architecture and the reviewed website 
 
 Production approval — 26 November 2026:
 Owner approved publication in the current conversation. Pre-release verification: origin/production remains cdf5d99, all51 current live files byte-identical,113 tests and all guards pass. Production build differs only in app.mjs,index.html,styles.css,new learning-references.mjs and three original chart assets; no removed files. Approved implementation commit551f4aa. Release will use the unchanged reviewed payload and Hosting-only procedure.
+
+Production release completed — 26 November 2026
+Owner approved publication in this conversation. Hosting version: 4d312a0c5ff6a8e0; deployed source: fa016d2; approved implementation: 551f4aa. Both Production origins match all 55 build files byte-for-byte. Original PNG/SVG/PDF return HTTP 200 with correct MIME types. 113 tests passed. Browser checks confirmed Numbers section order, existing vocabulary and Units, enlarged chart, full-window fallback and exit, printable PDF link, Home, Vocabulary, Topics, Activities, About, Journey, Units Management and Unit publication. Journey Year 2 retains its existing coming-soon state. Teacher pages checked read-only; no publication actions or database writes performed. Native iPad Safari was not tested; responsive layouts were verified in Staging.

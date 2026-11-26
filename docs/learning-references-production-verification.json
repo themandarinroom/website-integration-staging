@@ -1,0 +1,55 @@
+{
+  "verifiedAt": "2026-11-26T10:37:34.244Z",
+  "source": "fa016d2",
+  "hostingVersion": "4d312a0c5ff6a8e0",
+  "filesPerOrigin": 55,
+  "origins": [
+    "https://themandarinroom.au",
+    "https://the-mandarin-room.web.app"
+  ],
+  "failures": [],
+  "assets": [
+    {
+      "origin": "https://themandarinroom.au",
+      "file": "assets/learning-references/number-chart-0-100/number_chart_0_100.pdf",
+      "status": 200,
+      "matches": true,
+      "contentType": "application/pdf"
+    },
+    {
+      "origin": "https://themandarinroom.au",
+      "file": "assets/learning-references/number-chart-0-100/number_chart_0_100.svg",
+      "status": 200,
+      "matches": true,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "origin": "https://themandarinroom.au",
+      "file": "assets/learning-references/number-chart-0-100/number_chart_0_100.png",
+      "status": 200,
+      "matches": true,
+      "contentType": "image/png"
+    },
+    {
+      "origin": "https://the-mandarin-room.web.app",
+      "file": "assets/learning-references/number-chart-0-100/number_chart_0_100.pdf",
+      "status": 200,
+      "matches": true,
+      "contentType": "application/pdf"
+    },
+    {
+      "origin": "https://the-mandarin-room.web.app",
+      "file": "assets/learning-references/number-chart-0-100/number_chart_0_100.svg",
+      "status": 200,
+      "matches": true,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "origin": "https://the-mandarin-room.web.app",
+      "file": "assets/learning-references/number-chart-0-100/number_chart_0_100.png",
+      "status": 200,
+      "matches": true,
+      "contentType": "image/png"
+    }
+  ]
+}
