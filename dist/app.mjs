@@ -79,10 +79,9 @@ function wordCards() {
     <div class="audio-buttons"><button class="audio-button" data-ai="${i}" ${!item.aiEnabled||!canSpeak()?'disabled':''} aria-label="AI Voice: ${escape(item.chinese)}">▶ AI Voice</button><button class="audio-button" data-teacher="${i}" disabled aria-label="Teacher Voice: ${escape(item.chinese)}">Checking…</button></div></div></article>`).join('')}</div>`;
 }
 function activityTiles() {
-  // Each card is fully clickable: the arrow link stretches over the card (.activity-card .circle::after).
-  return `<div class="activity-grid"><article class="activity-card yellow"><span class="symbol">${icon('shuffle')}</span><h3>Word Randomiser</h3><p>Turn vocabulary into fun classroom activities.</p><a class="circle" href="${LINKS.randomiser}" aria-label="Open Word Randomiser Local Mode">${arrow}</a></article>
-  <article class="activity-card lavender"><span class="symbol">${icon('mic')}</span><h3>Speaking Practice</h3><p>Build confidence with listening and speaking practice.</p><a class="circle" href="${LINKS.speaking}" aria-label="Open Speaking Practice">${arrow}</a></article>
-  <article class="activity-card green"><span class="symbol">${icon('headphones')}</span><h3>Listening Games</h3><p>Play Bingo and Build The Great Wall by listening to Chinese words.</p><a class="circle" href="#/activities/listening-games" aria-label="Open Listening Games">${arrow}</a></article></div>`;
+  return `<div class="activity-grid"><a class="activity-card yellow" href="${LINKS.randomiser}" aria-label="Open Word Randomiser Local Mode"><span class="symbol">${icon('shuffle')}</span><h3>Word Randomiser</h3><p>Turn vocabulary into fun classroom activities.</p></a>
+  <a class="activity-card lavender" href="${LINKS.speaking}" aria-label="Open Speaking Practice"><span class="symbol">${icon('mic')}</span><h3>Speaking Practice</h3><p>Build confidence with listening and speaking practice.</p></a>
+  <a class="activity-card green" href="#/activities/listening-games" aria-label="Open Listening Games"><span class="symbol">${icon('headphones')}</span><h3>Listening Games</h3><p>Play Bingo and Build The Great Wall by listening to Chinese words.</p></a></div>`;
 }
 // Listening Games: each game is one link covering the whole card. Titles and descriptions are HTML text; covers carry no lettering.
 const LISTENING_GAMES=[
@@ -94,7 +93,7 @@ const LISTENING_GAMES=[
 function gameCard(game) {
   return `<a class="game-card" href="${game.href}" target="_blank" rel="noopener noreferrer" data-game="${game.id}" aria-labelledby="game-${game.id}-title game-${game.id}-hint" aria-describedby="game-${game.id}-description">
     <div class="game-cover"><img src="assets/listening-games/${game.cover}-800.webp" srcset="assets/listening-games/${game.cover}-800.webp 800w, assets/listening-games/${game.cover}-1600.webp 1600w" sizes="(max-width: 700px) 100vw, 50vw" width="1600" height="900" alt="${escape(game.alt)}" decoding="async"></div>
-    <div class="game-copy"><h2 id="game-${game.id}-title">${game.title}</h2><p id="game-${game.id}-description">${game.description}</p><span class="game-play"><span id="game-${game.id}-hint">Play · opens in a new tab</span><span class="circle">${arrow}</span></span></div></a>`;
+    <div class="game-copy"><h2 id="game-${game.id}-title">${game.title}</h2><p id="game-${game.id}-description">${game.description}</p><span class="game-play" id="game-${game.id}-hint">Play · opens in a new tab</span></div></a>`;
 }
 function listeningGamesPage() {
   return `<a class="back-link" href="#/activities">← Back to Activities</a><header class="page-intro activities-intro"><h1>Listening Games</h1></header><section class="game-grid" aria-label="Listening games">${LISTENING_GAMES.map(gameCard).join('')}</section>`;
@@ -165,7 +164,7 @@ function topics(params) {
     ${units.length?`<section class="topic-units" aria-labelledby="topic-units-heading"><h2 id="topic-units-heading">Units</h2><div class="topic-grid catalog-cards topic-collection">${units.map(resource=>topicCard(topic,resource)).join('')}</div></section>`:''}
     <p class="data-note">Sets appear here automatically from the Vocabulary Library, using the topics chosen for each set.</p>`;
   }
-  return `<div class="catalog-heading topics-heading"><h1>Topics <span lang="zh-Hans">主题</span></h1><label class="topic-search">${icon('search')}<input id="topic-filter" type="search" placeholder="Search topics (e.g. animals, 动物, food…)" aria-label="Search topics"></label></div><div class="topic-grid" id="topic-grid">${TOPICS.map(topic=>topicCard(topic)).join('')}</div><p class="data-note" id="topic-count" role="status">${TOPICS.length} topics · Year badges reflect published resources.</p>`;
+  return `<div class="catalog-heading topics-heading"><h1>Topics</h1><label class="topic-search">${icon('search')}<input id="topic-filter" type="search" placeholder="Search topics (e.g. animals, 动物, food…)" aria-label="Search topics"></label></div><div class="topic-grid" id="topic-grid">${TOPICS.map(topic=>topicCard(topic)).join('')}</div><p class="data-note" id="topic-count" role="status">${TOPICS.length} topics · Year badges reflect published resources.</p>`;
 }
 const learning={
   pinyin:{title:'Pinyin',colour:'pink',description:'Pinyin (<span lang="zh-Hans">拼音</span>) is the official system for writing Mandarin sounds with the English alphabet, using tone marks to show how each syllable is said.',banner:[1015,130,460,105],items:[

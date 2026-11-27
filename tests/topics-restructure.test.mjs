@@ -190,3 +190,9 @@ test('cover precedence: a set\'s own cover is shown whenever it has one; the top
   const noCover=context.topicCard(topic,{type:'vocabulary',id:'zz-new',title:'New',chinese:'',year:3,url:'u',coverImage:''});
   assert.match(noCover,/^<article[^>]*><div class="topic-top"><svg data-topic-art="people">/);assert.doesNotMatch(noCover,/catalog-saved-cover/);
 });
+
+test('the Topics index heading is English and the topic cards keep bilingual titles',()=>{
+ assert.match(app,/<div class="catalog-heading topics-heading"><h1>Topics<\/h1>/);
+ assert.equal(TOPICS.length,13);
+ for(const topic of TOPICS)assert.match(topic.chinese,/\p{Script=Han}/u);
+});

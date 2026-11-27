@@ -52,3 +52,11 @@ test('the homepage year panel no longer calls Listening Games "coming soon"',()=
  assert(!app.includes('Bingo Board and Listening Game · Coming soon'));
  assert(app.includes('<strong>Speaking Practice ${arrow}</strong>'));
 });
+
+test('Activities and Listening Games use arrow-free full-card links',()=>{
+ assert.equal((tiles.match(/<a class="activity-card /g)||[]).length,3);
+ assert.equal((tiles.match(/<a /g)||[]).length,3);
+ assert.doesNotMatch(tiles,/class="circle"|\$\{arrow\}/);
+ assert.doesNotMatch(games,/class="circle"|\$\{arrow\}/);
+ assert(games.includes('Play · opens in a new tab'));
+});
