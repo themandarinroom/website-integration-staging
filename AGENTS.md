@@ -2,11 +2,21 @@
 
 This file is the single shared protocol for every coding agent (Codex, Claude Code) and human working in this repository. `CLAUDE.md` imports this file, so the two cannot drift apart. Change the protocol here.
 
+## 0. Shared standards (read first)
+
+The Mandarin Room's shared standards live in the Vocabulary Library repository, which is the hub. They apply here too. Read [`docs/PROJECT_STANDARDS.md`](https://github.com/themandarinroom/vocabularylibrary/blob/main/docs/PROJECT_STANDARDS.md) before any task. It covers:
+- principles and collaboration rules;
+- environments and Staging/Production parity;
+- the **risk-based approval policy**;
+- reporting and evidence, the workspace map and operational knowledge;
+- the index of owner documents.
+
+Vocabulary data, IDs, pinyin, English, assets and audio are owned there (`docs/VOCABULARY_SET_CREATION.md`, `docs/ASSETS.md`, `docs/TOPICS.md`). This repository owns the website's architecture (`docs/ARCHITECTURE.md`), build and deployment (this file, §1–§7) and the **UI and design standard** (`docs/design-references/README.md`).
+
 ## 1. What this repository deploys
 
 | Environment | Where | Deployed from | How |
 |---|---|---|---|
-| 2026-11-26 | `4d312a0c5ff6a8e0` | `fa016d2` | Learning References: Numbers chart, anonymous enlarged/full-window viewing and printable PDF; reused original SVG/PNG/PDF assets; Hosting only |
 | **Production** | themandarinroom.au (+ the-mandarin-room.web.app). Firebase Hosting site `the-mandarin-room`, project `the-mandarin-room` | a commit on **`production`** | `firebase deploy --only hosting --config firebase.hosting-default.json --project the-mandarin-room`, after explicit owner approval |
 | Shared staging (GitHub Pages) | themandarinroom.github.io/website-integration-staging | `codex/unified-website-v1` | **automatically on any push to that branch** (`.github/workflows/staging.yml`) |
 | Isolated staging previews | `the-mandarin-room-staging--<channel>.web.app` | any feature branch | `firebase hosting:channel:deploy <name> --expires 14d --project the-mandarin-room-staging` |
@@ -16,7 +26,9 @@ This file is the single shared protocol for every coding agent (Codex, Claude Co
 
 ## 2. Production protection (non-negotiable)
 
-1. **No Production change without explicit approval** from the owner in the current conversation. This covers Hosting deploys, Firestore/Storage data, rules, Functions, Auth settings, IAM and DNS. Approval for one action does not carry over to the next.
+1. **No Production change without explicit approval** from the owner. This covers Hosting deploys, Firestore/Storage data, rules, Functions, Auth settings, IAM and DNS. Approval for one action does not carry over to the next.
+   - Website code and UI always need a separate approval after Staging verification.
+   - Only narrowly scoped vocabulary content operations may be approved in advance (shared standards §5).
 2. **`production` is the definitive Production source and GitHub's default branch.** It is protected: no force-push, no deletion, linear history, admins included. Never try to bypass or remove this protection.
 3. **Keep the local push guard.** `remote.origin.pushurl` stays `PUSH-DISABLED-<date>`. After approval, push only by explicit URL: `git push https://github.com/themandarinroom/website-integration-staging.git <sha>:refs/heads/<branch>`. Never run `git config` to re-enable pushing.
 4. **Never force-push, reset, rebase or delete** a shared branch, and never push to `codex/unified-website-v1` (that redeploys shared staging) without approval.
@@ -72,6 +84,7 @@ Isolated staging preview channels and local testing need no extra approval when 
 |---|---|---|---|
 | 2026-11-28 | `58afa37fe2931016` | `66903c5` | Activities: fourth card **Vocabulary Games** (whole-card link, no arrow) and its page with **Tarsia Puzzle** (opens `themandarinroom.github.io/vocabularylibrary/tools/tarsia-puzzle/`, Vocabulary Library `e589848` / #9). Hosting only. All 57 files verified on both production domains. |
 | 2026-11-27 | `626fde920169049c` | `f4f2d81` | Activities and Listening Games card arrows removed, Topics index heading simplified. Hosting only. All 55 files verified on both production domains. |
+| 2026-11-26 | `4d312a0c5ff6a8e0` | `fa016d2` | Learning References: Numbers chart, anonymous enlarged/full-window viewing and printable PDF; reused original SVG/PNG/PDF assets; Hosting only |
 | 2026-11-25 | `5b2c84` | `2d69017` | Topics v1.1: 13 topics (Social Interactions, 餐饮, Nature, Community) and multi-topic sets (with Vocabulary Library `56db84f`, Firestore rules `17af1788`, Production `publishPublicUnit` from `e399672`, data: How are you? → social-interactions, topicIds backfill, Age → Numbers + People) |
 | 2026-11-25 | `4aa80c` | `69d0a58` | Topics restructure: 11 topics, membership from Vocabulary Library `topicId` (with Vocabulary Library `6fc48a2`, Firestore rules `3c3d85b4`, topic migration of 22 sets) |
 | 2026-11-23 | `060baebe6e68aadd` | `d1b1e05` | Removed navigation arrows; full-card Home, Vocabulary and Topics links |
@@ -85,6 +98,13 @@ Isolated staging preview channels and local testing need no extra approval when 
 
 ## 8. Related repositories (same rules apply)
 
-- `themandarinroom/vocabularylibrary`: GitHub Pages from `main`. Production = live Pages build. Same push guard. Fast-forward only, after approval.
+- `themandarinroom/vocabularylibrary`: GitHub Pages from `main`. Production = live Pages build. Same push guard. Code releases go through squash-merged Pull Requests after approval; see its `AGENTS.md` §6–§7 (release history).
 - `themandarinroom/units`, `themandarinroom/speaking`: GitHub Pages apps linked from this site. Do not change their base paths.
-- Firebase backends (rules, Functions) live in the Vocabulary Library workspace. The staging project is `the-mandarin-room-staging`, the Production project is `the-mandarin-room`. Staging deploys must go through the staging guard (`guard-staging-deploy.cjs`), which refuses the Production project.
+- Firebase Rules are owned by the Vocabulary Library repository root (shared standards §6; its `storage.rules` is known to be behind Production). For where the Functions source lives, see the shared standards' workspace map, §8. The staging project is `the-mandarin-room-staging`, the Production project is `the-mandarin-room`. Staging deploys must go through the staging guard (`guard-staging-deploy.cjs`), which refuses the Production project.
+
+## 9. Agent-specific notes
+
+Machine facts both agents need are in the shared standards §9: OpenJDK PATH, git identity, push URL and Firebase CLI.
+
+- **Claude Code:** the browser pane cannot complete Google sign-in. Teacher-page tests that need sign-in go to the owner's Chrome.
+- **Both agents:** `dist/` is pinned to Staging. Verify the built `build/production/` or the live files, never `dist/`, when making a claim about Production.

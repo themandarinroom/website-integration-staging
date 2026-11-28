@@ -1,46 +1,35 @@
-# The Mandarin Room — unified website integration v1.0
+# The Mandarin Room: website
 
-Eight responsive pages: Home, Vocabulary, Units, Activities, Topics, Pinyin, Hanzi and About. The approved staircase artwork is the homepage, with seven interactive year levels and the welcome heading. Dedicated resource pages provide real published Vocabulary with independent AI/Teacher Voice, year/topic filters, public Unit lesson previews and verified activity links. Search, protected Admin entry links and bilingual About remain available. Unimplemented activities and contact delivery are visibly unavailable.
+The public website at **themandarinroom.au** (also the-mandarin-room.web.app).
+- **Public pages:** Home, Vocabulary, Units, Activities (Listening Games, Vocabulary Games), Topics, Pinyin, Hanzi and About.
+- **Teacher pages:** Units Management, Unit publication and Journey admin.
 
-**Live staging:** https://themandarinroom.github.io/website-integration-staging/
+It is static: hash-routed pages built from `dist/`, deployed to Firebase Hosting.
 
-The staging source is isolated from all existing application repositories. It makes anonymous read-only requests for public resources; it has no Firebase SDK, auth, backend, writes or curriculum cache. The existing apps retain ownership of editing, student workflows, recordings and permissions.
+**Start here:**
+- [AGENTS.md](AGENTS.md): environments, protection, branching, required tests, the Production release procedure and release history. Every agent and contributor reads this first.
+- [Shared standards](https://github.com/themandarinroom/vocabularylibrary/blob/main/docs/PROJECT_STANDARDS.md) (Vocabulary Library repository): principles, collaboration rules, approvals, reporting and workspace map.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): how the site is built and what it reads.
+- [docs/design-references/README.md](docs/design-references/README.md): the UI and design standard, and the approved decision log.
+- [docs/TOPICS.md](docs/TOPICS.md): the Topics pages.
+- [docs/VERIFICATION.md](docs/VERIFICATION.md): the browser and device checklist.
 
-## Preview and checks
+## Local preview and checks
 
-Requires Node 22+ for tests and Python 3 for local serving; no npm dependencies or build step.
+Requires Node 22+ and Python 3. There are no npm dependencies.
 
 ```sh
-npm run check
-npm test
-node scripts/verify-payload.mjs
-npm run preview
+npm run check                              # syntax of every shipped module
+npm test                                   # tests/*.test.mjs
+node scripts/verify-payload.mjs            # dist/ allowlist
+node scripts/build-production.mjs <tmpdir> # Production build (needs a sibling vocabularylibrary checkout)
+npm run preview                            # serves dist/ (Staging-pinned) at http://127.0.0.1:8765/
 ```
 
-Open http://127.0.0.1:8765/. Hash routes work beneath a GitHub Pages repository path.
+`dist/` is pinned to Staging. `build-production.mjs` produces the Production payload. See [AGENTS.md](AGENTS.md) §1.
 
-* [Architecture audit and integration inventory](docs/ARCHITECTURE.md)
-* [Verification and remaining device checks](docs/VERIFICATION.md)
-* [Staging and production deployment plan](docs/DEPLOYMENT.md)
-* [Approved original references](docs/design-references/README.md)
-* [Page screenshots and revision previews](docs/screenshots/)
+## History
 
-Only `dist/` is deployed. `scripts/verify-payload.mjs` rejects files outside the static allowlist and common credential patterns. `.github/workflows/staging.yml` checks and publishes this isolated staging repository only.
-
-## Updating resource metadata
-
-Vocabulary loads `published == true` from the existing public Firestore API. The frontend also excludes deleted/unpublished records. Units loads its already-public metadata index; it never queries the teacher-only Units collection. The public index may lag current edits and does not make full units public.
-
-`dist/catalog.mjs` holds stable topic IDs and reviewed resource-to-topic associations. New or renamed resource IDs are searchable but receive no guessed topic tags until reviewed. Years come directly from source metadata; the mockups’ illustrative year chips are not data.
-
-The approved illustrations are displayed by clipping unchanged PNG references inside SVG viewports. Text/navigation/cards are real responsive HTML; no screenshot is used as a full-page implementation. Actual vocabulary imagery remains owned by the existing library. Standalone original illustration assets can replace these clipped references later without changing the approved design.
-
-## Latest approved visual revision
-
-Home now uses the supplied illustrated staircase, with working Prep–Year 6 step links and smaller-screen shortcuts. Legacy `#/year-levels` links redirect to Home with their year parameters preserved. All shared header/footer branding and the favicon use the supplied Yin-Yang emblem. These replace the earlier year-card layout and vertical seal; the other approved page designs and resource/data boundaries remain in place.
-
-## Homepage promotion and independent resources
-
-Navigation is Home | Vocabulary | Units | Activities | Topics | Pinyin | Hanzi | About, with Search and Admin on the right. Home is available at both `/` and `/#/`; year selection uses `#/?year=0` through `#/?year=6`. Vocabulary/Units filters are shareable URL state and restore with Back/Forward. Only the original heading/subtitle area is clipped for live welcome text; the supplied PNG and its children, steps and illustrations remain unchanged.
-
-See [homepage promotion verification](docs/HOMEPAGE_PROMOTION.md) and [current page previews](docs/screenshots/homepage-promotion/). The public Unit index remains a title/lesson preview; full Unit content and editing keep their existing access restrictions.
+The earlier October 2026 documents (the GitHub Pages integration shell, staircase homepage and Phase A audit) are kept in git history.
+- [docs/HOMEPAGE_PROMOTION.md](docs/HOMEPAGE_PROMOTION.md) and the evidence files under `docs/` are historical records.
+- Newer task evidence lives in the shared workspace (shared standards §7).
